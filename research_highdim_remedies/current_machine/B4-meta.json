@@ -1,0 +1,24 @@
+{
+  "block": "B4",
+  "started": "2026-10-02T22:11:13+0100",
+  "platform": "macOS-26.7-arm64-arm-64bit-Mach-O",
+  "python": "3.14.6 (main, Jun 10 2026, 10:03:53) [Clang 21.0.0 (clang-2100.0.123.102)]",
+  "torch": "2.14.1",
+  "numpy": "2.5.3",
+  "threads": 1,
+  "seeds": [
+    40,
+    41,
+    42
+  ],
+  "status": "completed",
+  "scope": "retrospective current-machine cohort, no historical file mutations",
+  "source_sha256": {
+    "reimpl.py": "25bf01890f9ad1ecf50ac39672b6c0eadc41e4ac96297e78e0f46828b1342a15",
+    "reimpl2.py": "830b80746dbf0126848ca78575f60d8b75a4ab4bd6098b4e36c846f64441944f"
+  },
+  "finished": "2026-10-02T22:29:48+0100",
+  "cpu": "Apple M4 Pro",
+  "training_device": "CPU",
+  "concurrency": "two processes, each torch.set_num_threads(1)"
+}

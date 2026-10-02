@@ -76,7 +76,7 @@ sh build_pdfs.sh                           # builds main.pdf (copied to paper.pd
 ```
 
 The check takes a few seconds and trains nothing. The results were produced with Python 3.14;
-`requirements.txt` lists the package versions used. Trained-network files are not included, also not those
+`requirements.txt` lists the package versions used. Trained-network files from the original studies are not included, including those
 of the pre-registered evaluation of Section 6.7, whose SHA-256 hashes are in
 `research_highdim_bound/results/inventory.json`; the training scripts retrain them.
 
@@ -116,3 +116,7 @@ Code: MIT. Text, figures and data: CC BY 4.0. See [`LICENSE`](LICENSE).
 
 Xiaoxiao Zhouyi, School of Engineering Mathematics and Technology, University of Bristol, UK.
 zhouyixiaoxiao@gmail.com
+
+## Checkpoint-backed current-machine replication
+
+A separate 24-network PINN cohort at dimension 20 is supplied in [`research_highdim_remedies/current_machine/`](research_highdim_remedies/current_machine/), including all checkpoints and a read-only test-error validator. It covers seeds 40–42 on LapD and SinLinD, keeps historical results separate, and recalibrates the computational budget on the current machine. On SinLinD presolve worsens all three seeds while lift3c and centred input improve all three; the CPU-calibrated LapD comparison records its actual 10.5% CPU-time overshoot. See Supplementary Table S14 and [`reproduce.md`](reproduce.md).

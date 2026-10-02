@@ -53,7 +53,8 @@ loss, but the bound is loose at small $d$.} The constant of the harmonic extensi
 (Theorem~\ref{s6_highdim:thm:kappa}); the bound of Corollary~\ref{s6_highdim:cor:bound} held on all
 133 networks evaluated, with efficiency 1.92 to 3.44 at $d=10$ and 20, but the pre-registered target
 of an efficiency of at most 3 for $d\ge5$ failed (21 of 57 networks), and at $d=2$ the efficiency
-reached 24.8. It is a certificate, not an error estimator. A bound of this form already follows from
+reached 24.8. The exact population losses give a rigorous upper bound; the reported Monte-Carlo
+evaluations are numerical assessments of that bound, not certified quadrature. A bound of this form already follows from
 Payne's classical constant; the theorem adds the order in $d$.
 % src: research_highdim_remedies/results/decision.json; research_highdim_remedies/results/decision_p5.json; research_highdim_remedies/results/summary.json (P2/d20 lift3c, rep3; presolve and lift3c medians); research_highdim_remedies/results/summary_exploratory.json (P2/d20 lift1); research_highdim_remedies/results/attribution.json (P2 lift1/lift3c); research_highdim_remedies/results/summary_p5.json (P5/d20 presolve, lift3c); research_highdim_remedies/results/checks.json (C5_floors poisson/d20: exact_lift3 3.9e-3)
 \item \emph{Neither cheap remedy is general at $d=20$.} By the pre-registered rule the Legendre
@@ -112,7 +113,7 @@ weights. Uniqueness is proved in a stated class (classical solutions; for \PLthr
 solutions that attain the datum in mean square); continuous dependence on the data is not
 proved.
 
-\emph{Unfinished problems.} \PWtwo\ and \PLthree\ are not converged at 3000 iterations.
+\emph{Convergence at the tested budgets.} \PWtwo\ and \PLthree\ are not converged at 3000 iterations.
 The longer runs on \PWtwo\ (three seeds, one strategy) ended on the tolerance of the
 optimiser in single precision, below one per cent but not on a plateau
 (Section~\ref{s5_hard:sec:w2}). \PWone\ is not solved at the network size and budgets
@@ -162,11 +163,12 @@ input and, for Deep Ritz on \Pone, rep3 had been tried on \Pone\ and \Ptwo\ in e
 before the freeze, so their direction on these two problems was known and only \Pridge\ and
 \Pcospair\ were held out; the pre-registered controls lift3u and rep3 were run for Deep Ritz only;
 \Paltridge\ was not a blind test; and the second round of the re-check, which added \Psinlin\
-and \Pexpcos, is descriptive, and three planned cells of it were not run (Supplementary
-Section~\ref{S5:sec:remedies}).
+and \Pexpcos, is descriptive. A separate 24-network current-machine cohort covers the full
+three-seed PINN comparisons on \Pone\ and \Psinlin\; its CPU-calibrated arm used 10.5 per cent
+more measured CPU time than plain (Supplementary Section~\ref{S5:sec:current-machine}).
 % src: research_highdim_bound/results/decisions.json (H1: min_z_D hd 75.49); data/s6_highdim_bound_numbers.json (recheck_r2: min_z 92.57; n_networks_bound_valid: recheck_round1_eta_range from 1.974); research_highdim_bound/check/out/c4_fresh.jsonl (no standard-error fields); data/s6_highdim_remedies_recheck.json (missing_runs_of_plan; load1_range); notes/VERIFICATION.md (sec. 4.3, pilots before the freeze)
 
-\subsection{What was not tried}\label{s8_discussion:sec:nottried}
+\subsection{Further comparisons}\label{s8_discussion:sec:nottried}
 
 Apart from the two cheap remedies of Section~\ref{s6_highdim:sec:remedies}, none of the
 published remedies for the failures seen here was tried: adaptive loss

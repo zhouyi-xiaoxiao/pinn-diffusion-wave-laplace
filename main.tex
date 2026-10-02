@@ -88,7 +88,7 @@ Laplace problems: a reproducible benchmark and its failure modes}
 \noindent
 % src: research_benchmark/results/tables.md (T2); research_benchmark/results/stats.json; research_benchmark/results/tables.md (T3, T6); data/s4_lowdim_gridcontrol.json
 We benchmark physics-informed neural networks (PINNs) and the Deep Ritz method on eight linear
-problems (dimension $d\le20$) with exact solutions proved unique in a stated class, using seeded paired runs and low-dimensional classical baselines. An \LBFGS\
+problems (dimension $d\le20$) with exact solutions proved unique in a stated class, using paired seeds and classical baselines. An \LBFGS\
 phase after \Adam\ lowers the error in all 175 pairs; the largest collocation
 penalty after it (cell-centred grid, heat problem) comes from missing points near the
 initial line.
@@ -99,17 +99,15 @@ A small unit-weight PINN fails on a two-mode wave problem; finite differences ar
 The PINN is more accurate per iteration up to $d=10$, Deep Ritz at equal CPU time at $d=10$.
 % src: sections/s6_highdim.tex (Theorem s6_highdim:thm:kappa, Corollary s6_highdim:cor:bound); data/s6_highdim_bound_numbers.json (n_networks_bound_valid, eta_d10_d20_all_networks, eta_by_d_all_networks: d = 2 max 24.82); research_highdim_bound/results/decisions.json (H2: 21 of 57)
 On the unit cube we prove that the harmonic-extension norm from the boundary has exact order
-$d^{-1/4}$; with it, as already with Payne's constant, the two population PINN loss terms bound
-the $L^2$ error of any $C^2$ network. The bound held on all 133 networks, exceeding the error
-1.9 to 3.4 times at $d\ge10$, up to 25 at $d=2$, missing a pre-registered
+$d^{-1/4}$; the resulting constants and the two population PINN loss terms bound
+the $L^2$ error of any $C^2$ network. Its Monte-Carlo evaluation exceeded the error on all 133 networks by
+factors of 1.9 to 3.4 at $d\ge10$ and up to 25 at $d=2$, missing a pre-registered
 target ($\le3$ for $d\ge5$) on 21 of 57 networks.
 % src: research_highdim_remedies/results/summary.json (P2/d20 plain, presolve, lift3c, rep3); research_highdim_remedies/results/summary_exploratory.json (P2/d20 lift1); research_highdim_remedies/results/decision.json (general_lift3c); research_highdim_remedies/results/decision_p5.json; research_highdim_remedies/results/checks.json (C5_floors poisson/d20: test_affine, exact_lift3 3.9e-3); research_highdim_remedies/results/summary_p5.json (P5/d20 lift3c, presolve)
 At $d=20$ Legendre input features (containing the Poisson solution to 0.4 per cent), centred
 inputs (exploratory) and, for Deep Ritz, a featureless reparametrisation each remove a plateau
 left by a fixed affine part. The features passed a pre-registered generality test on four
 problems but, like the affine part, hurt on a fifth problem, added afterwards (not blind).
-Minimal examples show two pitfalls: a residual zeroed by misused automatic differentiation, and
-too few boundary conditions.
 \end{abstract}
 
 \noindent\textbf{Keywords:} physics-informed neural networks; Deep Ritz method; collocation

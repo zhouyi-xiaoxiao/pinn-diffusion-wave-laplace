@@ -758,12 +758,44 @@ gain is matched by centring; presolve gives 1.16 (3 of 3, below the threshold 1.
 \Pexpcos, which is on the plateau ($\errL=0.025$ for plain, affine floor 0.022), presolve gives
 4.51 ($\errL=0.0053$ to $0.0063$), lift3c 1.85 and lift1 1.33 (3 of 3 each), and lift3c against
 lift1 1.34. For the PINN on \Pone\ at $d=20$, that code gives ratios of the same size as the study's
-(presolve 2.81 and 3.96, lift3c 2.86 and 2.68 for seeds 40 and 41; study medians 2.85 and 2.86). Not all runs of the plan were made: the third
-seed of this PINN cell, its equal-CPU runs and the PINN on \Psinlin\ are missing. These results are
-descriptive, from a different implementation, and are not part of the pre-registered study.
+(presolve 2.81 and 3.96, lift3c 2.86 and 2.68 for seeds 40 and 41; study medians 2.85 and 2.86).
+These descriptive results are separate from the pre-registered study. The PINN comparison below
+uses all three seeds and calibrates its computational budget on one machine.
 % src: research_highdim_remedies/check/runs_reimpl2.jsonl; research_highdim_remedies/check/reimpl2_summary.json; research_highdim_remedies/results/tables.tex (study medians, P1 PINN: presolve 2.85, lift3c 2.86); data/s6_highdim_remedies_recheck.json (recomputed by code/s6_highdim_remedies.py: P6 lift3c 2.937, eq. CPU 2.533, d10 2.140, lift1 3.018, lift1/lift3c 1.011, presolve 1.163; P7 presolve 4.507, lift3c 1.852, lift1 1.333, lift1/lift3c 1.336, plain err 0.02504-0.02532; P1 PINN presolve 2.814, 3.961, lift3c 2.858, 2.677; missing runs)
 
 % src: research_highdim_remedies/results/decision.json; research_highdim_remedies/results/decision_p5.json; research_highdim_remedies/results/attribution.json; data/s6_highdim_remedies_recheck.json
+\paragraph{Current-machine PINN replication.}\label{S5:sec:current-machine}
+A separate cohort uses the same implementation, seeds 40--42 and $d=20$ on an Apple M4 Pro
+CPU (Python 3.14.6, PyTorch 2.14.1). Each of two concurrent processes uses one PyTorch thread.
+The 24 networks comprise plain, presolve and lift3c on \Pone\ at 4000 iterations; lift3c on
+\Pone\ at a CPU-calibrated budget; and plain, presolve, lift3c and lift1 on \Psinlin\ at
+4000 iterations. The architecture, loss weights, training-point generators and held-out
+50\,000-point test set are those of the re-implementation. All weights and configurations
+are released, and reloading each checkpoint reproduces its recorded test error to less than
+$10^{-10}$ absolute difference. The records are kept separately from the earlier cohorts;
+these are retrospective descriptive comparisons, not new pre-registered tests.
+
+On \Pone, presolve and lift3c improve every seed at 4000 iterations (median error ratios
+3.56 and 2.86). The median training times of the current-machine plain and lift3c runs set
+2500 iterations for the calibrated comparison. Its realised median CPU ratio is 1.105,
+so it uses 10.5 per cent more CPU time than plain rather than an exactly matched budget.
+Its median error ratio is 1.31: all three seeds improve, but the ratio is below the 1.5
+threshold used to label a clear gain. On \Psinlin, presolve is less accurate in all three
+seeds (median ratio 0.87), whereas lift3c and lift1 improve all three (2.75 and 2.57).
+Thus the benefit of the polynomial features remains problem-dependent, and centring alone
+accounts for much of the gain on \Psinlin.
+% src: research_highdim_remedies/current_machine/{B1-runs.jsonl,B4-runs.jsonl,summary.json}; analyze_cohort.py (checkpoint reload and paired ratios)
+
+\begin{table}[htbp]
+\centering\small
+\caption{Current-machine PINN replication at $d=20$, seeds 40--42. $\rho$ is the seed-paired
+error of plain divided by the arm's error; wins count $\rho>1$. CPU ratio is the ratio of
+median measured training times to plain at 4000 iterations, on the same machine. The
+calibrated budget is selected from the first-stage timing medians, not from historical timing.}
+\label{S5:tab:current-machine}
+\input{data/current_machine_table}
+\end{table}
+
 \paragraph{Counts over seven problems.} Counting the two problems of the second round of the
 re-check (Deep Ritz only, three seeds), presolve is clearly more accurate than plain on two of
 seven problems (\Pone, \Pexpcos), close to plain on three (\Ptwo, \Pcospair, \Psinlin) and less

@@ -47,10 +47,10 @@ misreading of a problem, the single-precision library stack) are not excluded.
 | `research_highdim_bound/check/`, `research_highdim_remedies/check/` | re-checks of the analyses of Sections 6.7 and 6.8 |
 | `data/checks/` | the numbers that the article takes from the records of the checks |
 
-Trained networks are not included, also not the 88 networks on which the bound of Section 6.7 was
+Trained networks from the original studies and re-checks are not included, including the 88 networks on which the bound of Section 6.7 was
 evaluated; their SHA-256 hashes, recorded before the evaluation, are in
 `research_highdim_bound/results/inventory.json`. The scripts that need trained networks therefore do not run as
-they are; their stored outputs are included, and the training scripts recreate the networks (`reproduce.md`).
+they are; their stored outputs are included, and the training scripts recreate the networks (`reproduce.md`). The separate `research_highdim_remedies/current_machine/` cohort includes all 24 of its checkpoints and a read-only validator; its data and same-machine budget calibration are separate from these historical records.
 
 ---
 
@@ -435,3 +435,7 @@ Every number that the article takes from these records is stored, with its sourc
 
 All other numbers come from result files of the experiments and of the verification codes, named in the
 `% src:` comments of the LaTeX sources.
+
+## Current-machine descriptive PINN cohort
+
+The 24-network cohort in `research_highdim_remedies/current_machine/` reports all seeds 40–42 for the LapD PINN plain/presolve/lift3c comparison and its same-machine CPU calibration, and all four SinLinD PINN arms. The earlier missing-run inventory above remains an accurate description of the archived second re-check, not of this separately complete cohort. Re-loading all 24 checkpoints and directly recomputing the 50,000-point test error gives absolute differences below 1.4e-14. The recorded calibrated runs used 2500 iterations and a median CPU ratio of 1.105 rather than an exact match. See `summary.json` and the cohort README for the paired outcomes, including the detrimental presolve result on SinLinD.

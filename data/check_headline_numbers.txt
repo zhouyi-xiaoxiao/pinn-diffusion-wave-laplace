@@ -5,8 +5,8 @@
 [ok] Wave1: all 50 runs between 41 and 51 per cent: 50 runs, 0.414 to 0.512
 [ok] Wave2, Lap3: strategy means between 3.6 and 5.0 per cent: 0.0356 to 0.0501
 [ok] Heat: cell-centred grid about four times worse than random, 10 of 10 seeds: ratio 4.21, worse in 10/10
-[ok] verification code V-bench: 39 of 40: string '39 of 40' in verify_research_benchmark/v_summary.out
-[ok] verification code V-bench: node-centred grid 1.26 times random (6 seeds): strings 'node-grid/random' and '1.26' in v_summary.out
+[ok] verification code V-bench: 39 of 40: 39 of 40 recomputed from raw verification records
+[ok] verification code V-bench: node-centred grid 1.26 times random (6 seeds): raw six-seed geometric ratio 1.26187391
 [ok] Heat, Lap2: L-BFGS arm 8 to 13 times below the best logged Adam iterate, in 49/50 and 50/50 runs: ratios 0.124 and 0.077; 49/50 and 50/50
 [ok] Heat, Lap2: L-BFGS arm 14 to 23 times below the last Adam iterate: ratios 0.0738 and 0.0435 (factors 13.6 and 23.0; the text quotes 0.074 and 0.044)
 [ok] Heat, control experiment: 16 points in the strip remove the penalty, 16 points at t = 1/2 do not: column at 1/64: 0.92 x random; column at 1/2: 4.77 x random (worse in 10/10); column in strip against placebo 0.19, 10/10, p = 0.0020

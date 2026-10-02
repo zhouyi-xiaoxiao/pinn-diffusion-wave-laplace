@@ -31,7 +31,8 @@ was used). The article and the Supplementary Material refer to each other; `sh b
 ## 1. Check the article against the stored results
 
 ```sh
-python code/check_headline_numbers.py   # the headline numbers; ends with "ALL HEADLINE CHECKS PASSED"
+python code/check_headline_numbers.py   # read-only data checks; ends with "ALL HEADLINE CHECKS PASSED"
+python code/check_headline_numbers.py --output headline-check.txt  # optional saved report
 python code/sA_proofs_checks.py         # every computational step of the proofs; ends with "ALL CHECKS PASSED"
 python code/s2_problems_symbolic.py     # exact solutions, symbolically; every printed expression is 0
 python code/check_tables.py             # every generated table row against the article; ends with "ALL TABLE CHECKS PASSED"
@@ -325,3 +326,36 @@ the CPU; seeds already in `v_oneface.json` are not trained again):
   and section 3.3 recreates the networks.
 * `code/sC_details_repro.py rerun` and `stacksize` need the Metal backend of PyTorch for a bit-level
   comparison with the stored stacks.
+
+
+## Current-machine PINN replication
+
+`research_highdim_remedies/current_machine/` is a separate 24-network descriptive cohort,
+with per-run records and all trained weights. It does not replace historical or frozen-study
+records. Validate every checkpoint on its specified 50,000-point test set and recompute the
+seed-paired comparisons (read-only by default):
+
+```sh
+python research_highdim_remedies/current_machine/analyze_cohort.py
+```
+
+To regenerate its summary and the supplementary table labelled `S5:tab:current-machine`, use explicit output
+paths:
+
+```sh
+python research_highdim_remedies/current_machine/analyze_cohort.py --output research_highdim_remedies/current_machine/summary.json --table-output data/current_machine_table.tex
+```
+
+For full retraining, use a fresh output directory so released records and weights remain intact:
+
+```sh
+python research_highdim_remedies/current_machine/run_cohort.py B1 --output-dir /tmp/pinn-new-cohort
+python research_highdim_remedies/current_machine/run_cohort.py B4 --output-dir /tmp/pinn-new-cohort
+python research_highdim_remedies/current_machine/analyze_cohort.py --input-dir /tmp/pinn-new-cohort
+```
+
+B1 trains all nine 4000-iteration LapD PINNs before calibrating three lift3c runs using
+current-machine timing medians. B4 trains all twelve SinLinD PINNs. Each driver uses one
+PyTorch thread and skips completed records. The released calibrated arm used 2500 iterations;
+its realised median training CPU time was 1.105 times the plain arm, not an exactly matched
+budget. The README in that directory records the software, hardware and interpretation.

@@ -7,9 +7,11 @@ research_highdim_remedies/.)
 
 Each check recomputes one headline statement from the raw per-run files (or, where a number is itself
 the output of an analysis script, from that script's output) and compares it with the value printed in
-the article.  Output: data/check_headline_numbers.txt, last line "ALL HEADLINE CHECKS PASSED".
-The script only reads files; it is a guard against the text and the data drifting apart.
+the article.  Output: standard output, last line "ALL HEADLINE CHECKS PASSED"; optionally --output PATH.
+The default invocation is read-only. Use --output PATH to save the report.
+Reference values represent the manuscript at release; this is a data-consistency check, not a parser of LaTeX prose.
 """
+import argparse
 import csv
 import json
 import math
@@ -69,10 +71,22 @@ check("Wave2, Lap3: strategy means between 3.6 and 5.0 per cent", rd(min(means),
 ratios = [err["heat1d", "grid", "adam_lbfgs", k] / err["heat1d", "random", "adam_lbfgs", k] for k in range(10)]
 check("Heat: cell-centred grid about four times worse than random, 10 of 10 seeds",
       abs(geo(ratios) - 4.21) < 0.005 and all(r > 1 for r in ratios), f"ratio {geo(ratios):.2f}, worse in {sum(r > 1 for r in ratios)}/10")
-vs = open(os.path.join(ROOT, "verify_research_benchmark", "v_summary.out"), encoding="utf8").read()
-check("verification code V-bench: 39 of 40", "39 of 40" in vs, "string '39 of 40' in verify_research_benchmark/v_summary.out")
-check("verification code V-bench: node-centred grid 1.26 times random (6 seeds)", "node-grid/random" in vs and "1.26" in vs,
-      "strings 'node-grid/random' and '1.26' in v_summary.out")
+# Recompute both verification headlines from per-run records, not a cached prose summary.
+v_runs = {}
+for filename in ("v_runs.json", "v_runs_extra.json", "v_runs_budget.json"):
+    with open(os.path.join(ROOT, "verify_research_benchmark", filename), encoding="utf8") as handle:
+        for key, value in json.load(handle).items():
+            if key in v_runs and v_runs[key] != value:
+                raise ValueError(f"conflicting verification record: {key}")
+            v_runs[key] = value
+v_better = sum(r["adam_lbfgs"]["rel_l2"] < r["adam"]["rel_l2"] for r in v_runs.values())
+check("verification code V-bench: 39 of 40", len(v_runs) == 40 and v_better == 39,
+      f"{v_better} of {len(v_runs)} recomputed from raw verification records")
+node_ratios = [v_runs[f"heat1d|nodegrid|{seed}|256|fixed"]["adam_lbfgs"]["rel_l2"] /
+               v_runs[f"heat1d|random|{seed}|256|fixed"]["adam_lbfgs"]["rel_l2"] for seed in range(6)]
+node_ratio = geo(node_ratios)
+check("verification code V-bench: node-centred grid 1.26 times random (6 seeds)",
+      round(node_ratio, 2) == 1.26, f"raw six-seed geometric ratio {node_ratio:.8f}")
 # L-BFGS arm against the best logged Adam iterate ("about one order of magnitude")
 bi = json.load(open(os.path.join(DATA, "s4_lowdim_numbers.json")))["lbfgs_vs_logged_adam_iterates_it1500_3000"]
 check("Heat, Lap2: L-BFGS arm 8 to 13 times below the best logged Adam iterate, in 49/50 and 50/50 runs",
@@ -235,6 +249,11 @@ check("data on one face: five seeds, both loss terms between 2.7e-4 and 2.2e-3, 
 
 lines.append("ALL HEADLINE CHECKS PASSED" if ok_all else "SOME HEADLINE CHECKS FAILED")
 out = "\n".join(lines) + "\n"
-open(os.path.join(DATA, "check_headline_numbers.txt"), "w", encoding="utf8").write(out)
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument("--output", help="optional report path; the default invocation writes no files")
+args = parser.parse_args()
+if args.output:
+    with open(args.output, "w", encoding="utf8") as handle:
+        handle.write(out)
 sys.stdout.write(out)
 sys.exit(0 if ok_all else 1)

@@ -90,8 +90,10 @@ boundary-value problem with too few conditions, on which training reaches a smal
 a different function for every seed (Section~\ref{s7_pitfalls:sec}).
 \end{enumerate}
 
-No new method is proposed, and, except for the two-sided bound of (C7), none of these findings
-is new taken singly.
+The study combines a dimension-explicit stability result with controlled measurements of
+established neural PDE solvers. The two-sided bound in (C7) is the theoretical contribution;
+the experiments connect optimiser choice, sampling, error reporting and computational cost
+within one reproducible protocol.
 % src: refs.bib (rathore2024, annote: Sec. 2.2 and Table 1 of arXiv:2402.01868v2, checked 2026-10-01)
 The gain from an \LBFGS\ phase after \Adam\ was measured by \citet{rathore2024}; what is
 added here is the same measurement, paired by seed, on the heat and Laplace problems at a
@@ -103,8 +105,7 @@ resampled points on every problem. That a PINN needs residual points next to the
 data (C4) is consistent with the propagation hypothesis of \citet{daw2023} and with causal
 training~\citep{wangsankaran2024}; the control experiment isolates it for one problem. The
 late-time behaviour of the heat problem (C2) is an elementary consequence of a loss made of
-absolute residuals; we have not found it quantified for this problem and do not claim it as
-a new phenomenon. The cost gap to classical solvers agrees with \citet{grossmann2024}, and
+absolute residuals; the time-slice analysis quantifies its size on this test problem. The cost gap to classical solvers agrees with \citet{grossmann2024}, and
 the penalty bias is classical~\citep{babuska1973,muller2022}. The residual loss and the Ritz
 loss have been compared on elliptic problems by \citet{chen2020comparison}, who found, as we
 do, that neither dominates the other. The constant of (C7) is classical: it is
@@ -116,16 +117,17 @@ the squared constant $1/\delta_1$ of exact order $d^{-1/2}$ on the cube (equival
 constant itself is of exact order $d^{-1/4}$). The error bound that
 follows is an application of known theory with a better constant: a bound of the same form,
 on smooth domains and with a constant that is not explicit, is in
-\citet[App.~B]{shin2023error}. The remedies of (C8) are
-known~\citep{lagaris1998,ainsworth2021galerkin,chang2022horderdnn,zhang2025khorderdnn}; only
-their measurement is added. Apart from (C7), what this article contributes is the setting:
+\citet[App.~B]{shin2023error}. The remedies of (C8) use established
+constructions~\citep{lagaris1998,ainsworth2021galerkin,chang2022horderdnn,zhang2025khorderdnn};
+the paired comparisons measure their benefits and failure cases under a common budget.
+The empirical contribution is the combination of
 exact solutions, seeds, paired comparisons and a classical baseline of the kind whose
 absence \citet{mcgreivy2024} criticise; a verification of the benchmark and of the dimension
 study by re-aggregation of the raw runs and by separately written code for part of them
 (Section~\ref{s3_methods:sec:verif} states what it covers and what it does not); and the
 release of all code and data.
 
-The scope is narrow. All problems are linear with constant coefficients on boxes; the
+The experiments cover linear, constant-coefficient problems on boxes; the
 networks are small and use the tanh activation; the loss weights are equal to one in
 Sections~\ref{s4_lowdim:sec} and~\ref{s5_hard:sec}, and a single boundary weight per problem
 and method is chosen once in Section~\ref{s6_highdim:sec}. Of the published remedies only two

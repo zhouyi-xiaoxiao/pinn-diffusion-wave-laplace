@@ -353,7 +353,8 @@ H1 holds: on both sets and for all 88 networks the bound is above the error, by 
 standard errors, and the smallest efficiency is 1.744. H2 fails: $\eta$ exceeds 3 for 21 of the
 57 confirmatory networks with $d\ge5$, with a maximum of 5.46 (Deep Ritz on \Ptwo\ at $d=5$);
 below $d=5$, where H2 made no claim, $\eta$ is up to 8.31 at $d=3$ and up to 24.8 at $d=2$. The
-bound is therefore a valid but loose certificate at small $d$, not an error estimator. H3 holds
+population bound is therefore rigorous but loose at small $d$; its Monte-Carlo evaluation
+is a numerical assessment rather than certified quadrature. H3 holds
 for all four (problem, method) pairs: the seed-mean share rises from 0.19 to 0.29 at $d=2$
 (0.056 for Deep Ritz on \Ptwo) to 0.84 to 0.98 at $d=20$ (Figure~\ref{s6_highdim:fig:bound}). Part
 of this trend is built into the constants, $1/(d\pi^2)$ for the interior and
@@ -510,9 +511,11 @@ of the addendum neither presolve nor lift3c is a general remedy on the five prob
 In the second round of the re-check (Deep Ritz, three seeds, a different implementation,
 descriptive) the gain of the lift on \Psinlin\ is again matched by centring the input, and
 \Pexpcos\ is on the plateau ($\errL=0.025$, affine floor 0.022), which presolve leaves (median
-ratio 4.51).
+ratio 4.51). A separate three-seed PINN replication at $d=20$ also improves every seed with
+lift3c and with centred inputs on \Psinlin, while presolve worsens every seed (median ratios
+2.75, 2.57 and 0.87; Supplementary Table~\ref{S5:tab:current-machine}).
 
-\paragraph{What this shows and what it does not.} At $d=20$, with this network, optimiser,
+\paragraph{Mechanistic interpretation.} At $d=20$, with this network, optimiser,
 schedule and these weights, the accuracy of both methods depends strongly on how the input enters
 the first layer, in a way that differs between problems; no single mechanism (centring the input or
 the polynomial features) accounts for it on every problem.
