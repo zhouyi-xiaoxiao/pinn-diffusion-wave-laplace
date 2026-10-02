@@ -1,0 +1,14 @@
+[B] main laplace ritz d=10 s=7 w=100 it=4000: rel_l2=1.525e-02 h1=7.948e-02 bd=1.633e-02 cpu=21.0s (5.24 ms/it) wall=77s
+[B] main laplace pinn d=10 s=7 w=1000 it=4000: rel_l2=1.093e-02 h1=5.682e-02 bd=1.345e-02 cpu=106.4s (26.59 ms/it) wall=165s
+[B] main laplace ritz d=10 s=8 w=100 it=4000: rel_l2=1.687e-02 h1=8.745e-02 bd=1.731e-02 cpu=26.3s (6.59 ms/it) wall=57s
+[B] main laplace pinn d=10 s=8 w=1000 it=4000: rel_l2=1.153e-02 h1=6.209e-02 bd=1.442e-02 cpu=124.4s (31.10 ms/it) wall=235s
+[B] main laplace ritz d=10 s=9 w=100 it=4000: rel_l2=2.523e-02 h1=1.255e-01 bd=2.379e-02 cpu=24.3s (6.07 ms/it) wall=41s
+[B] main laplace pinn d=10 s=9 w=1000 it=4000: rel_l2=1.393e-02 h1=6.962e-02 bd=1.732e-02 cpu=114.6s (28.65 ms/it) wall=201s
+[B] main laplace ritz d=2 s=7 w=100 it=4000: rel_l2=1.021e-02 h1=4.046e-02 bd=1.029e-02 cpu=18.9s (4.72 ms/it) wall=21s
+[B] main laplace pinn d=2 s=7 w=1000 it=4000: rel_l2=2.008e-03 h1=8.072e-03 bd=2.029e-03 cpu=32.8s (8.19 ms/it) wall=38s
+[B] main laplace ritz d=2 s=8 w=100 it=4000: rel_l2=2.289e-02 h1=7.705e-02 bd=1.053e-02 cpu=19.2s (4.81 ms/it) wall=22s
+[B] main laplace pinn d=2 s=8 w=1000 it=4000: rel_l2=9.188e-03 h1=2.302e-02 bd=3.703e-03 cpu=35.6s (8.91 ms/it) wall=55s
+[B] main laplace ritz d=2 s=9 w=100 it=4000: rel_l2=1.637e-02 h1=5.885e-02 bd=1.160e-02 cpu=21.2s (5.31 ms/it) wall=33s
+[B] main laplace pinn d=2 s=9 w=1000 it=4000: rel_l2=1.464e-03 h1=7.237e-03 bd=1.999e-03 cpu=36.6s (9.16 ms/it) wall=51s
+[B] main laplace ritz d=20 s=7 w=100 it=4000: rel_l2=3.590e-02 h1=1.987e-01 bd=3.834e-02 cpu=21.0s (5.24 ms/it) wall=25s
+[B] main laplace pinn d=20 s=7 w=1000 it=4000: rel_l2=3.360e-02 h1=1.759e-01 bd=3.709e-02 cpu=157.1s (39.26 ms/it) wall=198s

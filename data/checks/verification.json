@@ -1,0 +1,22 @@
+{
+ "source": "Verification of the two studies; numbers that are not stored in a result file of the verification codes. Summary: notes/VERIFICATION.md, sections 2 and 3.",
+ "literature_wave1": {
+  "description": "Wang, Yu and Perdikaris (arXiv:2007.14527), Sec. 7.3, eqs. (7.5)-(7.9), caption of Fig. 6: the two-mode wave problem Wave1",
+  "plain_pinn_relative_l2": 0.4518,
+  "ntk_weighted_relative_l2": 0.001728,
+  "network": "five layers of 500 units",
+  "iterations": 80000
+ },
+ "lowdim_compute_minutes": {
+  "description": "Training time of the verification of the low-dimensional benchmark (V-bench), every run under 3 minutes",
+  "about": 59
+ },
+ "highdim_compute": {
+  "description": "Compute of the verification of the study in d dimensions (V-dim)",
+  "training_runs": 73,
+  "training_cpu_s": 2896,
+  "training_wall_s": 4469,
+  "longest_run_wall_s": 238,
+  "repetitions_and_cost_benchmark_minutes_about": 5
+ }
+}

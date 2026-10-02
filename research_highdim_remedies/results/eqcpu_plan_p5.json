@@ -1,0 +1,24 @@
+{
+ "altridge/ritz/lift3c": {
+  "iters": 3200,
+  "median_cpu_plain": 7.434868999998912,
+  "median_cpu_arm": 9.236321999999433
+ },
+ "altridge/ritz/presolve": {
+  "iters": 0,
+  "median_cpu_plain": 7.434868999998912,
+  "median_cpu_total_presolve": 7.747663000000037,
+  "ratio": 1.0420712187398555
+ },
+ "altridge/pinn/lift3c": {
+  "iters": 3700,
+  "median_cpu_plain": 26.92270600000097,
+  "median_cpu_arm": 29.028785000001164
+ },
+ "altridge/pinn/presolve": {
+  "iters": 0,
+  "median_cpu_plain": 26.92270600000097,
+  "median_cpu_total_presolve": 27.23608099999751,
+  "ratio": 1.0116398032202458
+ }
+}

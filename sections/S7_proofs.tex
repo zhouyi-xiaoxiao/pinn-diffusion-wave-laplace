@@ -1,0 +1,979 @@
+% =====================================================================================
+% sections/S7_proofs.tex -- Supplementary Section S7: proofs of the propositions fixed in
+% statements.tex.  The propositions are referred to by their fixed labels and are not
+% restated.  All `% src:` paths are relative to the root of the repository.
+% Every computational step of Sections S7.1-S7.4 and S7.7 is cross-checked by code/sA_proofs_checks.py
+% (output: data/sA_proofs_checks.json and data/sA_proofs_checks.txt, last line "ALL CHECKS PASSED").
+% Sections S7.5 and S7.6 prove the Theorem, Proposition and Corollary of Section 6.7 (texts in
+% statements.tex) and state and prove the auxiliary results of Sections 6.7 and 6.8; their numerical
+% cross-checks are scripts of research_highdim_bound/ and research_highdim_remedies/.
+% Labels keep the prefix sA_proofs: (sec, sec:exact, sec:unique, sec:floors, sec:robin, sec:kappa,
+% sec:remedies, sec:pitfalls, eq:*, lem:*, obs:*, rem:steklov, prop:*, thm:first).
+% =====================================================================================
+\section{Proofs}\label{sA_proofs:sec}
+
+This section proves Propositions~\ref{s2_problems:prop:exact},
+\ref{s2_problems:prop:unique} and~\ref{s2_problems:prop:floors} of
+Section~\ref{s2_problems:sec}, Proposition~\ref{s3_methods:prop:robin} of
+Section~\ref{s3_methods:sec}, Theorem~\ref{s6_highdim:thm:kappa},
+Proposition~\ref{s6_highdim:prop:steklov} and Corollary~\ref{s6_highdim:cor:bound} of
+Section~\ref{s6_highdim:sec:bound} together with the exact penalty bias
+(Section~\ref{sA_proofs:sec:kappa}), the results on affine minimisers, floors and the
+reparametrisation control used in Section~\ref{s6_highdim:sec:remedies}
+(Section~\ref{sA_proofs:sec:remedies}), and the two propositions of
+Section~\ref{s7_pitfalls:sec} (Proposition~\ref{s7_pitfalls:prop:notwave} on the decaying mode
+and Proposition~\ref{s7_pitfalls:prop:nonunique} on the one-face problem). The derivatives,
+integrals and inequalities of Sections~\ref{sA_proofs:sec:exact}--\ref{sA_proofs:sec:robin}
+and~\ref{sA_proofs:sec:pitfalls} were also checked symbolically and numerically by the script
+\code{code/sA_proofs_checks.py}, those of Sections~\ref{sA_proofs:sec:kappa}
+and~\ref{sA_proofs:sec:remedies} by the scripts named in the source comments next to them; the
+proofs do not depend on these checks.
+
+Two tools are used throughout. The first is Green's formula on a box. Let
+$B=\prod_{i}(a_i,b_i)$ be bounded and let $C^k(\overline B)$ denote the functions whose
+partial derivatives up to order $k$ extend continuously to $\overline B$. For
+$w\in C^2(\overline B)$ and $\varphi\in C^1(\overline B)$, integrating
+$\partial_i(\varphi\,\partial_i w)$ in $x_i$ by the fundamental theorem of calculus, then
+over the other variables, and summing over $i$ gives
+\begin{equation}\label{sA_proofs:eq:green}
+\int_B\grad w\cdot\grad\varphi\,\dd\x+\int_B\varphi\,\lap w\,\dd\x
+=\int_{\partial B}\varphi\,\dn w\,\dd s .
+\end{equation}
+The second is completeness: the functions $\sin nz$, $n\ge1$, form a complete orthogonal
+system of $L^2(0,\pi)$~\citep[Sec.~5.4]{strauss2008}, and so do the products
+$\sin jy\,\sin nz$ in $L^2\bigl((0,\pi)^2\bigr)$. Indeed, if $F$ is orthogonal to all of
+them, then for each $n$ the function $y\mapsto\int_0^\pi F(y,z)\sin nz\,\dd z$ is
+orthogonal to every $\sin jy$ and vanishes for almost every $y$; hence $F(y,\cdot)=0$ for
+almost every $y$. By the same argument and a change of scale, the products
+$\prod_{i=1}^d\sin(\pi k_ix_i)$ with positive integers $k_i$ are complete in
+$L^2\bigl((0,1)^d\bigr)$.
+
+% -------------------------------------------------------------------------------------
+\subsection{Exact solutions}\label{sA_proofs:sec:exact}
+
+\begin{proof}[Proof of Proposition~\ref{s2_problems:prop:exact}]
+(a) Each $\uex$ is a finite combination of products of polynomials and exponential,
+trigonometric and hyperbolic functions, hence infinitely differentiable on the closed
+domain. The equations and data are verified by differentiation.
+% src: data/sA_proofs_checks.json (exact_a_all_residuals_zero)
+\PH: $\partial_t\uex=-\pi^2\uex=\partial_{xx}\uex$, $\uex(0,x)=\sin\pi x$, and
+$\sin 0=\sin\pi=0$.
+\PWone: for $j\in\{1,4\}$ both $\partial_{tt}$ and $4\,\partial_{xx}$ multiply the mode
+$\sin(j\pi x)\cos(2j\pi t)$ by $-4j^2\pi^2$; its time derivative vanishes at $t=0$, and
+$\sin(j\pi x)=0$ at $x=0$ and $x=1$.
+\PWtwo: with $S=\sin\pi x\,\sin\pi y$ one has $\lap S=-2\pi^2S$ and
+$\partial_{tt}\cos(\sqrt2\,\pi t)=-2\pi^2\cos(\sqrt2\,\pi t)$; moreover $\uex(0,\cdot)=S$,
+$\partial_t\uex(0,\cdot)=0$, and $S=0$ where $x=\pm1$ or $y=\pm1$.
+\PLtwo: $x/(2\pi)$ is harmonic and $\lap(\cos 2y\,\sinh 2x)=(4-4)\cos 2y\,\sinh 2x=0$;
+$\uex(0,y)=0$, $\uex(\pi,y)=\tfrac12+\tfrac12\cos 2y$, and $\partial_y\uex$ is a multiple of
+$\sin 2y$, which vanishes at $y=0$ and $y=\pi$.
+\PLthreeS: $\lap\bigl(\sin y\,\sin z\,\sinh(\sqrt2\,x)\bigr)=(2-1-1)\sin y\,\sin z\,\sinh(\sqrt2\,x)=0$;
+the function vanishes where $x=0$, $y\in\{0,\pi\}$ or $z\in\{0,\pi\}$ and equals
+$\sin y\,\sin z$ at $x=\pi$.
+\Pone: $\lap(x_{2k-1}x_{2k})=0$.
+\Ptwo: $\partial_{ii}\cos(\pi x_i)=-\pi^2\cos(\pi x_i)$, so $-\lap\uex=\pi^2\uex$.
+For \Pone\ and \Ptwo\ the boundary datum is the restriction of $\uex$.
+
+(b) Throughout, $n$ runs over the even integers $n\ge2$ unless stated otherwise. Put
+$\rho_n(x)=\sinh(k_nx)/\sinh(k_n\pi)$ and $T_n=b_n\sin y\,\sin(nz)\,\rho_n(x)$. For
+$0\le x\le\pi$ and $k\ge\sqrt5$,
+\begin{equation}\label{sA_proofs:eq:decay}
+\frac{\sinh kx}{\sinh k\pi}
+=\ee^{-k(\pi-x)}\,\frac{1-\ee^{-2kx}}{1-\ee^{-2k\pi}}\le\ee^{-k(\pi-x)},
+\qquad
+\frac{\cosh kx}{\sinh k\pi}\le\frac{2\,\ee^{-k(\pi-x)}}{1-\ee^{-2k\pi}}\le 3\,\ee^{-k(\pi-x)} .
+\end{equation}
+% src: data/sA_proofs_checks.json (exact_b: max_rho_minus_bound, max_coshratio_minus_3bound, max_abs_bn)
+Since $\abs{b_n}\le b_2=8/(3\pi)<1$ and $n<k_n\le 2n$, every derivative of $T_n$ of order $p$
+in $x$, order $q$ in $z$ and any order in $y$ is bounded on
+$K_\delta=[0,\pi-\delta]\times[0,\pi]^2$ by $3\,(2n)^{p+q}\ee^{-n\delta}$, and
+$\sum_n n^{p+q}\ee^{-n\delta}<\infty$. By the Weierstrass test the series and all its
+term-by-term derivatives converge uniformly on $K_\delta$, so the sum is infinitely
+differentiable on $K_\delta$ and its derivatives are the term-by-term ones. As $\delta$ is
+arbitrary, $\uex\in C^\infty\bigl([0,\pi)\times[0,\pi]^2\bigr)$. Each term is harmonic,
+because $\lap T_n=(k_n^2-1-n^2)\,T_n=0$, and vanishes for $x=0$, for $y\in\{0,\pi\}$ and for
+$z\in\{0,\pi\}$; hence so does $\uex$.
+
+For every integer $n\ge1$,
+$\tfrac2\pi\int_0^\pi\cos z\,\sin nz\,\dd z
+=\tfrac1\pi\int_0^\pi\bigl(\sin(n+1)z+\sin(n-1)z\bigr)\dd z$,
+which equals $\tfrac2\pi\bigl(\tfrac1{n+1}+\tfrac1{n-1}\bigr)=b_n$ for even $n$ and $0$ for
+odd $n$. So the $b_n$ are the sine coefficients of $\cos z$ on $(0,\pi)$, and Parseval's
+identity gives $\tfrac\pi2\sum_nb_n^2=\int_0^\pi\cos^2z\,\dd z=\tfrac\pi2$, that is
+$\sum_nb_n^2=1$. For fixed $x<\pi$ the series $\sum_nb_n\rho_n(x)\sin nz$ converges
+uniformly in $z$, so the sine coefficients of
+$z\mapsto\sum_nb_n\rho_n(x)\sin nz-\cos z$ are $b_n\bigl(\rho_n(x)-1\bigr)$. Parseval's
+identity in $z$ and $\int_0^\pi\sin^2y\,\dd y=\tfrac\pi2$ then give
+% src: data/sA_proofs_checks.json (exact_b: sum_bn_squared, mean_square_defect, parseval_vs_direct_quadrature_truncation_200)
+\[
+\int_0^\pi\!\!\int_0^\pi\bigl(\uex(x,y,z)-\sin y\cos z\bigr)^2\dd y\,\dd z
+=\frac{\pi^2}{4}\sum_{n}b_n^2\,\bigl(1-\rho_n(x)\bigr)^2 .
+\]
+Each term tends to $0$ as $x\to\pi^-$ and is at most $b_n^2$, because $0\le\rho_n\le1$; as
+$\sum_nb_n^2<\infty$, the sum tends to $0$ by dominated convergence.
+
+As $z\to0$ and $z\to\pi$ the datum $\sin y\cos z$ on the face $\{x=\pi\}$ tends to
+$\sin y$ and $-\sin y$, whereas the datum on the faces $\{z=0\}$ and $\{z=\pi\}$ is $0$.
+For $0<y<\pi$ these values differ, so the boundary data are discontinuous along the two
+edges.
+
+Finally, let $D_\delta=(0,\pi-\delta)\times(0,\pi)^2$. On $K_\delta$ the gradient of $\uex$
+is the term-by-term sum, and each of the three families $\sin y\,\sin nz$,
+$\cos y\,\sin nz$, $\sin y\,\cos nz$ is orthogonal in $L^2\bigl((0,\pi)^2\bigr)$ with
+squared norms $\pi^2/4$. Using $k_n^2=1+n^2$ and $\cosh^2s+\sinh^2s=\cosh2s$, for every
+$x\le\pi-\delta$
+% src: data/sA_proofs_checks.json (exact_b: parseval_vs_direct_quadrature_truncation_200, energy_x_integral_max_rel_err, energy_partial_sums, harmonic_lower_bound_partial_sums)
+\begin{align*}
+\int_0^\pi\!\!\int_0^\pi\abs{\grad\uex}^2\,\dd y\,\dd z
+&=\frac{\pi^2}{4}\sum_{n}b_n^2\,k_n^2\,\frac{\cosh(2k_nx)}{\sinh^2(k_n\pi)},\\
+\int_{D_\delta}\abs{\grad\uex}^2\,\dd\x
+&=\frac{\pi^2}{4}\sum_{n}b_n^2\,k_n\,\frac{\sinh\bigl(2k_n(\pi-\delta)\bigr)}{2\sinh^2(k_n\pi)},
+\end{align*}
+the second by integrating the non-negative terms over $0<x<\pi-\delta$. As
+$\delta\downarrow0$ the $n$-th term of the second sum increases to
+$b_n^2k_n\coth(k_n\pi)\ge b_n^2k_n\ge16/(\pi^2n)$; the last inequality holds because
+$b_n^2=16n^2/\bigl(\pi^2(n^2-1)^2\bigr)\ge16/(\pi^2n^2)$ and $k_n\ge n$. By monotone
+convergence, for the integrals over $D_\delta$ and for the sums,
+$\int_{(0,\pi)^3}\abs{\grad\uex}^2\,\dd\x\ge\sum_{n}4/n=\infty$.
+\end{proof}
+
+% -------------------------------------------------------------------------------------
+\subsection{Uniqueness}\label{sA_proofs:sec:unique}
+
+\begin{proof}[Proof of Proposition~\ref{s2_problems:prop:unique}]
+(a) These are the classical energy
+arguments~\citep[Secs~2.2.5, 2.3.4, 2.4.3]{evans2010}. Let $w$ be the difference of two
+solutions of the stated regularity; it solves the same problem with zero right-hand side
+and zero data.
+% src: data/sA_proofs_checks.json (unique: heat_energy_identity, wave_energy_identity, mixed_green_identity)
+
+\PH. Let $E(t)=\int_0^1w(t,x)^2\,\dd x$. Then
+$E'(t)=2\int_0^1w\,w_t\,\dd x=2\int_0^1w\,w_{xx}\,\dd x=-2\int_0^1w_x^2\,\dd x\le0$; the
+boundary term of the integration by parts vanishes because $w=0$ at $x=0$ and $x=1$. Since
+$E\ge0$ and $E(0)=0$, $E\equiv0$ and $w\equiv0$.
+
+\PWone, \PWtwo. Let $c=2$, $\Om=(0,1)$ for \PWone\ and $c=1$, $\Om=(-1,1)^2$ for \PWtwo,
+and $E(t)=\tfrac12\int_\Om\bigl(w_t^2+c^2\abs{\grad w}^2\bigr)\dd\x$. Differentiating under
+the integral and using~\eqref{sA_proofs:eq:green} with $\varphi=w_t$ at fixed $t$,
+\[
+E'(t)=\int_\Om\bigl(w_t\,w_{tt}+c^2\,\grad w\cdot\grad w_t\bigr)\dd\x
+=\int_\Om w_t\,(w_{tt}-c^2\lap w)\,\dd\x+c^2\int_{\dOm}w_t\,\dn w\,\dd s=0,
+\]
+because $w=0$ on $\dOm$ for all $t$ implies $w_t=0$ there. As $w(0,\cdot)=0$ and
+$w_t(0,\cdot)=0$, $E(0)=0$; hence $w_t\equiv0$ and $\grad w\equiv0$, so $w$ is constant,
+and the constant is $w(0,\cdot)=0$.
+
+\PLtwo, \PLthreeS, \Pone, \Ptwo. Here $\lap w=0$, and~\eqref{sA_proofs:eq:green} with
+$\varphi=w$ gives $\int_\Om\abs{\grad w}^2\,\dd\x=\int_{\dOm}w\,\dn w\,\dd s=0$, since on
+every face either $w=0$ or, on the sides $y=0$ and $y=\pi$ of \PLtwo, $\dn w=0$. So $w$ is
+constant, and it vanishes on a face.
+
+By Proposition~\ref{s2_problems:prop:exact}(a), $\uex$ is a solution of the stated
+regularity, hence the only one.
+
+(b) Let $w$ be the difference of two solutions with the three properties; then $w$ has the
+first two properties and $w(x,\cdot,\cdot)\to0$ in $L^2\bigl((0,\pi)^2\bigr)$ as
+$x\to\pi^-$. For integers $j,n\ge1$ and $x\in[0,\pi)$ put
+\[
+c(x)=\int_0^\pi\!\!\int_0^\pi w(x,y,z)\,\sin jy\,\sin nz\,\dd y\,\dd z .
+\]
+As $w$ is twice continuously differentiable on each compact set
+$[0,\pi-\delta]\times[0,\pi]^2$, $c\in C^2\bigl([0,\pi)\bigr)$ and, for $0<x<\pi$,
+$c''=\iint w_{xx}\sin jy\,\sin nz=-\iint(w_{yy}+w_{zz})\sin jy\,\sin nz$. Two integrations
+by parts in $y$ give
+% src: data/sA_proofs_checks.json (unique: integration_by_parts_identity, coefficient_ode_on_L3s)
+$\int_0^\pi w_{yy}\sin jy\,\dd y=-j^2\int_0^\pi w\sin jy\,\dd y$: the boundary terms
+contain $\sin jy$ or $w$, both zero at $y=0$ and $y=\pi$. The same holds in $z$, so
+$c''=(j^2+n^2)\,c$. With $\lambda_{jn}=\sqrt{j^2+n^2}$, therefore,
+$c(x)=A\sinh\lambda_{jn}x+A'\cosh\lambda_{jn}x$, and $A'=c(0)=0$ because $w(0,\cdot,\cdot)=0$. By the
+Cauchy--Schwarz inequality
+$\abs{c(x)}\le\tfrac\pi2\,\norm{w(x,\cdot,\cdot)}_{L^2((0,\pi)^2)}\to0$ as $x\to\pi^-$,
+whereas $A\sinh\lambda_{jn}x\to A\sinh\lambda_{jn}\pi$; so $A=0$. Thus, for each $x<\pi$, every
+coefficient of $w(x,\cdot,\cdot)$ in the complete orthogonal system $\{\sin jy\,\sin nz\}$
+vanishes, and $w(x,\cdot,\cdot)=0$ by continuity. The
+series~\eqref{s2_problems:eq:lap3d-exact} has the three properties by
+Proposition~\ref{s2_problems:prop:exact}(b).
+\end{proof}
+
+% -------------------------------------------------------------------------------------
+\subsection{Trivial-predictor floors}\label{sA_proofs:sec:floors}
+
+\begin{proof}[Proof of Proposition~\ref{s2_problems:prop:floors}]
+Write $\langle u\rangle=\int_\Om u\,\dd\x$. Lebesgue measure on $\Om$ is a probability
+measure under which the coordinates are independent and uniform on $(0,1)$. The functions
+$1$ and $x_i-\tfrac12$, $i=1,\dots,d$, are therefore orthogonal in $L^2(\Om)$, with
+$\norm{x_i-\tfrac12}^2=\tfrac1{12}$, and they span $\mathcal{P}_1$. By orthogonal
+projection, for $u\in L^2(\Om)$,
+\begin{equation}\label{sA_proofs:eq:proj}
+\min_{c\in\mathcal{P}_0}\norm{u-c}^2=\langle u^2\rangle-\langle u\rangle^2=:V(u),
+\qquad
+\min_{a\in\mathcal{P}_1}\norm{u-a}^2=V(u)-12\sum_{i=1}^d\bigl\langle u\,(x_i-\tfrac12)\bigr\rangle^2 .
+\end{equation}
+
+% src: data/sA_proofs_checks.json (floors: P1_var_pair = 7/144, P1_cov_pair_coord = 1/24, P1_affine_residual_pair = 1/144, closed_form_vs_monte_carlo); data/closed_forms.json (floors)
+(a) Let $p_k=x_{2k-1}x_{2k}$. Then $\langle p_k\rangle=\tfrac14$,
+$\langle p_k^2\rangle=\tfrac19$ and $V(p_k)=\tfrac19-\tfrac1{16}=\tfrac7{144}$. The $p_k$
+are independent, so $\langle\uex\rangle=m/4$, $V(\uex)=7m/144$ and
+$\norm{\uex}^2=7m/144+m^2/16=(9m^2+7m)/144$. Further,
+$\langle p_k\,(x_i-\tfrac12)\rangle=\tfrac16-\tfrac18=\tfrac1{24}$ for $i\in\{2k-1,2k\}$ and
+$0$ for every other $i$, so the affine residual in~\eqref{sA_proofs:eq:proj} is
+$7m/144-12\cdot2m/576=m/144$. (Equivalently,
+$p_k=(x_{2k-1}-\tfrac12)(x_{2k}-\tfrac12)+\tfrac12x_{2k-1}+\tfrac12x_{2k}-\tfrac14$, where
+the first term is orthogonal to $\mathcal{P}_1$ and has squared norm $\tfrac1{144}$.)
+Dividing $7m/144$ and $m/144$ by $\norm{\uex}^2$ gives the two squared ratios.
+
+% src: data/sA_proofs_checks.json (floors: P2_var_cos = 1/2, P2_cov_cos_coord = -2/pi**2, P2_affine_floor = 0.120273); data/closed_forms.json (floors.*.P2_affine = 0.120273)
+(b) $\langle\cos\pi x_i\rangle=0$ and $\langle\cos^2\pi x_i\rangle=\tfrac12$, so by
+independence $\langle\uex\rangle=0$ and $\norm{\uex}^2=V(\uex)=\tfrac12$; the best constant
+is $0$ and the first ratio is $1$. Integrating by parts,
+$\langle\cos(\pi x_i)\,(x_i-\tfrac12)\rangle=\int_0^1x\cos\pi x\,\dd x=-2/\pi^2$, hence
+$\langle\uex\,(x_i-\tfrac12)\rangle=-2/(\pi^2\sqrt d)$ and the affine residual is
+$\tfrac12-12\,d\cdot4/(\pi^4d)=\tfrac12-48/\pi^4$. The squared ratio is $1-96/\pi^4$,
+whatever $d$, and its square root is $0.1203$.
+\end{proof}
+
+% -------------------------------------------------------------------------------------
+\subsection{Penalised Ritz energy}\label{sA_proofs:sec:robin}
+
+In this subsection $\Om=(0,1)^d$, norms without subscript are those of $L^2(\Om)$,
+$\norm{\cdot}_{\partial}$ is the norm of $L^2(\dOm)$, and
+$\norm{v}_{H^1}^2=\norm{v}^2+\norm{\grad v}^2$.
+
+\begin{lemma}[Trace inequalities on the unit cube]\label{sA_proofs:lem:trace}
+Let $F$ be one of the two faces of $\Om$ on which $x_i$ is constant. For every
+$v\in C^1(\overline\Om)$,
+\begin{equation}\label{sA_proofs:eq:trace}
+\textup{(i)}\quad\norm{v}^2\le2\,\norm{v}_{L^2(F)}^2+2\,\norm{\partial_iv}^2,
+\qquad\qquad
+\textup{(ii)}\quad\norm{v}_{L^2(F)}^2\le2\,\norm{v}^2+2\,\norm{\partial_iv}^2 .
+\end{equation}
+Moreover $C^\infty(\overline\Om)$ is dense in $H^1(\Om)$. Consequently the restriction
+$v\mapsto v|_{\dOm}$, defined on $C^1(\overline\Om)$, extends to a bounded linear operator
+$H^1(\Om)\to L^2(\dOm)$ (the trace, used in all boundary integrals below) with
+$\norm{v}_{\partial}^2\le4d\,\norm{v}^2+4\,\norm{\grad v}^2$; inequalities \textup{(i)}
+and \textup{(ii)} hold for all $v\in H^1(\Om)$; and Green's
+formula~\eqref{sA_proofs:eq:green} holds for all $w\in C^2(\overline\Om)$ and
+$\varphi\in H^1(\Om)$.
+\end{lemma}
+
+\begin{proof}
+% src: data/sA_proofs_checks.json (robin: lemma_ineq_i_max_violation, lemma_ineq_ii_max_violation, lemma_stress_cases, trace_bound_max_ratio)
+By symmetry take $F=\{x_d=0\}$ and write $\x=(\x',s)$. For $v\in C^1(\overline\Om)$,
+$v(\x',s)-v(\x',0)=\int_0^s\partial_dv(\x',\tau)\,\dd\tau$. With $(a+b)^2\le2a^2+2b^2$ and
+the Cauchy--Schwarz inequality, each of $v(\x',s)^2$ and $v(\x',0)^2$ is at most twice the
+other plus $2\int_0^1\partial_dv(\x',\tau)^2\,\dd\tau$. Integrating over $(\x',s)\in\Om$
+gives (i) and (ii).
+
+Density. Let $\boldsymbol c$ be the centre of $\Om$ and, for $\mu>1$ and a function $g$ on
+$\Om$, let $g_\mu(\x)=g\bigl(\boldsymbol c+(\x-\boldsymbol c)/\mu\bigr)$, which is defined
+on the larger cube $\Om_\mu=\boldsymbol c+\mu(\Om-\boldsymbol c)\supset\overline\Om$. A
+change of variables gives $\norm{g_\mu}\le\mu^{d/2}\norm{g}$, and $g_\mu\to g$ uniformly
+on $\Om$ as $\mu\downarrow1$ if $g\in C(\overline\Om)$; since $C(\overline\Om)$ is dense
+in $L^2(\Om)$, $g_\mu\to g$ in $L^2(\Om)$ for every $g\in L^2(\Om)$. For $v\in H^1(\Om)$
+one has $v_\mu\in H^1(\Om_\mu)$ with $\grad v_\mu=\mu^{-1}(\grad v)_\mu$, so $v_\mu\to v$
+in $H^1(\Om)$. Mollifying $v_\mu$ with a radius smaller than the distance from $\Om$ to
+$\partial\Om_\mu$ gives functions that are smooth on $\overline\Om$ and converge to
+$v_\mu$ in $H^1(\Om)$~\citep[Sec.~5.3.1]{evans2010}.
+
+Summing (ii) over the $2d$ faces gives the trace bound on $C^1(\overline\Om)$, so the
+restriction extends by density and continuity. Both sides of (i), (ii)
+and~\eqref{sA_proofs:eq:green} are then continuous with respect to the $H^1(\Om)$ norm of
+$v$, respectively $\varphi$, and the three relations extend likewise.
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{s3_methods:prop:robin}]
+(a) For $v,\varphi\in H^1(\Om)$ let
+\[
+a(v,\varphi)=\int_\Om\grad v\cdot\grad\varphi\,\dd\x+2\bet\int_{\dOm}v\,\varphi\,\dd s,
+\qquad
+\ell(\varphi)=\int_\Om f\varphi\,\dd\x+2\bet\int_{\dOm}g\,\varphi\,\dd s ,
+\]
+so that $\Eritz(v)=\tfrac12a(v,v)-\ell(v)+\bet\,\norm{g}_{\partial}^2$. By the trace bound
+of Lemma~\ref{sA_proofs:lem:trace}, $a$ and $\ell$ are bounded on $H^1(\Om)$, and by (i)
+% src: data/sA_proofs_checks.json (robin: coercivity_constant_ok)
+\[
+\norm{v}_{H^1}^2\le2\,\norm{v}_{\partial}^2+3\,\norm{\grad v}^2
+\le\frac{3}{\min(1,2\bet)}\;a(v,v) .
+\]
+Thus $a$ is a symmetric, bounded and coercive bilinear form, and by the Lax--Milgram
+theorem~\citep[Sec.~6.2.1]{evans2010} (here the Riesz representation theorem for the inner
+product $a$) there is exactly one $\ubeta\in H^1(\Om)$ with
+$a(\ubeta,\varphi)=\ell(\varphi)$ for all $\varphi\in H^1(\Om)$; this is the displayed
+identity. For every $\varphi\in H^1(\Om)$,
+\[
+\Eritz(\ubeta+\varphi)=\Eritz(\ubeta)+\bigl(a(\ubeta,\varphi)-\ell(\varphi)\bigr)+\tfrac12a(\varphi,\varphi)
+=\Eritz(\ubeta)+\tfrac12a(\varphi,\varphi),
+\]
+which exceeds $\Eritz(\ubeta)$ unless $\varphi=0$: $\ubeta$ is the unique minimiser. The
+identity is the weak form of the Robin problem in the usual sense: if
+$u\in C^2(\overline\Om)$ satisfies $-\lap u=f$ in $\Om$ and $\dn u+2\bet(u-g)=0$ on $\dOm$,
+then~\eqref{sA_proofs:eq:green} with $w=u$ shows that $u$ satisfies the identity, and so
+$u=\ubeta$.
+
+(b) By~\eqref{sA_proofs:eq:green} with $w=\uex$,
+$\int_\Om\grad\uex\cdot\grad\varphi\,\dd\x=\int_\Om f\varphi\,\dd\x+\int_{\dOm}(\dn\uex)\,\varphi\,\dd s$
+for all $\varphi\in H^1(\Om)$. Subtracting this from the identity of (a) and using
+$g=\uex$ on $\dOm$,
+\begin{equation}\label{sA_proofs:eq:werr}
+\int_\Om\grad w\cdot\grad\varphi\,\dd\x+2\bet\int_{\dOm}w\,\varphi\,\dd s
+=-\int_{\dOm}(\dn\uex)\,\varphi\,\dd s\qquad\text{for all }\varphi\in H^1(\Om).
+\end{equation}
+The choice $\varphi=w$ is the energy identity. Write $A=\norm{w}_{\partial}$ and
+$N=\norm{\dn\uex}_{\partial}$. The right-hand side of the energy identity is at most $NA$,
+so $2\bet A^2\le NA$, that is $A\le N/(2\bet)$, and
+$\norm{\grad w}^2\le NA-2\bet A^2\le\max_{s\ge0}(Ns-2\bet s^2)=N^2/(8\bet)$.
+
+(c) We show that
+\begin{equation}\label{sA_proofs:eq:duality}
+\norm{w}\le2\,C_d\,\norm{w}_{\partial},\qquad C_d=\sqrt{1+\frac{1}{d\pi^2}} ,
+\end{equation}
+which with (b) gives $\norm{\ubeta-\uex}\le C_dN/\bet$; the constant decreases with $d$
+from $C_1=1.049$, and $C_2=1.025$. For
+$\boldsymbol k=(k_1,\dots,k_d)$ with positive integers $k_i$ let
+$e_{\boldsymbol k}(\x)=2^{d/2}\prod_i\sin(\pi k_ix_i)$. These functions form an orthonormal
+basis of $L^2(\Om)$ (completeness was recalled above), vanish on $\dOm$ and satisfy
+$-\lap e_{\boldsymbol k}=\pi^2\abs{\boldsymbol k}^2e_{\boldsymbol k}$ with
+$\abs{\boldsymbol k}^2=\sum_ik_i^2\ge d$. Let
+$\hat w_{\boldsymbol k}=\int_\Om w\,e_{\boldsymbol k}\,\dd\x$ and, for $M\in\N$,
+\[
+w_M=\sum_{\max_ik_i\le M}\hat w_{\boldsymbol k}\,e_{\boldsymbol k},
+\qquad
+\psi_M=\sum_{\max_ik_i\le M}\frac{\hat w_{\boldsymbol k}}{\pi^2\abs{\boldsymbol k}^2}\,e_{\boldsymbol k},
+\]
+so that $\psi_M\in C^\infty(\overline\Om)$, $\psi_M=0$ on $\dOm$ and $-\lap\psi_M=w_M$. For
+fixed $i$ and $j$, each of the families $\partial_ie_{\boldsymbol k}/(\pi k_i)$ and
+$\partial_i\partial_je_{\boldsymbol k}/(\pi^2k_ik_j)$, indexed by $\boldsymbol k$, is
+orthonormal in $L^2(\Om)$, being of the same product form with some sines replaced by
+cosines. Hence, all sums being over $\max_ik_i\le M$,
+% src: data/sA_proofs_checks.json (robin: parseval_d2_*, parseval_d3_*, quadrature_hess_sq_over_w_sq, quadrature_minus_lap_psi_equals_w_maxerr)
+\[
+\norm{\grad\psi_M}^2=\sum_{\boldsymbol k}\frac{\hat w_{\boldsymbol k}^2}{\pi^2\abs{\boldsymbol k}^2}
+\le\frac{\norm{w_M}^2}{d\pi^2},
+\qquad
+\sum_{i,j=1}^d\norm{\partial_i\partial_j\psi_M}^2
+=\sum_{\boldsymbol k}\hat w_{\boldsymbol k}^2\,\frac{\bigl(\sum_ik_i^2\bigr)^2}{\abs{\boldsymbol k}^4}
+=\norm{w_M}^2 .
+\]
+On the two faces where $x_i$ is constant, $\dn\psi_M=\pm\partial_i\psi_M$.
+Inequality~(ii) of Lemma~\ref{sA_proofs:lem:trace}, applied to $v=\partial_i\psi_M$ on
+these two faces and summed over $i$, gives
+% src: data/sA_proofs_checks.json (robin: dn_psi_bound_max_ratio_random_w, duality_on_harmonic_functions_d2_M16)
+\[
+\norm{\dn\psi_M}_{\partial}^2\le4\,\norm{\grad\psi_M}^2+4\sum_{i=1}^d\norm{\partial_i^2\psi_M}^2
+\le4\,C_d^2\,\norm{w_M}^2 .
+\]
+Now take $\varphi=\psi_M$ in~\eqref{sA_proofs:eq:werr}: both boundary integrals vanish, so
+$\int_\Om\grad w\cdot\grad\psi_M\,\dd\x=0$. Green's formula~\eqref{sA_proofs:eq:green},
+with $\psi_M$ in the role of $w$ and $w\in H^1(\Om)$ in the role of $\varphi$, then reads
+$-\int_\Om w\,w_M\,\dd\x=\int_{\dOm}w\,\dn\psi_M\,\dd s$. Since
+$\int_\Om w\,w_M\,\dd\x=\norm{w_M}^2$,
+\[
+\norm{w_M}^2\le\norm{w}_{\partial}\,\norm{\dn\psi_M}_{\partial}
+\le2\,C_d\,\norm{w}_{\partial}\,\norm{w_M} .
+\]
+Hence $\norm{w_M}\le2\,C_d\,\norm{w}_{\partial}$, and letting $M\to\infty$, so that
+$w_M\to w$ in $L^2(\Om)$, gives~\eqref{sA_proofs:eq:duality}.
+
+(d) If $\dn\uex=0$ on $\dOm$, then $N=0$ and (b) gives $\grad w=0$ and
+$\norm{w}_{\partial}=0$ for every $\bet>0$, hence $w=0$ by
+Lemma~\ref{sA_proofs:lem:trace}(i). Conversely, if $w=0$ for one $\bet$,
+then~\eqref{sA_proofs:eq:werr} gives $\int_{\dOm}(\dn\uex)\,\varphi\,\dd s=0$ for all
+$\varphi\in C^1(\overline\Om)$. Choose $\varphi(\x)=\chi(x_i)\,\theta(\x')$, where $\x'$
+denotes the other coordinates, $\theta$ is smooth with compact support in the open face
+$F=\{x_i=0\}$, and $\chi$ is smooth, equal to $1$ near $0$ and to $0$ near $1$. This
+$\varphi$ vanishes on every face other than $F$, so $\int_F(\dn\uex)\,\theta\,\dd s=0$ for
+all such $\theta$; as $\dn\uex$ is continuous on the closed face, it vanishes there, and
+likewise on every other face. So $\dn\uex=0$, and then $\ubeta=\uex$ for every $\bet$ by
+the first part.
+
+Finally, \Pone\ and \Ptwo\ satisfy the assumption of (b) by
+Proposition~\ref{s2_problems:prop:exact}(a).
+% src: data/sA_proofs_checks.json (robin.normal_derivatives: 4/3, 4/3, 8/3, 4 for d = 2, 3, 5, 6; P2: 0); data/closed_forms.json (floors.*.P1_normal_derivative_sq_norm)
+For \Pone, on the faces $x_{2k-1}\in\{0,1\}$ one has $\dn\uex=\mp x_{2k}$ and on the faces
+$x_{2k}\in\{0,1\}$, $\dn\uex=\mp x_{2k-1}$, each with squared $L^2$ norm
+$\int_0^1s^2\,\dd s=\tfrac13$; when $d$ is odd, $\dn\uex=0$ on the two faces
+$x_d\in\{0,1\}$. Summing the $4m$ contributions gives $\norm{\dn\uex}_{\partial}^2=4m/3>0$,
+so $\ubeta\ne\uex$ for every $\bet$ by (d). For \Ptwo,
+$\partial_i\uex=-\pi d^{-1/2}\sin(\pi x_i)$ vanishes at $x_i\in\{0,1\}$, so $\dn\uex=0$ and
+$\ubeta=\uex$.
+\end{proof}
+
+\begin{observation}[The bounds against a computed Robin solution]\label{sA_proofs:obs:sharp}
+% src: data/sA_proofs_checks.json (robin: C_2 = 1.02502, norm_dn_ustar_P1_d2 = 1.15470; fd_robin_P1_d2_N200: beta_times_L2 = 0.16673, 0.18279, 0.18476 and bound_c_Cd_N_over_beta = 1.18359/beta for beta = 10, 100, 1000; bnd = 5.7517e-4 and bound_b_N_over_2beta = 5.7735e-4 at beta = 1000)
+% src: verify_research_highdim/results/v_robin_fd.json (rel_l2_N200; the same finite-difference scheme, re-implemented in code/sA_proofs_checks.py, agrees to 1e-4 relative)
+For \Pone\ at $d=2$, where $N=\norm{\dn\uex}_{\partial}=\sqrt{4/3}$ and
+$C_2=\sqrt{1+1/(2\pi^2)}=1.025$, part~(c) of Proposition~\ref{s3_methods:prop:robin} gives
+$\norm{\ubeta-\uex}\le C_2N/\bet=1.184/\bet$. In a second-order finite-difference
+solution of the Robin problem on a grid of 200 cells per side, $\bet\,\norm{\ubeta-\uex}$
+is $0.167$, $0.183$ and $0.185$ for $\bet=10$, $100$ and $1000$; divided by
+$\norm{\uex}=\tfrac13$, these are the values between $0.50/\bet$ and $0.55/\bet$ of
+Observation~\ref{s3_methods:obs:robin}. The computed bias thus decays like $1/\bet$, the
+order of the bound, with a constant 6.4 to 7.1 times smaller than that of part~(c); the sharper
+bound $\sqrt{U_2}\,N/(2\bet)=0.312/\bet$ of Corollary~\ref{s6_highdim:cor:bound}(b) is 1.69 to 1.87
+times the computed values (Section~\ref{s6_highdim:sec:bound}).
+% src: data/s6_highdim_bound_numbers.json (corollary_b_over_fd_bias_d2: 0.31195; ratios 1.871, 1.707, 1.688 for beta = 10, 100, 1000)
+The
+trained Deep Ritz networks of Observation~\ref{s3_methods:obs:robin} are compared with
+these values there. The first bound of (b) is nearly attained: at $\bet=1000$ the computed $\norm{w}_{\partial}$ is
+$\sci{5.75}{-4}$ against $N/(2\bet)=\sci{5.77}{-4}$.
+\end{observation}
+
+\begin{observation}[The bias in dimension $d$]\label{sA_proofs:obs:biasd}
+% src: data/s6_highdim_robin_bias.json, data/s6_highdim_robin_bias.txt (code/s6_highdim_robin_bias.py: series, galerkin, check_d4, series_over_fd_d2, series_over_galerkin_largest_p, d_times_bias_beta100); d = 4: 4 x 3.3178e-3 = 0.0133 (check d=4 beta=100, double sum)
+For \Pone\ in dimension $d=2,3,5,10,20$ the relative bias
+$\norm{\ubeta-\uex}/\norm{\uex}$ was computed from the weak
+form~\eqref{sA_proofs:eq:werr} by separation of variables: $w=\ubeta-\uex$ is a sum of
+products of the eigenfunctions of $-\varphi''$ on $(0,1)$ with the Robin condition
+$\pm\varphi'+2\bet\varphi=0$ and of one hyperbolic factor, and $\norm{w}^2$ becomes a sum
+over the eigenvalues of one or two coordinates and an expectation over the others, summed exactly
+for $d\le4$ and estimated by Monte Carlo for $d\ge5$ (relative standard error at most
+$\sci{1.7}{-4}$; halving the number of modes kept changes no value). These are the values of
+Table~\ref{s6_highdim:tab:bias}: at $\bet=100$ the bias is $\sci{5.48}{-3}$, $\sci{4.70}{-3}$,
+$\sci{2.99}{-3}$, $\sci{1.46}{-3}$ and $\sci{7.37}{-4}$ for $d=2,3,5,10,20$. At $d=2$ they agree
+with the finite-difference solution of Observation~\ref{s3_methods:obs:robin} to $\sci{1}{-4}$
+relative, and a Galerkin solution with tensor Legendre polynomials agrees with them to 1 per cent for
+$d\le5$ and $\bet\le100$ (at $d=10$ and 20 it has not converged at the degrees that can be afforded).
+The exact representation of Proposition~\ref{sA_proofs:prop:exact}, computed with separate code,
+agrees with these values to within $\sci{4.3}{-4}$ relative in all 20 cells that the two
+computations share, including $d=10$ and $20$.
+% src: research_highdim_bound/results/bias_table.json (exact_over_article_series 0.99957 to 1.00026)
+\end{observation}
+
+% -------------------------------------------------------------------------------------
+\subsection{The harmonic-extension constant of the unit cube}\label{sA_proofs:sec:kappa}
+
+Throughout, $\Om=(0,1)^d$, $\norm{\cdot}$ is the norm of $L^2(\Om)$, $\nbd{\cdot}$ that of
+$L^2(\dOm)$ with surface measure, and $|\dOm|=2d$. For $\boldsymbol k=(k_1,\dots,k_d)$ with positive
+integers $k_i$ let $e_{\boldsymbol k}=2^{d/2}\prod_i\sin(\pi k_ix_i)$ and
+$\abs{\boldsymbol k}^2=\sum_ik_i^2\ge d$; these functions form an orthonormal basis of $L^2(\Om)$
+(Section~\ref{sA_proofs:sec}), vanish on $\dOm$ and satisfy
+$-\lap e_{\boldsymbol k}=\pi^2\abs{\boldsymbol k}^2e_{\boldsymbol k}$. A finite linear combination
+of them is called a sine polynomial. $F_i^0=\{x_i=0\}$ and $F_i^1=\{x_i=1\}$ are the two faces
+normal to $x_i$. Green's formula~\eqref{sA_proofs:eq:green}, with the roles of the two functions as
+needed, holds for $w\in H^1(\Om)$ and $\psi\in C^2(\overline\Om)$ by
+Lemma~\ref{sA_proofs:lem:trace}:
+\begin{equation}\label{sA_proofs:eq:green2}
+\int_\Om w\,\lap\psi\,\dd\x=-\int_\Om\grad w\cdot\grad\psi\,\dd\x+\int_{\dOm}w\,\dn\psi\,\dd s .
+\end{equation}
+
+\paragraph{The operator $T$.} For a sine polynomial $\zeta=\sum a_{\boldsymbol k}e_{\boldsymbol k}$
+let $\psi_\zeta=\sum a_{\boldsymbol k}e_{\boldsymbol k}/(\pi^2\abs{\boldsymbol k}^2)$, so that
+$-\lap\psi_\zeta=\zeta$ and $\psi_\zeta=0$ on $\dOm$, and let $T\zeta=\dn\psi_\zeta|_{\dOm}$. By
+Theorem~\ref{s6_highdim:thm:kappa} (whose proof below uses only sine polynomials) $T$ is bounded,
+and it extends uniquely to a bounded operator $T:L^2(\Om)\to L^2(\dOm)$. For sine polynomials
+$\norm{\grad\psi_\zeta}^2=\sum a_{\boldsymbol k}^2/(\pi^2\abs{\boldsymbol k}^2)\le\norm\zeta^2/(d\pi^2)$
+and $\sum_{i,j}\norm{\partial_i\partial_j\psi_\zeta}^2=\norm\zeta^2$ (the families
+$\partial_ie_{\boldsymbol k}/(\pi k_i)$ and $\partial_i\partial_je_{\boldsymbol k}/(\pi^2k_ik_j)$ are
+orthonormal), so for $\zeta\in L^2(\Om)$ the sine series $\psi_\zeta$ converges in $H^2(\Om)$ and
+$T\zeta$ is the trace of $\dn\psi_\zeta$ (Lemma~\ref{sA_proofs:lem:trace} applied to
+$\partial_i\psi$). By~\eqref{sA_proofs:eq:green2}, $\int_\Om w\zeta\,\dd\x=-\int_{\dOm}w\,T\zeta\,\dd s$
+for every harmonic $w\in C^2(\overline\Om)$ and every sine polynomial $\zeta$; thus $-T^*$ is the
+(very weak) harmonic extension from $L^2(\dOm)$ to $L^2(\Om)$, with norm $\norm{T}$.
+
+\begin{lemma}\label{sA_proofs:lem:kappaT}
+$\kappa_d=\norm{T}$, where $\kappa_d$ is defined by~\eqref{s6_highdim:eq:kappa}.
+\end{lemma}
+\begin{proof}
+Formula~\eqref{sA_proofs:eq:green2} extends to $\psi\in H^2(\Om)$: $C^2(\overline\Om)$ is dense in
+$H^2(\Om)$ on the cube (dilation about the centre and mollification, as in the proof of
+Lemma~\ref{sA_proofs:lem:trace}), and both sides are continuous in the $H^2$ norm of $\psi$, the
+boundary term because $\nbd{\partial_i\psi}$ is bounded by the $H^1$ norm of $\partial_i\psi$. Let
+$u\in H^2(\Om)\cap H^1_0(\Om)$ and $\zeta=-\lap u$. For each $\boldsymbol k$,
+\eqref{sA_proofs:eq:green2} with $(w,\psi)=(u,e_{\boldsymbol k})$ and with
+$(w,\psi)=(e_{\boldsymbol k},u)$, together with $u=e_{\boldsymbol k}=0$ on $\dOm$, gives
+$\int u\,\lap e_{\boldsymbol k}=-\int\grad u\cdot\grad e_{\boldsymbol k}=\int e_{\boldsymbol k}\lap u$,
+that is $\pi^2\abs{\boldsymbol k}^2\int ue_{\boldsymbol k}=\int\zeta e_{\boldsymbol k}$. So $u$ and
+$\psi_\zeta$ have the same sine coefficients, $u=\psi_\zeta$ and $\dn u=T\zeta$. Conversely, for
+every $\zeta\in L^2(\Om)$, $\psi_\zeta\in H^2(\Om)$, and $\psi_\zeta\in H^1_0(\Om)$ as an $H^1$
+limit of sine polynomials. Hence
+$\{(\lap u,\dn u):u\in H^2\cap H^1_0\}=\{(-\zeta,T\zeta):\zeta\in L^2(\Om)\}$, and the supremum
+defining $\kappa_d$ is $\norm{T}$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{s6_highdim:thm:kappa}]
+By Lemma~\ref{sA_proofs:lem:kappaT} it suffices to bound $\norm{T}$. Let
+$\zeta=\sum a_{\boldsymbol k}e_{\boldsymbol k}$ be a sine polynomial and $\psi=\psi_\zeta$.
+
+\emph{Step 1 (face formula).} Write $\boldsymbol k_{-i}$ for $\boldsymbol k$ without its $i$-th
+entry and let
+\[
+F_{\boldsymbol k_{-i}}=2^{(d-1)/2}\prod_{j\ne i}\sin(\pi k_jx_j);
+\]
+these functions form an orthonormal family in $L^2(F_i^0)$ and in $L^2(F_i^1)$. Since
+\[
+\partial_ie_{\boldsymbol k}=2^{d/2}\pi k_i\cos(\pi k_ix_i)\prod_{j\ne i}\sin(\pi k_jx_j)
+\]
+and the
+outward normal is $-e_i$ on $F_i^0$ and $e_i$ on $F_i^1$,
+\[
+\dn\psi|_{F_i^0}=-\sum_{\boldsymbol k}a_{\boldsymbol k}b_{\boldsymbol k}^{(i)}F_{\boldsymbol k_{-i}},\qquad
+\dn\psi|_{F_i^1}=\sum_{\boldsymbol k}(-1)^{k_i}a_{\boldsymbol k}b_{\boldsymbol k}^{(i)}F_{\boldsymbol k_{-i}},\qquad
+b_{\boldsymbol k}^{(i)}=\frac{\sqrt2\,k_i}{\pi\abs{\boldsymbol k}^2}.
+\]
+% src: research_highdim_bound/results/theorem2_checks.txt (A1: finite differences on 24 faces, d = 2, 3, worst relative error 4.11e-09)
+\emph{Step 2 (parity).} Group the terms by $\boldsymbol k_{-i}$. For real $b_k$,
+$(\sum_kb_k)^2+(\sum_k(-1)^kb_k)^2=2E^2+2O^2$, with $E$ and $O$ the sums over even and odd $k$. By
+orthonormality,
+\begin{equation}\label{sA_proofs:eq:TT}
+\nbd{T\zeta}^2=\frac4{\pi^2}\sum_{i=1}^d\sum_{\boldsymbol k_{-i}}\bigl(E_i(\boldsymbol k_{-i})^2+O_i(\boldsymbol k_{-i})^2\bigr),
+\qquad
+E_i,\;O_i=\sum_{k_i\ \mathrm{even},\ \mathrm{odd}}a_{\boldsymbol k}\frac{k_i}{\abs{\boldsymbol k}^2}.
+\end{equation}
+% src: research_highdim_bound/results/theorem2_checks.txt (A2: parity identity, worst relative error 1.2e-15)
+\emph{Step 3 (Cauchy--Schwarz).} Fix $i$ and $\boldsymbol k_{-i}$ and put $q=\abs{\boldsymbol k_{-i}}^2\ge d-1$,
+so $\abs{\boldsymbol k}^2=k_i^2+q$. Writing
+$a_{\boldsymbol k}k_i/\abs{\boldsymbol k}^2=(a_{\boldsymbol k}k_i/\abs{\boldsymbol k})\cdot(1/\abs{\boldsymbol k})$,
+\[
+O_i^2\le\Bigl(\sum_{k_i\ \mathrm{odd}}a_{\boldsymbol k}^2w^{(i)}_{\boldsymbol k}\Bigr)S_{\mathrm{odd}}(q),\qquad
+w^{(i)}_{\boldsymbol k}=\frac{k_i^2}{\abs{\boldsymbol k}^2},\quad
+S_{\mathrm{odd}}(q)=\sum_{j\ \mathrm{odd}}\frac1{j^2+q},
+\]
+and $E_i^2\le(\sum_{k_i\ \mathrm{even}}a_{\boldsymbol k}^2w^{(i)}_{\boldsymbol k})\,S_{\mathrm{even}}(q)$
+with $S_{\mathrm{even}}(q)=\sum_{l\ge1}1/((2l)^2+q)\le S_{\mathrm{odd}}(q)$ termwise.
+% src: research_highdim_bound/results/theorem2_checks.txt (A3: random fibres, largest lhs/rhs 0.3506; A4: even sum below odd sum)
+\emph{Step 4 (partial fractions).} For $a>0$,
+$\sum_{j\ \mathrm{odd}}1/(j^2+a^2)=\pi\tanh(\pi a/2)/(4a)$, from
+$\tanh z=\sum_{j\ \mathrm{odd}}8z/(4z^2+\pi^2j^2)$ with $z=\pi a/2$; for $a=0$ the sum is $\pi^2/8$.
+The function $a\mapsto\tanh(\pi a/2)/a$ decreases on $(0,\infty)$, since its derivative has the
+sign of $\pi a/2-\sinh(\pi a/2)\cosh(\pi a/2)<0$. Hence
+$S_{\mathrm{odd}}(q)\le\pi\tanh(\pi\sqrt{d-1}/2)/(4\sqrt{d-1})=\pi^2U_d/4$ for every $q\ge d-1$
+(for $d=1$, $q=0$ and $\pi^2/8=\pi^2U_1/4$).
+% src: research_highdim_bound/results/theorem2_checks.txt (A4: series against closed form for 10 values of a, worst relative difference 2.39e-06 with the series truncated at j = 8e6)
+\emph{Step 5 (summation).} Inserting Steps 3 and 4 into~\eqref{sA_proofs:eq:TT} and using
+$\sum_iw^{(i)}_{\boldsymbol k}=1$,
+$\nbd{T\zeta}^2\le\frac4{\pi^2}\cdot\frac{\pi^2U_d}4\sum_i\sum_{\boldsymbol k}a_{\boldsymbol k}^2w^{(i)}_{\boldsymbol k}=U_d\norm\zeta^2$.
+So $\norm T^2\le U_d$.
+
+\emph{Step 6 (lower bound $L_d$).} Take $a_{\boldsymbol k}=j/(j^2+d-1)$ for $\boldsymbol k=(j,1,\dots,1)$
+with $j$ odd, $j\le J$, and $a_{\boldsymbol k}=0$ otherwise. Then
+$\norm\zeta^2=S_J:=\sum_{j\le J\ \mathrm{odd}}j^2/(j^2+d-1)^2$. In~\eqref{sA_proofs:eq:TT} the face
+pair $i=1$ alone, with $\boldsymbol k_{-1}=(1,\dots,1)$, gives $O_1=S_J$, so
+$\nbd{T\zeta}^2\ge(4/\pi^2)S_J^2=(4/\pi^2)S_J\norm\zeta^2$. Letting $J\to\infty$ gives
+$\norm T^2\ge L_d$.
+% src: research_highdim_bound/results/theorem2_checks.txt (A7: (4/pi^2) S_J increases to L_d; Rayleigh quotient by operator and by formula agree to 12 digits, d = 2, 3)
+\emph{Step 7 (values and limits).} $L_1=(4/\pi^2)\sum_{j\ \mathrm{odd}}j^{-2}=\frac12=U_1$. With
+$x=\pi\sqrt{d-1}/2>0$, $U_d=\frac12\tanh(x)/x<\frac12$ for $d\ge2$, and $\sqrt d\,U_d\to1/\pi$ as
+$d\to\infty$. For $a=\sqrt{d-1}$ the function $f(x)=x^2/(x^2+a^2)^2$ increases on $[0,a]$ to
+$1/(4a^2)$ and then decreases, so its total variation on $[0,\infty)$ is $1/(2a^2)$; the midpoint
+rule with step 2 gives $\abs{\sum_{j\ \mathrm{odd}}f(j)-\frac12\int_0^\infty f}\le1/(2a^2)$, and
+$\int_0^\infty f=\pi/(4a)$. Hence $\sqrt d\,L_d\to1/(2\pi)$.
+% src: research_highdim_bound/results/theorem2_checks.txt (A5: sqrt(d) U_d = 0.31847 and sqrt(d) L_d = 0.15923 at d = 1000; 1/pi = 0.31831, 1/(2 pi) = 0.15915)
+\emph{Step 8 (lower bound $1/(2d)$).} Let $\zeta_M$ be the $L^2$ projection of the constant $1$ onto
+the span of the $e_{\boldsymbol k}$ with $\max_ik_i\le M$, so $\zeta_M\to1$ in $L^2(\Om)$. The
+identity $\int_\Om w\zeta=-\int_{\dOm}wT\zeta$ with the harmonic function $w=1$ gives
+$\int_\Om\zeta_M=-\int_{\dOm}T\zeta_M\le\abs{\dOm}^{1/2}\nbd{T\zeta_M}\le\sqrt{2d}\,\norm T\norm{\zeta_M}$;
+letting $M\to\infty$ gives $1\le\sqrt{2d}\,\norm T$.
+% src: research_highdim_bound/results/posthoc_analyses.json (step8_check: d = 2, M = 401: 0.24950 <= 0.28071 <= U_2 = 0.29194)
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{s6_highdim:prop:steklov}]
+By the proof of Lemma~\ref{sA_proofs:lem:kappaT}, the pairs $(\lap u,\dn u)$ with
+$u\in H^2(\Om)\cap H^1_0(\Om)$ are exactly the pairs $(-\zeta,T\zeta)$, $\zeta\in L^2(\Om)$. So
+$1/\delta_1=\sup\nbd{T\zeta}^2/\norm\zeta^2=\norm T^2=\kappa_d^2$ (functions with $\dn u=0$ do not
+change the supremum), and the bounds follow from Theorem~\ref{s6_highdim:thm:kappa}.
+\end{proof}
+
+\begin{remark}\label{sA_proofs:rem:steklov}
+By Fichera's principle of duality, $\delta_1$ is also the optimal constant in
+$\delta_1\norm h^2\le\nbd h^2$ over harmonic $h$; for domains with a uniform outer ball condition,
+which includes convex domains, this is due to~\citet{bucur2009first}, see~\citet[Sec.~3]{bucur2011first}.
+In the present notation it is the statement that $-T^*$ is the harmonic extension. Payne's bound
+$\delta_1\ge2/\ell$ for convex domains of minimal width $\ell$~\citep{payne1968bounds}, in the form
+stated in~\citet[Lemma~5.3]{bucur2011first}, with the regularity assumptions removed
+by~\citet{philippin2010extending}, gives $\kappa_d^2\le\frac12$ for the unit cube. An elementary
+bound of the same kind uses the torsion
+function $\vartheta$ of $\Om$, $-\lap\vartheta=1$ in $\Om$, $\vartheta=0$ on $\dOm$. For harmonic $h\in
+C^2(\overline\Om)$, Green's formula~\eqref{sA_proofs:eq:green2} applied twice (to $(h^2,\vartheta)$ and
+to $(\vartheta,h^2)$, with $\lap(h^2)=2\abs{\grad h}^2$ and $\vartheta=0$ on $\dOm$) gives
+$\int_\Om h^2=-2\int_\Om\vartheta\abs{\grad h}^2-\int_{\dOm}h^2\,\dn\vartheta\le m_d\nbd h^2$ with
+$m_d=\max_{\dOm}\abs{\dn\vartheta}$, since $\vartheta\ge0$ (on the cube $\vartheta=\psi_1\in H^2(\Om)$ by the paragraph on $T$
+above, and~\eqref{sA_proofs:eq:green2} holds for $\psi\in H^2(\Om)$ by the proof of
+Lemma~\ref{sA_proofs:lem:kappaT}). This gives $\kappa_d^2\le m_d$. Indeed, for harmonic $h\in
+C^2(\overline\Om)$ the identity $\int_\Om h\zeta=-\int_{\dOm}h\,T\zeta$ of the paragraph on $T$
+extends by continuity from sine polynomials to all $\zeta\in L^2(\Om)$, so $T^*(h|_{\dOm})=-h$ and
+$\norm{T^*(h|_{\dOm})}^2\le m_d\nbd{h}^2$. These traces are dense in $L^2(\dOm)$: for
+$g\in C(\dOm)$ let $h\in C(\overline\Om)$ be the harmonic function with boundary values $g$, which
+exists because the convex domain $\Om$ satisfies an exterior sphere condition at every boundary
+point~\citep[Sec.~2.8]{gilbarg2001}; with $\boldsymbol c$ the centre of $\Om$ and $\mu>1$,
+$h_\mu(\x)=h(\boldsymbol c+(\x-\boldsymbol c)/\mu)$ is harmonic on the open cube
+$\boldsymbol c+\mu(\Om-\boldsymbol c)\supset\overline\Om$, hence in $C^2(\overline\Om)$, and
+$h_\mu\to h$ uniformly on $\overline\Om$ as $\mu\downarrow1$, since $h$ is uniformly continuous; so
+$g$ is a uniform limit of such traces, and $C(\dOm)$ is dense in $L^2(\dOm)$. As $T^*$ is
+bounded, $\norm{T}^2=\norm{T^*}^2\le m_d$, and $\kappa_d^2\le m_d$ by
+Lemma~\ref{sA_proofs:lem:kappaT}. On
+the cube $\vartheta(\x)=\int_0^\infty\prod_iu(t,x_i)\,\dd t$, where $u$ solves the heat equation on
+$(0,1)$ with $u(0,\cdot)=1$ and zero boundary values; as $0\le u(t,y)\le u(t,\frac12)$, the maximum
+is at the centres of the faces, $m_d=\int_0^\infty\partial_xu(t,0)\,u(t,\frac12)^{d-1}\dd t$, with
+$m_1=\frac12$. By quadrature $m_d=0.3377$, 0.1953, 0.1703 and 0.1366 for $d=2$, 10, 20 and 100
+(Table~\ref{s6_highdim:tab:kappa}): $m_d$ decreases with $d$, but more slowly than $U_d$.
+% src: data/s6_highdim_torsion.json (code/s6_highdim_torsion.py: m_1 = 1/2 to 3.5e-12; trapezoidal rule on two grids and adaptive quadrature agree to 8e-11)
+Lower bounds of $\delta_1$ through the mean
+curvature~\citep{payne1970some,ferrero2005fourth} or through curvature bounds and the inner
+radius~\citep{raulot2015sharp} need a $C^2$ or smooth boundary and do not apply to the cube.
+\end{remark}
+
+\begin{observation}[Rayleigh--Ritz lower bounds]\label{sA_proofs:obs:RR}
+% src: research_highdim_bound/results/theorem2_checks.txt (A6); research_highdim_bound/results/restricted_lanczos.txt; research_highdim_bound/results/best_lower_bounds.json
+The largest eigenvalue of $T^*T$ restricted to the sine modes with $\max_ik_i\le K$, computed
+from~\eqref{sA_proofs:eq:TT} by the Lanczos method, increases with $K$: for $d=2$ it is
+$0.28366$, $0.28569$, $0.28670$, $0.28721$, $0.28746$ for $K=50$, 100, 200, 400, 800
+($U_2=0.29194$). $T^*T$ preserves the parity pattern of $\boldsymbol k$, and for $d=2,3$ the top
+eigenvalue lies in the block in which all $k_i$ are odd. Restricting further to all-odd
+$\boldsymbol k$ with at most $r\in\{1,2\}$ entries different from 1 gives lower bounds for larger
+$d$; the best values found are $0.985\,U_d$ ($d=2$), $0.964\,U_d$ (3), $0.947\,U_d$ (4),
+$0.932\,U_d$ (5), $0.874\,U_d$ (10), $0.796\,U_d$ (20), $0.691\,U_d$ (50) and $0.637\,U_d$ (100).
+They are lower bounds of $\kappa_d^2$ up to rounding, not estimates of it. For $d=2$ a
+Rayleigh--Ritz computation on the harmonic side, with the quotient $\norm h^2/\nbd h^2$ over linear
+combinations $h$ of the harmonic extensions of the face data $\sin(\pi k y)$, $k\le20$, on each of
+the four sides (zero on the other sides), made in the re-check (Section~\ref{s3_methods:sec:verif}),
+gives the larger quotient $0.2877121=0.9855\,U_2$, a lower bound up to rounding and quadrature error
+(quadrature with 200, 400 and 800 nodes agreeing to $10^{-13}$).
+% src: research_highdim_bound/check/out_r2/r2_rr_quadrature.json; research_highdim_bound/check/r2_rr_quadrature.py; notes/VERIFICATION.md (sec. 4.2)
+\end{observation}
+
+\begin{proof}[Proof of Corollary~\ref{s6_highdim:cor:bound}]
+(a) Let $\hat w_{\boldsymbol k}=\int_\Om we_{\boldsymbol k}$,
+$\zeta_M=\sum_{\max k_i\le M}\hat w_{\boldsymbol k}e_{\boldsymbol k}$ and
+$\psi_M=\psi_{\zeta_M}\in H^1_0(\Om)\cap C^\infty(\overline\Om)$. By~\eqref{sA_proofs:eq:green2} and
+the assumption,
+$\norm{\zeta_M}^2=\int_\Om w\zeta_M=-\int_\Om w\lap\psi_M=\int_\Om\grad w\cdot\grad\psi_M-\int_{\dOm}wT\zeta_M=-\int_{\dOm}wT\zeta_M$,
+so $\norm{\zeta_M}^2\le\nbd w\,\norm T\,\norm{\zeta_M}$. Let $M\to\infty$ and use
+Lemma~\ref{sA_proofs:lem:kappaT} and Theorem~\ref{s6_highdim:thm:kappa}.
+% src: research_highdim_bound/results/corollary_checks.txt ((a): largest ||w||^2/||w||_bd^2 over 200 harmonic test functions per d is below U_d for d = 2, 3, 5, 10, 20, 50)
+
+(b) By Proposition~\ref{s3_methods:prop:robin}(b), $w=\ubeta-\uex$
+satisfies~\eqref{sA_proofs:eq:werr} and $\nbd w\le\nbd{\dn\uex}/(2\bet)$; with $\varphi\in H^1_0(\Om)$
+in~\eqref{sA_proofs:eq:werr} the boundary terms vanish, so $w$ satisfies the assumption of (a).
+
+(c) Put $e=v-\uex\in C^2(\overline\Om)$, $r=\lap e=\lap v+f$ and $r_{\boldsymbol k}=\int re_{\boldsymbol k}$.
+The series $e_0=-\sum r_{\boldsymbol k}e_{\boldsymbol k}/(\pi^2\abs{\boldsymbol k}^2)$ converges in
+$H^1_0(\Om)$, because the $e_{\boldsymbol k}/(\pi\abs{\boldsymbol k})$ are orthonormal for
+$\int\grad\cdot\grad$, and
+$\norm{e_0}^2=\sum r_{\boldsymbol k}^2/(\pi^4\abs{\boldsymbol k}^4)\le\norm r^2/(d\pi^2)^2$. For each
+$\boldsymbol k$, $\int\grad e_0\cdot\grad e_{\boldsymbol k}=-r_{\boldsymbol k}$. The sine polynomials
+are dense in $H^1_0(\Om)$: a $\varphi\in H^1_0$ orthogonal to all of them in $\int\grad\cdot\grad$
+satisfies $0=\int\grad\varphi\cdot\grad e_{\boldsymbol k}=\pi^2\abs{\boldsymbol k}^2\int\varphi
+e_{\boldsymbol k}$ by~\eqref{sA_proofs:eq:green2}, so $\varphi=0$. Hence
+$\int\grad e_0\cdot\grad\varphi=-\int r\varphi$ for all $\varphi\in H^1_0(\Om)$, and
+by~\eqref{sA_proofs:eq:green2} also $\int\grad e\cdot\grad\varphi=-\int r\varphi$. So $e-e_0$ satisfies
+the assumption of (a), and its trace is that of $e$, namely $v-g$. Therefore
+$\norm e\le\norm{e_0}+\kappa_d\nbd{v-g}$. The second form follows from $\abs\Om=1$ and
+$\abs{\dOm}=2d$.
+% src: research_highdim_bound/results/corollary_checks.txt ((c): 48 separable test errors, d = 1 to 100, bound above the error in all, efficiency 1.011 to 24.9)
+\end{proof}
+
+\paragraph{The exact penalty bias.} Let $\alpha=2\bet$, $q=\dn\uex$ on $\dOm$, $N=\nbd q$ and
+$w=\ubeta-\uex$.
+
+\begin{proposition}[Exact bias on the cube]\label{sA_proofs:prop:exact}
+Let $(\mu_n,\phi_n)_{n\ge1}$ be the $L^2(0,1)$-normalised eigenpairs of $-\phi''=\mu\phi$ with
+$\phi'(0)=\alpha\phi(0)$, $\phi'(1)=-\alpha\phi(1)$: the even ones
+$\phi\propto\cos(\omega(x-\frac12))$ with $\omega\tan(\omega/2)=\alpha$, and the odd ones
+$\phi\propto\sin(\omega(x-\frac12))$ with $\omega\cot(\omega/2)=-\alpha$; $\mu=\omega^2$. Put
+$\Phi_{\boldsymbol n}=\prod_i\phi_{n_i}(x_i)$ and $\Lambda_{\boldsymbol n}=\sum_i\mu_{n_i}$. If
+$\uex\in C^2(\overline\Om)$, then
+\[
+\norm{\ubeta-\uex}^2=\sum_{\boldsymbol n}\frac{\bigl(\int_{\dOm}q\,\Phi_{\boldsymbol n}\,\dd s\bigr)^2}{\Lambda_{\boldsymbol n}^2}.
+\]
+For \Pone, with $m=\lfloor d/2\rfloor$, $D_n=\phi_n(1)-\phi_n(0)$, $X_n=\int_0^1x\phi_n$ and
+$M_n=\int_0^1\phi_n$,
+\[
+\norm{\ubeta-\uex}^2=m\int_0^\infty t\,Q(t)\,G(t)^{d-2}\,\dd t,\qquad G(t)=\sum_nM_n^2\ee^{-t\mu_n},
+\]
+\[
+Q(t)=2\Bigl[\Bigl(\sum_nD_n^2\ee^{-t\mu_n}\Bigr)\Bigl(\sum_nX_n^2\ee^{-t\mu_n}\Bigr)+\Bigl(\sum_nD_nX_n\ee^{-t\mu_n}\Bigr)^2\Bigr].
+\]
+\end{proposition}
+\begin{proof}
+(i) The form $a_1(\phi,\chi)=\int_0^1\phi'\chi'+\alpha(\phi(0)\chi(0)+\phi(1)\chi(1))$ is symmetric,
+bounded and coercive on $H^1(0,1)$, which embeds compactly in $L^2(0,1)$; the solution operator of
+the one-dimensional Robin problem is therefore compact, self-adjoint and positive on $L^2(0,1)$, and
+its eigenfunctions form an orthonormal basis~\citep[Sec.~6.5 and App.~D]{evans2010}. Every
+eigenfunction is smooth with $\mu>0$; splitting it into even and odd parts about $\frac12$ gives the
+two equations, and $\theta\tan\theta=\alpha/2$ has exactly one root in each interval
+$(k\pi,k\pi+\pi/2)$, $\theta\cot\theta=-\alpha/2$ exactly one in each $(k\pi+\pi/2,(k+1)\pi)$
+($\omega=2\theta$). Products of orthonormal bases are an orthonormal basis of $L^2(\Om)$.
+(ii) $\Phi_{\boldsymbol n}\in C^\infty(\overline\Om)$, $-\lap\Phi_{\boldsymbol n}=\Lambda_{\boldsymbol n}\Phi_{\boldsymbol n}$,
+and $\dn\Phi_{\boldsymbol n}+\alpha\Phi_{\boldsymbol n}=0$ on every face (on $F_i^0$ this is the
+condition of $\phi_{n_i}$, the other factors being constant in the normal direction).
+By~\eqref{sA_proofs:eq:green2}, for $\varphi\in H^1(\Om)$,
+$\int\grad\varphi\cdot\grad\Phi_{\boldsymbol n}+\alpha\int_{\dOm}\varphi\Phi_{\boldsymbol n}=\Lambda_{\boldsymbol n}\int\varphi\Phi_{\boldsymbol n}$.
+(iii) The error identity~\eqref{sA_proofs:eq:werr} with $\varphi=\Phi_{\boldsymbol n}$ gives
+$\Lambda_{\boldsymbol n}\int w\Phi_{\boldsymbol n}=-\int_{\dOm}q\Phi_{\boldsymbol n}$, and Parseval's
+identity gives the first formula.
+(iv) For \Pone, $q=\mp x_{2p}$ on $\{x_{2p-1}=0\}$, $\{x_{2p-1}=1\}$, $q=\mp x_{2p-1}$ on
+$\{x_{2p}=0\}$, $\{x_{2p}=1\}$, and $q=0$ on the faces of $x_d$ when $d$ is odd. The four faces of the
+pair $p$ contribute $(D_{n_{2p-1}}X_{n_{2p}}+X_{n_{2p-1}}D_{n_{2p}})\prod_{j\notin\{2p-1,2p\}}M_{n_j}$.
+$D_n=0$ for even and $M_n=0$ for odd eigenfunctions, so the term of pair $p$ needs all coordinates
+outside $p$ even and at least one coordinate of $p$ odd (if both are odd, both products survive and
+give the cross term of $Q$); terms of different pairs never share an
+$\boldsymbol n$, the square of the sum is the sum of the squares, and by symmetry each pair gives the
+same value.
+(v) $\Lambda^{-2}=\int_0^\infty t\ee^{-t\Lambda}\dd t$; all terms are non-negative, so by Tonelli's
+theorem the sum over $\boldsymbol n$ may be taken inside the integral, where for $t>0$ it converges
+absolutely and factorises over the coordinates; expanding the square of
+$D_{n_1}X_{n_2}+X_{n_1}D_{n_2}$ gives $Q$.
+\end{proof}
+% src: research_highdim_bound/results/exact_bias_checks.json (Parseval: sum M_n^2 = 1, sum X_n^2 = 1/3 to 15 digits; Robin residuals 2.8e-09 and 2.7e-09 at alpha = 20; d = 1 closed form; direct sums d = 2, 3)
+% src: research_highdim_bound/results/bias_table.json (max_trunc_diff 2.7e-9); research_highdim_bound/results/exact_bias_wide_compare.json (max_rel_change_beta_le_1000 1.01e-8; max_rel_change_all 4.49e-5 at d = 100, beta = 1e5)
+\noindent The numbers of Table~\ref{s6_highdim:tab:biasexact} were computed by quadrature in $t$
+over $[10^{-11},80]$ with $2\times10^5$ roots per parity type. For large $\bet$ the integrand, in
+$\log t$, decays only like $t^{1/2}$ as $t\to0$; a check over $[10^{-18},400]$ changes the entries by
+at most $\sci{1.0}{-8}$ relative for $\bet\le1000$ and $\sci{4.5}{-5}$ for $\bet=10^4,10^5$.
+
+By the Riesz theorem and Theorem~\ref{s6_highdim:thm:kappa} there is a unique $v_1\in L^2(\Om)$ with
+$\int_\Om v_1\zeta=\frac12\int_{\dOm}q\,T\zeta$ for all $\zeta\in L^2(\Om)$; it is the very weak
+harmonic function with boundary values $-q/2$, and $\norm{v_1}\le\kappa_dN/2$.
+
+\begin{theorem}[First-order term of the bias]\label{sA_proofs:thm:first}
+If $\uex\in C^2(\overline\Om)$, then for every $\bet>0$
+\[
+\Bigl\lVert\ubeta-\uex-\frac{v_1}{\bet}\Bigr\rVert\le K_dN\bet^{-3/2},\qquad
+K_d=\frac{\sqrt d+2/(\pi\sqrt d)}{4\sqrt2};
+\]
+in particular $\bigl|\norm{\ubeta-\uex}-\norm{v_1}/\bet\bigr|\le K_dN\bet^{-3/2}$.
+\end{theorem}
+\begin{proof}
+Let $\psi=\psi_\zeta$ for a sine polynomial $\zeta$ and $z=w-v_1/\bet$.
+(i) By~\eqref{sA_proofs:eq:green2}, $\int w\zeta=\int\grad w\cdot\grad\psi-\int_{\dOm}w\,\dn\psi$.
+(ii) \eqref{sA_proofs:eq:werr} with $\varphi=\psi\in H^1_0$ gives $\int\grad w\cdot\grad\psi=0$.
+(iii) By definition $\int v_1\zeta=\frac12\int_{\dOm}q\,\dn\psi$; hence
+$\int z\zeta=-\int_{\dOm}(w+q/(2\bet))\,\dn\psi$.
+(iv) Let $\tilde\zeta=\sum_i(2x_i-1)\partial_i\psi\in C^\infty(\overline\Om)$. On $F_i^0\cup F_i^1$ the
+tangential derivatives of $\psi$ vanish and $2x_i-1=\pm1$ is the sign of the outward normal, so
+$\tilde\zeta=\dn\psi$ on $\dOm$. \eqref{sA_proofs:eq:werr} with $\varphi=\tilde\zeta$ gives
+$\int\grad w\cdot\grad\tilde\zeta+2\bet\int_{\dOm}w\,\dn\psi=-\int_{\dOm}q\,\dn\psi$, that is
+$\int_{\dOm}(w+q/(2\bet))\dn\psi=-(2\bet)^{-1}\int\grad w\cdot\grad\tilde\zeta$.
+(v) $\partial_j\tilde\zeta=2\partial_j\psi+\sum_i(2x_i-1)\partial_i\partial_j\psi$ and
+$\abs{2\x-\mathbf1}\le\sqrt d$ give
+$\norm{\grad\tilde\zeta}\le2\norm{\grad\psi}+\sqrt d\,(\sum_{i,j}\norm{\partial_i\partial_j\psi}^2)^{1/2}\le(2/(\pi\sqrt d)+\sqrt d)\norm\zeta$
+by the two identities of the paragraph on $T$.
+(vi) With $\norm{\grad w}\le N/\sqrt{8\bet}$ (Proposition~\ref{s3_methods:prop:robin}(b)),
+$\abs{\int z\zeta}\le(2\bet)^{-1}N(8\bet)^{-1/2}(\sqrt d+2/(\pi\sqrt d))\norm\zeta=K_dN\bet^{-3/2}\norm\zeta$.
+Sine polynomials are dense in $L^2(\Om)$, which gives the claim; the second statement is the
+triangle inequality.
+\end{proof}
+% src: research_highdim_bound/results/bias_table.json (theorem1_all_ok: the second inequality holds in all 49 cells); research_highdim_bound/check/out/c2_bias.json (also at beta = 0.01 and 0.1); research_highdim_bound/results/exact_bias_checks.json (d = 1, u* = x: remainder 1/(sqrt(12) beta (1+beta)))
+
+% -------------------------------------------------------------------------------------
+\subsection{Affine minimisers, floors and the reparametrisation control}\label{sA_proofs:sec:remedies}
+
+Here $\Om=(0,1)^d$ with the uniform measures, $\phi(\x)=(1,x_1,\dots,x_d)^\top$, and an affine function
+is $p_c=c^\top\phi$, $c\in\R^{d+1}$. The problems are $-\lap\uex=f$ in $\Om$, $\uex=g$ on $\dOm$, with
+\Pone, \Ptwo\ as in~\eqref{s2_problems:eq:p1} and~\eqref{s2_problems:eq:p2} and, with $m=\lfloor d/2\rfloor$
+and $t_i=2x_i-1$,
+\Pridge: $\uex=\cos(2s)$, $s=d^{-1/2}\sum_it_i$, $f=16\uex$;
+\Pcospair: $\uex=\sum_{k\le m}\cos(\pi x_{2k-1})\cos(\pi x_{2k})$, $f=2\pi^2\uex$;
+\Paltridge: $\uex=\cos(\pi s'+1)$, $s'=d^{-1/2}\sum_ie_it_i$, $e_i=+1$ for odd and $-1$ for even $i$,
+$f=4\pi^2\uex$. The sources follow from $\partial_{ii}\cos(2s)=-(16/d)\cos(2s)$ and
+$\partial_{ii}\cos(\pi s'+1)=-(4\pi^2/d)\cos(\pi s'+1)$.
+% src: research_highdim_remedies/results/checks.json (C1: |f + Lap u*| <= 4.3e-14, nested automatic differentiation in float64); research_highdim_remedies/results/checks_p5.json (C1: <= 2.2e-14 for d in {2, 5, 10, 20})
+The population losses whose Monte-Carlo estimates are minimised are the penalised Ritz energy
+$\Eritz$ of~\eqref{s3_methods:eq:ritz} and the population PINN loss
+$\Lpop_\lam(v)=\int_\Om(\lap v+f)^2+\frac{\lam}{2d}\int_{\dOm}(v-g)^2$ of
+Remark~\ref{s3_methods:rem:consistent}.
+
+\begin{lemma}[Boundary Gram matrix]\label{sA_proofs:lem:gram}
+$M_\partial=\int_{\dOm}\phi\phi^\top\dd s$ has the entries $(M_\partial)_{00}=2d$, $(M_\partial)_{0i}=d$,
+$(M_\partial)_{ii}=1+\frac{2(d-1)}3$ and $(M_\partial)_{ij}=\frac d2$ for $i\ne j$, $i,j\ge1$. Its eigenvalues are
+$(d+2)/6$, with multiplicity $d-1$, and the two eigenvalues of
+$B=\bigl(\begin{smallmatrix}2d&d\sqrt d\\ d\sqrt d&a+(d-1)d/2\end{smallmatrix}\bigr)$,
+$a=1+\frac{2(d-1)}3$, with $\det B=d(d+2)/3$. In particular $M_\partial$ is positive definite.
+\end{lemma}
+\begin{proof}
+$\dOm$ is the union of the $2d$ faces $\{x_k=s\}$, $s\in\{0,1\}$, each of unit area with the uniform
+measure in the other coordinates. On $\{x_k=s\}$: $\int1=1$; $\int x_i=\frac12$ for $i\ne k$ and $s$
+for $i=k$; $\int x_i^2=\frac13$ for $i\ne k$ and $s^2$ for $i=k$; $\int x_ix_j=\int x_i\int x_j$ for
+$i\ne j$. Summing over the faces gives the entries; for $i\ne j$ the faces of $x_i$ and of $x_j$
+give $\frac12$ each and the other $2(d-2)$ faces $\frac14$ each. With $b=d/2$ the lower block is
+$(a-b)I+b\mathbf1\mathbf1^\top$, so every $(0,v)$ with $v\perp\mathbf1$ is an eigenvector with
+eigenvalue $a-b=(d+2)/6$; on the span of $e_0$ and $(0,\mathbf1/\sqrt d)$, $M_\partial$ acts as $B$, and
+$\det B=2d(a+(d-1)\frac d2)-d^3=d(d+2)/3>0$, $\operatorname{tr}B>0$.
+\end{proof}
+% src: research_highdim_remedies/results/checks.json (C3: product Gauss quadrature 8.9e-15); research_highdim_remedies/results/check_proof_formulas.json (L1: eigenvalue formula against numpy for d in {1, 2, 5, 20, 50}, <= 3.7e-13)
+
+\begin{proposition}[Affine minimisers]\label{sA_proofs:prop:presolve}
+Let $E=\operatorname{diag}(0,1,\dots,1)$, $r_f=\int_\Om f\phi$ and $r_g=\int_{\dOm}g\phi$. For $\bet>0$
+and $\lam>0$ the minimisers of $\Eritz$ and of $\Lpop_\lam$ over affine functions are unique; their
+coefficient vectors solve $(E+2\bet M_\partial)c=r_f+2\bet r_g$ and $M_\partial c=r_g$, respectively. The PINN
+minimiser is the $L^2(\dOm)$ projection of $g$ onto the affine functions and depends neither on
+$\lam$ nor on $f$.
+\end{proposition}
+\begin{proof}
+For $v=p_c$, $\frac12\int\abs{\grad p_c}^2=\frac12c^\top Ec$, $\int fp_c=c^\top r_f$ and
+$\int_{\dOm}(p_c-g)^2=c^\top M_\partial c-2c^\top r_g+\int_{\dOm}g^2$, so $\Eritz(p_c)$ is a quadratic in $c$
+with Hessian $E+2\bet M_\partial$, positive definite by Lemma~\ref{sA_proofs:lem:gram}; its unique minimiser
+is the stationary point. For the PINN, $\lap p_c=0$, so
+$\Lpop_\lam(p_c)=\int f^2+\frac\lam{2d}(c^\top M_\partial c-2c^\top r_g+\int_{\dOm}g^2)$, minimised uniquely at
+$M_\partial c=r_g$.
+\end{proof}
+% src: research_highdim_remedies/results/checks.json (C4: against minimisers of two 1e6-point Monte-Carlo losses); research_highdim_remedies/results/check_presolve_quad.json (tensor Gauss quadrature, d = 2, 3: <= 1.7e-13); research_highdim_remedies/results/checks_p5.json (C4, C4b: AltRidgeD <= 6.7e-14)
+
+\begin{proposition}[Structure of the affine minimisers]\label{sA_proofs:prop:struct}
+(a) On \Pcospair, $r_f=r_g=0$, so both affine minimisers are $0$.
+(b) On \Pridge\ both affine minimisers are constant.
+(c) On \Pone\ the PINN minimiser is $p=\sum_{k\le m}\frac12(x_{2k-1}+x_{2k})-\frac m4$, which is also
+the best $L^2(\Om)$ approximation of $\uex$ by affine functions.
+\end{proposition}
+\begin{proof}
+(a) $f$ and $g$ are sums of multiples of $\cos(\pi x_a)\cos(\pi x_b)$, $a\ne b$. Since
+$\int_0^1\cos(\pi x)\,\dd x=0$, every interior integral against $1$ or $x_i$ contains such a factor,
+and so does every face integral on a face of a coordinate other than $a$ and $b$. On $\{x_a=s\}$ the
+term is $\cos(\pi s)\cos(\pi x_b)$; against $1$ or $x_i$, $i\ne b$, it contains
+$\int\cos(\pi x_b)=0$, and against $x_b$ it equals $\cos(\pi s)\,(-2/\pi^2)$, which cancels between
+$s=0$ and $s=1$. The faces of $x_b$ are symmetric. So $r_f=r_g=0$ and $c=0$.
+(b) The reflection $\sigma(\x)=\mathbf1-\x$ preserves $\Om$, $\dOm$ and both measures, and
+$s\circ\sigma=-s$, so $\uex$, $f$ and $g$ are invariant and so are $\Eritz$ and $\Lpop_\lam$. If $p_c$ is
+the unique minimiser, so is $p_c\circ\sigma=(c_0+\sum_ic_i)-\sum_ic_ix_i$; uniqueness gives $c_i=0$
+for $i\ge1$.
+(c) $x_ax_b=(x_a-\frac12)(x_b-\frac12)+\frac12(x_a+x_b)-\frac14$, so $\uex-p=\sum_kq_k$ with
+$q_k=(x_{2k-1}-\frac12)(x_{2k}-\frac12)$. Each $q=(x_a-\frac12)(x_b-\frac12)$ is orthogonal to $1$
+and to every $x_i$ in $L^2(\Om)$ (a factor $\int_0^1(x-\frac12)\dd x=0$ remains) and in $L^2(\dOm)$:
+on faces of other coordinates the same factor remains; on $\{x_a=s\}$, $q=(s-\frac12)(x_b-\frac12)$
+gives $0$ against $1$ and $x_i$, $i\ne b$, and $(s-\frac12)/12$ against $x_b$, which cancels between
+$s=0,1$. So $p$ satisfies the normal equations of both projections.
+\end{proof}
+% src: research_highdim_remedies/results/check_proof_formulas.json (P2a-P2c: <= 5.5e-14 for d in {2, 5, 10, 20})
+
+\begin{proposition}[Floors of affine and lifted features]\label{sA_proofs:prop:floorsC}
+Let $\mathcal A$ be the affine functions, $\mathcal F$ the span of $1$ and the $P_k(t_i)$, $k=1,2,3$,
+$i=1,\dots,d$ ($P_k$ the Legendre polynomials; this is the span of the lift3c and of the lift3u
+features), and $\mathcal S=\{c_0+\sum_iw_i(x_i)\}$ the additively separable functions. With
+$\mathrm{fl}_{\mathcal V}(u)=\min_{v\in\mathcal V}\norm{u-v}/\norm u$ and $\mathbb E$ the mean over $\Om$,
+\begin{align*}
+\mathrm{fl}_{\mathcal A}(u)^2&=1-\frac{(\mathbb Eu)^2+12\sum_i(\mathbb E[(x_i-\frac12)u])^2}{\mathbb Eu^2},\\
+\mathrm{fl}_{\mathcal F}(u)^2&=1-\frac{(\mathbb Eu)^2+\sum_i\sum_{k=1}^3(2k+1)(\mathbb E[P_k(t_i)u])^2}{\mathbb Eu^2},
+\end{align*}
+and $\mathcal A\subset\mathcal F\subset\mathcal S$. Moreover:
+(a) \Pone: $\mathrm{fl}_{\mathcal A}=\mathrm{fl}_{\mathcal F}=\mathrm{fl}_{\mathcal S}
+=\bigl((m/144)/(m/9+m(m-1)/16)\bigr)^{1/2}$;
+(b) \Pcospair: $\mathrm{fl}_{\mathcal A}=\mathrm{fl}_{\mathcal F}=\mathrm{fl}_{\mathcal S}=1$;
+(c) \Pridge: $\mathrm{fl}_{\mathcal A}$ equals the floor of the constants,
+$(1-(\mathbb E\uex)^2/\mathbb E{\uex}^2)^{1/2}$, with $\mathbb E\uex=\operatorname{sinc}(2/\sqrt d)^d$,
+$\mathbb E{\uex}^2=\frac12(1+\operatorname{sinc}(4/\sqrt d)^d)$ and $\operatorname{sinc}a=\sin a/a$;
+(d) \Ptwo: $\mathbb E{\uex}^2=\frac12$;
+(e) \Paltridge: with $a=\pi/\sqrt d$ and $\chi(a)=(\sin a-a\cos a)/a^2$,
+$\mathbb E\uex=\cos(1)\operatorname{sinc}(a)^d$,
+$\mathbb E[(x_i-\frac12)\uex]=-\frac12e_i\sin(1)\chi(a)\operatorname{sinc}(a)^{d-1}$ and
+$\mathbb E{\uex}^2=\frac12(1+\cos(2)\operatorname{sinc}(2a)^d)$, hence
+$\mathrm{fl}_{\mathcal A}^2=1-\bigl(\cos^2(1)\operatorname{sinc}(a)^{2d}+3d\sin^2(1)\chi(a)^2\operatorname{sinc}(a)^{2d-2}\bigr)/\mathbb E{\uex}^2$.
+\end{proposition}
+\begin{proof}
+Under the uniform measure, $1$ and the $x_i-\frac12$ are pairwise orthogonal with
+$\norm{x_i-\frac12}^2=\frac1{12}$, and $1$ and the $P_k(t_i)$ are pairwise orthogonal (for different
+$i$ by independence and $\mathbb EP_k(t_i)=0$, for the same $i$ by the orthogonality of the Legendre
+polynomials) with $\norm{P_k(t_i)}^2=\frac1{2k+1}$. The best approximation from the span of an
+orthogonal system is the sum of the projections, and $\norm{u-\Pi u}^2=\norm u^2-\norm{\Pi u}^2$; this
+gives both formulas. $\mathcal A\subset\mathcal F$ because $x_i=(P_1(t_i)+1)/2$. The projection of
+$u$ onto $\mathcal S$ is $\mathbb Eu+\sum_i(\mathbb E[u\,|\,x_i]-\mathbb Eu)$: the remainder has zero
+conditional mean given each single coordinate and is orthogonal to every $w_i(x_i)$.
+(a) $\mathbb E[\uex|x_i]$ is affine in $x_i$, so the three projections coincide; the remainder is
+$\sum_kq_k$ (Proposition~\ref{sA_proofs:prop:struct}(c)), with pairwise orthogonal $q_k$ of squared
+norm $\frac1{144}$, and $\mathbb E{\uex}^2=m/9+m(m-1)/16$.
+(b) $\mathbb E[\cos(\pi x_a)\cos(\pi x_b)\,|\,x_i]=0$ for every $i$, so the $\mathcal S$-projection is $0$.
+(c) $\uex$ is invariant under $\boldsymbol t\mapsto-\boldsymbol t$ and $x_i-\frac12$ is odd, so
+$\mathbb E[(x_i-\frac12)\uex]=0$. With $a=2/\sqrt d$ and $Z=\prod_j\ee^{\mathrm iat_j}$,
+$\uex=\operatorname{Re}Z$ and $\mathbb E\ee^{\mathrm iat}=\operatorname{sinc}(a)$ for $t$ uniform on $[-1,1]$;
+${\uex}^2=\frac12(1+\cos4s)$.
+(d) $\mathbb E\cos^2(\pi x)=\frac12$ and $\mathbb E[\cos(\pi x_i)\cos(\pi x_j)]=0$ for $i\ne j$.
+(e) $\uex=\operatorname{Re}(\ee^{\mathrm i}Z)$ with $Z=\prod_j\ee^{\mathrm iae_jt_j}$; $\operatorname{sinc}$ is even, so
+$\mathbb E\uex=\cos(1)\operatorname{sinc}(a)^d$. Since $\mathbb E[t\ee^{\mathrm ibt}]=\mathrm i\,\mathrm{sign}(b)\chi(\abs b)$,
+$\mathbb E[t_i\uex]=\operatorname{Re}(\ee^{\mathrm i}\,\mathrm ie_i\chi(a))\operatorname{sinc}(a)^{d-1}=-e_i\sin(1)\chi(a)\operatorname{sinc}(a)^{d-1}$,
+and $x_i-\frac12=t_i/2$. ${\uex}^2=\frac12(1+\cos(2\pi s'+2))$ and the same argument with $2a$ give
+$\mathbb E{\uex}^2$; insert into the formula for $\mathrm{fl}_{\mathcal A}$.
+\end{proof}
+% src: research_highdim_remedies/results/checks.json (C5: e.g. LapD, d = 20: 0.10153 exact, 0.10157 Monte Carlo); research_highdim_remedies/results/check_proof_formulas.json (P3a-P3c: <= 5.5e-14); research_highdim_remedies/results/check_p5_formulas.json ((e): <= 1.3e-15 for d in 2..50); research_highdim_remedies/results/checks_p5.json (C5: AltRidgeD d = 20, 0.8965 and 0.8951)
+
+\begin{lemma}[Laplacian of a lifted network]\label{sA_proofs:lem:lap}
+Let $\mathcal N$ be a network of affine layers and $\tanh$ activations, $\psi:\R\to\R^3$ a $C^2$ map applied
+to each coordinate, $\Psi(\x)=(\psi_a(x_j))_{a,j}\in\R^{3d}$ and $u=\mathcal N\circ\Psi+p_c$. Propagate $(h,J,L)$
+by $h_0=\Psi(\x)$, $(J_0)_{i,(a,j)}=\delta_{ij}\psi_a'(x_j)$, $(L_0)_{(a,j)}=\psi_a''(x_j)$; through an
+affine layer $h\mapsto Wh+b$: $J\mapsto JW^\top$, $L\mapsto WL$; through a $\tanh$ layer, with
+$\tau=\tanh(h)$: $L\mapsto(1-\tau^2)\odot L-2\tau(1-\tau^2)\odot\sum_iJ_{i,\cdot}^{\,2}$,
+$J\mapsto J\operatorname{diag}(1-\tau^2)$, $h\mapsto\tau$. Then at the output $\lap u=L$ and
+$\grad u=J+(c_1,\dots,c_d)$.
+\end{lemma}
+\begin{proof}
+Induction over the layers with the invariant $J_{i,\cdot}=\partial_ih$ and $L=\sum_i\partial_{ii}h$
+componentwise; it holds at the input because the component $(a,j)$ depends on $x_j$ only. Affine
+layers act linearly on derivatives; for $\tanh$,
+$\partial_{ii}\tanh(h)=\tanh''(h)(\partial_ih)^2+(1-\tau^2)\partial_{ii}h$ with
+$\tanh''=-2\tau(1-\tau^2)$. The affine $p_c$ adds $(c_1,\dots,c_d)$ to the gradient and nothing to
+the Laplacian. The plain network is the case $\psi=\mathrm{id}$ (the forward Laplacian of
+Section~\ref{s3_methods:sec:highdim}).
+\end{proof}
+% src: research_highdim_remedies/results/checks.json (C2: plain, lift3c, lift3u, rep3, with and without the shift, d in {5, 20}, against nested reverse-mode differentiation in float64, <= 2.5e-15)
+
+\begin{proposition}[The control rep3]\label{sA_proofs:prop:rep3}
+Let $\boldsymbol t=2\x-\mathbf1$ and let the first layer of a network be $z\mapsto Wz+b$. Write the
+first-layer weight of the rep3 network $\mathcal N_3(\boldsymbol t,\boldsymbol t,\boldsymbol t)$ as
+$W=[W^{(1)}\,W^{(2)}\,W^{(3)}]$ and put $W_{\mathrm{eff}}=W^{(1)}+W^{(2)}+W^{(3)}$.
+(a) $\mathcal N_3(\boldsymbol t,\boldsymbol t,\boldsymbol t)=\mathcal N_1(\boldsymbol t)$, where $\mathcal N_1$ has the layers of
+$\mathcal N_3$ except the first weight, which is $W_{\mathrm{eff}}$.
+(b) If $\mathcal N_3$ is trained by \Adam\ with step size $\sigma$ (no weight decay, any momentum parameters
+and any $\epsilon$) on any loss that depends on the network only through the function it computes,
+the iterates of $\mathcal N_1$ built by (a) are exactly those of \Adam\ applied to $\mathcal N_1$ with step size
+$3\sigma$ for $W_{\mathrm{eff}}$ and $\sigma$ for all other parameters, from the initial values
+given by (a).
+(c) Under the PyTorch default initialisation, uniform on $\pm1/\sqrt{\text{fan-in}}$ for weights and
+biases, the entries of $W_{\mathrm{eff}}$ have variance $1/(3d)$, as those of the first weight of
+lift1 $=\mathcal N(\boldsymbol t)$, while the first bias has variance $1/(9d)$ in rep3 and $1/(3d)$ in lift1.
+\end{proposition}
+\begin{proof}
+(a) $W(\boldsymbol t,\boldsymbol t,\boldsymbol t)^\top=W_{\mathrm{eff}}\boldsymbol t$.
+(b) By (a) the loss depends on the $W^{(k)}$ only through $W_{\mathrm{eff}}$, so
+$\grad_{W^{(k)}}J=\grad_{W_{\mathrm{eff}}}J=:G$ for $k=1,2,3$ at every step, where $J$ is the
+training loss. The moment estimates of \Adam\ for each $W^{(k)}$ are those of $G$, each
+$W^{(k)}$ moves by the same $-\sigma\hat m_G/(\sqrt{\hat v_G}+\epsilon)$, and $W_{\mathrm{eff}}$ moves
+by three times that, which is the \Adam\ step with step size $3\sigma$ for the gradient sequence $G$.
+The other parameters see the same gradients in both networks; induction over the steps.
+(c) The uniform distribution on $\pm c$ has variance $c^2/3$. The fan-in of rep3 is $3d$, so each
+$W^{(k)}_{ij}$ has variance $1/(9d)$ and the sum of three independent copies $1/(3d)$; lift1 has
+fan-in $d$; the biases have variances $1/(9d)$ and $1/(3d)$.
+\end{proof}
+% src: research_highdim_remedies/results/check_rep3_equivalence.json (300 float64 steps of the Deep Ritz loss on RidgeD, d = 20: largest difference 8.9e-16; initial standard deviations 0.129 and 0.129 for the weights, 0.077 and 0.133 for the biases)
+
+% -------------------------------------------------------------------------------------
+\subsection{The decaying mode and the one-face problem}\label{sA_proofs:sec:pitfalls}
+
+\begin{proof}[Proof of Proposition~\ref{s7_pitfalls:prop:notwave}]
+% src: data/sA_proofs_checks.json (nonunique_notwave: v_residual, v_residual_ok)
+We use $\lap S=-2\pi^2S=-\omega^2S$.
+(a) $v_{tt}=v$ and $\lap v=-2\pi^2v$, so $v_{tt}-\lap v=(1+2\pi^2)\,\ee^{-t}S$, which is
+non-zero wherever $S\ne0$.
+(b) The first assertion is Propositions~\ref{s2_problems:prop:exact}(a)
+and~\ref{s2_problems:prop:unique}(a). Since $v-\uex=(\ee^{-t}-\cos\omega t)\,S$ and
+$\uex=\cos(\omega t)\,S$, the factor $\int_\Om S^2\,\dd\x=1$ cancels in the ratio, which
+leaves the stated quotient of time integrals. Elementary integration gives
+\[
+\int_0^1\cos^2\omega t\,\dd t=\frac12+\frac{\sin2\omega}{4\omega},
+\qquad
+\int_0^1\ee^{-t}\cos\omega t\,\dd t=\frac{1+\ee^{-1}(\omega\sin\omega-\cos\omega)}{1+\omega^2},
+\]
+and $\int_0^1\ee^{-2t}\,\dd t=\tfrac12(1-\ee^{-2})$.
+% src: data/closed_forms.json (wave2d.rel_L2_target_vs_exact_ut0_zero = 1.38004); data/sA_proofs_checks.json (nonunique_notwave: numerator = 1.00726, denominator = 0.52888, ratio_closed_form = ratio_quadrature = 1.38004)
+With $\omega=\sqrt2\,\pi$ the denominator is $0.52888$ and the numerator
+$\int_0^1(\ee^{-t}-\cos\omega t)^2\,\dd t$ is $1.00726$, so the ratio is
+$\sqrt{1.00726/0.52888}=1.380$.
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{s7_pitfalls:prop:nonunique}]
+% src: data/sA_proofs_checks.json (nonunique_notwave: u0_harmonic_and_datum, x_minus_pi_times_harmonic_polys, value_at_face_centre, uN_checks, u0_on_face_x0)
+All functions below are restrictions to $\overline D$ of functions that are smooth on
+$\R^3$.
+(a) $\lap u_0=(2-1-1)\,u_0=0$, and $\cosh0=1$ gives the datum on $\{x=\pi\}$.
+(b) If $h_{yy}+h_{zz}=0$, then
+$\lap\bigl((x-\pi)h\bigr)=(x-\pi)(h_{yy}+h_{zz})=0$ and $(x-\pi)h$ vanishes on $\{x=\pi\}$,
+so $u+(x-\pi)h$ is a solution. The difference of two solutions solves the problem with
+zero datum, so the solutions form the affine space $u_0+V$, where $V$ is the linear space
+of the functions in $C^\infty(\overline D)$ that are harmonic in $D$ and vanish on
+$\{x=\pi\}$. $V$ contains $(x-\pi)\,\mathrm{Re}\,(y+\mathrm{i}z)^j$ for $j=0,1,2,\dots$;
+these are linearly independent, being non-zero polynomials of distinct degrees, so $V$ has
+infinite dimension.
+(c) This is (b) with $h\equiv A$: at $(0,\pi/2,\pi/2)$, $u_0=0$ because $\cos(\pi/2)=0$,
+and $A(x-\pi)=-A\pi$.
+(d) $\lap u_N=(2-1-1)\,u_N=0$ and $u_N(\pi,y,z)=\sin y\cos z$; $u_N$ contains the factors
+$\sinh(\sqrt2\,x)$ and $\sin y$, which vanish at $x=0$ and at $y\in\{0,\pi\}$, and
+$\partial_zu_N$ contains the factor $\sin z$, which vanishes at $z\in\{0,\pi\}$. Finally
+$u_N\ne u_0$, since $u_0(0,y,z)=\cosh(\sqrt2\,\pi)\sin y\cos z\not\equiv0=u_N(0,y,z)$.
+\end{proof}

@@ -1,0 +1,223 @@
+% =====================================================================================
+% statements.tex -- the exact wording of every proposition of the article.
+%
+% A proposition is stated in one section and proved in Supplementary Section S7 (sections/S7_proofs.tex).
+% So that statement and proof cannot drift apart, the text of each statement is kept here,
+% once, as a macro.  The stating section writes
+%     \begin{proposition}[<title>]\label{<label>}\StmtXxx\end{proposition}
+% and Section S7 proves exactly that text, referring to the proposition by \ref.
+%
+%   macro            fixed label                      stated in      title
+%   \StmtExact       s2_problems:prop:exact           s2_problems    Exact solutions
+%   \StmtUnique      s2_problems:prop:unique          s2_problems    Uniqueness
+%   \StmtFloors      s2_problems:prop:floors          s2_problems    Trivial-predictor floors
+%   \StmtRobin       s3_methods:prop:robin            s3_methods     Penalised Ritz energy: Robin problem and penalty bias
+%   \StmtNonunique   s7_pitfalls:prop:nonunique       s7_pitfalls    A Laplace problem with data on one face only
+%   \StmtNotWave     s7_pitfalls:prop:notwave         s7_pitfalls    A decaying mode is not a wave solution
+%   \StmtKappa       s6_highdim:thm:kappa             s6_highdim     The harmonic-extension constant of the unit cube
+%   \StmtSteklov     s6_highdim:prop:steklov          s6_highdim     Biharmonic Steklov eigenvalue
+%   \StmtCertificate s6_highdim:cor:bound             s6_highdim     (corollary) harmonic part, penalty bias, computable bound
+%
+% The statements use: problem names (macros.tex), Table s2_problems:tab:problems and
+% equation s2_problems:eq:lap3d-exact (the series solution of Lap3), both defined in
+% sections/s2_problems.tex, and equation s3_methods:eq:ritz (the penalised Ritz energy) of sections/s3_methods.tex.
+% The three statements of Section 6.7 use the definition s6_highdim:eq:kappa of kappa_d and the PINN loss
+% s3_methods:eq:pinn; the Lemma, Propositions and Theorem stated and proved inside Section S7 are written there.
+% =====================================================================================
+
+% ---------------------------------------------------------------- exact solutions ----
+\newcommand{\StmtExact}{%
+\begin{enumerate}
+\item[(a)] For each of the problems \PH, \PWone, \PWtwo, \PLtwo, \PLthreeS, \Pone\ and \Ptwo\ of
+Table~\ref{s2_problems:tab:problems}, the function $\uex$ listed there is infinitely
+differentiable on the closed domain, satisfies the differential equation at every point,
+and satisfies every initial and boundary condition pointwise.
+\item[(b)] For \PLthree, let $k_n=\sqrt{1+n^2}$ and $b_n=4n/\bigl(\pi(n^2-1)\bigr)$ for even
+$n\ge 2$. The series~\eqref{s2_problems:eq:lap3d-exact},
+\[
+\uex(x,y,z)=\sin y\sum_{n\ \mathrm{even}} b_n\,\sin(nz)\,
+\frac{\sinh(k_n x)}{\sinh(k_n\pi)},
+\]
+converges, together with all its term-by-term derivatives, uniformly on
+$[0,\pi-\delta]\times[0,\pi]^2$ for every $\delta\in(0,\pi)$. Its sum is harmonic in
+$(0,\pi)^3$, belongs to $C^\infty\bigl([0,\pi)\times[0,\pi]^2\bigr)$, vanishes on the five
+faces $\{x=0\}$, $\{y=0\}$, $\{y=\pi\}$, $\{z=0\}$, $\{z=\pi\}$, and attains the datum on
+the sixth face in the mean-square sense,
+\[
+\lim_{x\to\pi^-}\int_0^\pi\!\!\int_0^\pi\bigl(\uex(x,y,z)-\sin y\cos z\bigr)^2\,\dd y\,\dd z=0 .
+\]
+The Dirichlet data of \PLthree\ are discontinuous along the two edges
+$\{x=\pi,\ z=0\}$ and $\{x=\pi,\ z=\pi\}$, and $\uex$ has infinite Dirichlet energy,
+$\int_{(0,\pi)^3}\abs{\grad\uex}^2\,\dd\x=\infty$.
+\end{enumerate}}
+
+% --------------------------------------------------------------------- uniqueness ----
+\newcommand{\StmtUnique}{%
+\begin{enumerate}
+\item[(a)] Each of the problems \PH, \PWone, \PWtwo, \PLtwo, \PLthreeS, \Pone\ and \Ptwo\ has at
+most one solution that is twice continuously differentiable on the closed domain (the
+closed space--time cylinder for \PH, \PWone\ and \PWtwo). Hence the function $\uex$ of
+Table~\ref{s2_problems:tab:problems} is the unique such solution.
+\item[(b)] Problem \PLthree\ has at most one solution $u$ with the following three properties:
+$u\in C^2\bigl([0,\pi)\times[0,\pi]^2\bigr)$ and $\lap u=0$ in $(0,\pi)^3$; $u=0$ on the five
+faces $\{x=0\}$, $\{y=0\}$, $\{y=\pi\}$, $\{z=0\}$, $\{z=\pi\}$ (for $x<\pi$); and
+$u(x,\cdot,\cdot)\to\sin y\cos z$ in $L^2\bigl((0,\pi)^2\bigr)$ as $x\to\pi^-$. The
+series~\eqref{s2_problems:eq:lap3d-exact} is this solution.
+\end{enumerate}}
+
+% ------------------------------------------------------------------------ floors -----
+\newcommand{\StmtFloors}{%
+Let $\Om=(0,1)^d$ with $d\ge 2$, let $m=\lfloor d/2\rfloor$, and let $\norm{\cdot}$ be the
+norm of $L^2(\Om)$. Write $\mathcal{P}_0$ for the constant functions and $\mathcal{P}_1$ for
+the affine functions $\x\mapsto a_0+\sum_{i=1}^d a_i x_i$.
+\begin{enumerate}
+\item[(a)] For \Pone, $\uex=\sum_{k=1}^{m}x_{2k-1}x_{2k}$, one has
+$\norm{\uex}^2=(9m^2+7m)/144$ and
+\[
+\min_{c\in\mathcal{P}_0}\frac{\norm{\uex-c}}{\norm{\uex}}=\sqrt{\frac{7}{7+9m}},\qquad
+\min_{a\in\mathcal{P}_1}\frac{\norm{\uex-a}}{\norm{\uex}}=\sqrt{\frac{1}{7+9m}} .
+\]
+\item[(b)] For \Ptwo, $\uex=d^{-1/2}\sum_{i=1}^{d}\cos(\pi x_i)$, one has
+$\norm{\uex}^2=\tfrac12$ for every $d$ and
+\[
+\min_{c\in\mathcal{P}_0}\frac{\norm{\uex-c}}{\norm{\uex}}=1,\qquad
+\min_{a\in\mathcal{P}_1}\frac{\norm{\uex-a}}{\norm{\uex}}=\sqrt{1-\frac{96}{\pi^4}}\approx 0.1203,
+\]
+independently of $d$.
+\end{enumerate}}
+
+% ------------------------------------------------------------------------- Robin -----
+\newcommand{\StmtRobin}{%
+Let $\Om=(0,1)^d$, $f\in L^2(\Om)$, $g\in L^2(\dOm)$ and $\bet>0$, and let $\Eritz$ be the
+penalised Ritz energy~\eqref{s3_methods:eq:ritz}, defined for $v\in H^1(\Om)$.
+\begin{enumerate}
+\item[(a)] $\Eritz$ has a unique minimiser $\ubeta\in H^1(\Om)$. It is characterised by
+\[
+\int_{\Om}\grad\ubeta\cdot\grad\varphi\,\dd\x+2\bet\int_{\dOm}(\ubeta-g)\,\varphi\,\dd s
+=\int_{\Om}f\varphi\,\dd\x\qquad\text{for all }\varphi\in H^1(\Om),
+\]
+which is the weak form of the Robin problem
+$-\lap u=f$ in $\Om$, $\ \dn u+2\bet\,(u-g)=0$ on $\dOm$.
+\item[(b)] Assume that the Dirichlet problem $-\lap u=f$ in $\Om$, $u=g$ on $\dOm$ has a
+solution $\uex\in C^2(\overline{\Om})$, and put $w=\ubeta-\uex$. Then
+\[
+\norm{\grad w}_{L^2(\Om)}^2+2\bet\,\norm{w}_{L^2(\dOm)}^2
+=-\int_{\dOm}(\dn\uex)\,w\,\dd s ,
+\]
+and consequently
+\[
+\norm{w}_{L^2(\dOm)}\le\frac{\norm{\dn\uex}_{L^2(\dOm)}}{2\bet},\qquad
+\norm{\grad w}_{L^2(\Om)}^2\le\frac{\norm{\dn\uex}_{L^2(\dOm)}^2}{8\bet}.
+\]
+\item[(c)] Under the assumption of (b),
+\[
+\norm{\ubeta-\uex}_{L^2(\Om)}\le\frac{C_d\,\norm{\dn\uex}_{L^2(\dOm)}}{\bet}
+\qquad\text{for all }\bet>0,\qquad\text{with}\quad
+C_d=\sqrt{1+\frac{1}{d\pi^2}}\le 1.05 .
+\]
+\item[(d)] Under the assumption of (b), $\ubeta=\uex$ for one (equivalently, for every)
+$\bet>0$ if and only if $\dn\uex=0$ on $\dOm$.
+\end{enumerate}
+For \Pone\ one has $\norm{\dn\uex}_{L^2(\dOm)}^2=4m/3$ with $m=\lfloor d/2\rfloor$, so the
+penalised minimiser is biased for every finite $\bet$; for \Ptwo\ one has $\dn\uex=0$, so
+$\ubeta=\uex$ for every $\bet>0$.}
+
+% ----------------------------------------------------------------- non-uniqueness ----
+\newcommand{\StmtNonunique}{%
+Let $D=(0,\pi)^3$. The boundary-value problem
+\[
+\lap u=0\ \text{ in }D,\qquad u(\pi,y,z)=\sin y\cos z\ \text{ for }(y,z)\in[0,\pi]^2,
+\]
+with no condition on the other five faces, has infinitely many solutions in
+$C^\infty(\overline{D})$. Precisely:
+\begin{enumerate}
+\item[(a)] $u_0(x,y,z)=\cosh\bigl(\sqrt2\,(x-\pi)\bigr)\sin y\cos z$ is a solution;
+\item[(b)] if $u$ is a solution and $h$ is a harmonic polynomial in the two variables $(y,z)$,
+then $u+(x-\pi)\,h(y,z)$ is a solution; the solutions therefore form an affine space of
+infinite dimension;
+\item[(c)] for every $A\in\R$ the solution $u_0+A\,(x-\pi)$ takes the value $-A\pi$ at the
+centre $(0,\pi/2,\pi/2)$ of the face $\{x=0\}$, so solutions exist whose values on the
+unconstrained faces are arbitrarily large;
+\item[(d)] the function $u_N(x,y,z)=\sin y\cos z\,\sinh(\sqrt2\,x)/\sinh(\sqrt2\,\pi)$, which
+vanishes on $\{x=0\}$, $\{y=0\}$, $\{y=\pi\}$ and has zero normal derivative on $\{z=0\}$
+and $\{z=\pi\}$, is another solution, different from $u_0$.
+\end{enumerate}}
+
+% ------------------------------------------------------------- not a wave solution ---
+\newcommand{\StmtNotWave}{%
+Let $\Om=(-1,1)^2$, $S(x,y)=\sin(\pi x)\sin(\pi y)$ and $\omega=\sqrt2\,\pi$.
+\begin{enumerate}
+\item[(a)] The function $v(t,x,y)=\ee^{-t}S(x,y)$ satisfies $v_{tt}-\lap v=(1+2\pi^2)\,\ee^{-t}S$,
+which vanishes nowhere in $(0,\infty)\times\{S\neq 0\}$; $v$ is not a solution of the wave
+equation $u_{tt}=\lap u$.
+\item[(b)] The unique solution of \PWtwo\ is $\uex=\cos(\omega t)\,S$, and the relative distance
+between $v$ and $\uex$ in $L^2\bigl((0,1)\times\Om\bigr)$ is
+\[
+\frac{\norm{v-\uex}}{\norm{\uex}}
+=\Biggl(\frac{\int_0^1(\ee^{-t}-\cos\omega t)^2\,\dd t}{\int_0^1\cos^2\omega t\,\dd t}\Biggr)^{1/2}
+\approx 1.380 .
+\]
+\end{enumerate}}
+
+% ------------------------------------------------- remark: PINN loss is consistent ---
+% (a remark, not a proposition; stated in s3_methods with label s3_methods:rem:consistent)
+\newcommand{\StmtConsistent}{%
+In contrast, consider the population PINN loss, the limit of the
+loss~\eqref{s3_methods:eq:pinn} with one boundary block as the numbers of points grow.
+Because every term of~\eqref{s3_methods:eq:pinn} is a mean, and $\abs{\Om}=1$ and
+$\abs{\dOm}=2d$ for the unit cube, it is
+\[
+\Lpop_{\lam}(v)=\norm{\lap v+f}_{L^2(\Om)}^2+\frac{\lam}{\abs{\dOm}}\,\norm{v-g}_{L^2(\dOm)}^2 .
+\]
+For a function $v\in C^2(\overline{\Om})$ it vanishes if and only if $v$ solves the Dirichlet
+problem, for every $\lam>0$: the exact solution is a global minimiser whatever the weight.
+The weight $\lam$ changes the conditioning of the optimisation problem but not its
+solution over $C^2(\overline{\Om})$, or over any class of functions that contains $\uex$,
+whereas $\bet$ changes the solution of the penalised Ritz problem itself. Over a class that
+does not contain $\uex$, such as a network of fixed size, the minimiser of $\Lpop_{\lam}$
+does in general depend on $\lam$, because the residual and the boundary misfit are traded
+against each other.
+The two weights are also normalised differently: $\lam$ multiplies a mean over the
+boundary and $\bet$ an integral over it, so that one boundary sample carries the weight
+$\lam/\Nb$ in~\eqref{s3_methods:eq:pinn} and $2d\,\bet/\Nb$
+in~\eqref{s3_methods:eq:ritz-mc}. At fixed $(\lam,\bet)$ the boundary weight of Deep Ritz
+relative to that of the PINN therefore grows like $2d$.}
+
+% ------------------------------------------------- harmonic-extension constant (Section 6.7) ---
+\newcommand{\StmtKappa}{%
+Let $\kappa_d$ be defined by~\eqref{s6_highdim:eq:kappa}. For $d\ge1$,
+\[
+\max\Bigl\{L_d,\frac1{2d}\Bigr\}\le\kappa_d^2\le U_d,
+\]
+where
+\[
+U_d=\frac{\tanh\bigl(\pi\sqrt{d-1}/2\bigr)}{\pi\sqrt{d-1}}\ \ (d\ge2),\quad U_1=\tfrac12,\qquad
+L_d=\frac4{\pi^2}\sum_{j\ \mathrm{odd}}\frac{j^2}{(j^2+d-1)^2}.
+\]
+Moreover $\kappa_1^2=\frac12$, and $U_d<\frac12$ for $d\ge2$. As $d\to\infty$, $\sqrt d\,U_d\to1/\pi$ and
+$\sqrt d\,L_d\to1/(2\pi)$, so $\kappa_d^2$ is of exact order $d^{-1/2}$.}
+
+\newcommand{\StmtSteklov}{%
+Let $\Om=(0,1)^d$ and
+$\delta_1=\inf\{\norm{\lap u}^2/\nbd{\dn u}^2:\ u\in H^2(\Om)\cap H^1_0(\Om),\ \dn u\ne0\}$, the
+variational form of the first eigenvalue of the biharmonic Steklov problem $\lap^2u=0$ in $\Om$, $u=0$ and
+$\lap u=\delta_1\dn u$ on $\dOm$~\citep[(2.2)]{bucur2011first}. Then $\kappa_d^2=1/\delta_1$; hence
+$1/U_d\le\delta_1\le\min\{1/L_d,2d\}$.}
+
+\newcommand{\StmtCertificate}{%
+Let $\Om=(0,1)^d$ and let $\uex\in C^2(\overline\Om)$ solve $-\lap\uex=f$ in $\Om$, $\uex=g$ on $\dOm$.
+\begin{enumerate}
+\item[(a)] Every $w\in H^1(\Om)$ with $\int_\Om\grad w\cdot\grad\varphi\,\dd\x=0$ for all
+$\varphi\in H^1_0(\Om)$ satisfies $\norm{w}\le\kappa_d\nbd{w}\le\sqrt{U_d}\,\nbd{w}$.
+\item[(b)] The minimiser $\ubeta$ of the penalised Ritz energy~\eqref{s3_methods:eq:ritz} satisfies
+$\norm{\ubeta-\uex}\le\sqrt{U_d}\,\nbd{\dn\uex}/(2\bet)$ for every $\bet>0$.
+\item[(c)] For every $v\in C^2(\overline\Om)$, in particular every network with $\tanh$ activations,
+\begin{align*}
+\norm{v-\uex}&\le\underbrace{\frac{\norm{\lap v+f}}{d\pi^2}}_{B_{\mathrm{int}}}
++\underbrace{\sqrt{U_d}\,\nbd{v-g}}_{B_{\mathrm{bd}}}
+=\frac{\sqrt{\Lpop_{\mathrm{int}}(v)}}{d\pi^2}+\sqrt{2dU_d}\,\sqrt{\Lpop_{\mathrm{bd}}(v)},
+\end{align*}
+where $\Lpop_{\mathrm{int}}(v)=\norm{\lap v+f}^2$ and $\Lpop_{\mathrm{bd}}(v)=\nbd{v-g}^2/\abs{\dOm}$ are the
+mean squared interior residual and the mean squared boundary misfit over the uniform measures, the two
+terms of the population PINN loss $\Lpop_1$ of Remark~\ref{s3_methods:rem:consistent}.
+\end{enumerate}}

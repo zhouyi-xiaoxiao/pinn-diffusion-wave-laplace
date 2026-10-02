@@ -1,0 +1,200 @@
+% =====================================================================================
+% sections/S3_lowdim.tex -- Supplementary Section S3: further results of the low-dimensional
+% benchmark (Section 4).  Figures: code/s4_lowdim_figs.py, code/s4_lowdim_timeslices.py.
+% The rows of Table s4_lowdim:tab:budget are written by code/s4_lowdim_tables.py.
+% All `% src:` paths are relative to the root of the repository.
+% =====================================================================================
+\section{Low-dimensional benchmark: further results}\label{S3:sec}
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{s4_lowdim_samplers.pdf}
+\caption{Held-out relative $L^2$ error $\errL$ of every benchmark run, by problem and
+collocation strategy, for the arms \Adam\ (blue circles, 3000 iterations) and \AdamLBFGS\
+(orange squares, 1500 + 1500 iterations). Small dots: one seed each. Large markers with
+bars: geometric mean over seeds and one geometric standard deviation either side.
+``grid (cell-centred)'' is \strat{grid-c}. The evaluation sets are those of
+Table~\ref{s2_problems:tab:problems}; the vertical scales differ between panels.}
+\label{s4_lowdim:fig:samplers}
+\end{figure}
+% src: research_benchmark/results/runs/*_s*-*.json -> code/s4_lowdim_figs.py samplers
+
+\subsection{Optimiser}\label{S3:sec:optimiser}
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{s4_lowdim_curves.pdf}
+\caption{Relative $L^2$ error during training for the arms \Adam\ (blue) and \AdamLBFGS\
+(orange), measured every 100 \Adam\ iterations and every 50 \LBFGS\ iterations on a fixed
+random subset of 4096 points of the held-out evaluation set. Line: median over all
+strategies and seeds (50 runs per arm for \PH\ and \PLtwo, 25 for \PWone, \PWtwo\ and
+\PLthree); dark band: inter-quartile range; light band: minimum to maximum. Dashed line:
+iteration 1500, where the \AdamLBFGS\ arm branches from the \Adam\ run.}
+\label{s4_lowdim:fig:curves}
+\end{figure}
+% src: research_benchmark/results/runs/*_s*-*.json (curve.test_rel_l2) -> code/s4_lowdim_figs.py curves; research_benchmark/pinnbench/problems.py (test_subset, n = 4096); research_benchmark/pinnbench/core.py (log_every = 100, callback_every = 50)
+
+% src: verify_research_benchmark/v_summary.out ("L-BFGS arm better than Adam arm in 39 of 40 of the re-check runs"; heat1d|grid|1: 1.303e-02 | 1.316e-02 against 1.582e-02 | 1.359e-02 in the benchmark)
+% src: data/s4_lowdim_numbers.json (optimiser.*.closest_pair_ratio_lbfgs_over_adam: heat1d 0.859, laplace2d 0.244, wave2d 0.314, laplace3d 0.547, wave1d 0.995)
+In \textsf{V-bench} the \AdamLBFGS\ arm is the better one in 39 of 40 pairs; the exception
+is \PH\ with \strat{grid-c} and seed~1 ($\sci{1.303}{-2}$ for \Adam\ against
+$\sci{1.316}{-2}$). The same network is the closest pair of the benchmark on \PH\
+($\sci{1.58}{-2}$ against $\sci{1.36}{-2}$, a ratio of 0.86) and, \PWone\ apart, where
+neither arm succeeds and the closest pair has the ratio 0.995, of the whole benchmark.
+% src: data/s4_lowdim_numbers.json (adam_fluctuation_max_over_min_it1500_3000), computed by code/s4_lowdim_tables.py from research_benchmark/results/runs/*_s*-*.json
+The logged \Adam\ errors of one run fluctuate by a median factor of 8.0 on \PH\ (largest factor
+41) and of 28 on \PLtwo\ (largest 246) between iterations 1500 and 3000
+(Figure~\ref{s4_lowdim:fig:curves}).
+
+% src: verify_research_benchmark/v_adam_decay.json; data/s4_lowdim_numbers.json (replication: adam_exponential_decay, adam_constant_lr_same_runs, adam_decay_over_constant_same_runs: heat 1.00, 0.85, 0.22; laplace2d 2.30, 4.39, 5.28)
+One alternative to the constant learning rate of the \Adam\ arm was tried, in
+\textsf{V-bench} with \strat{random} points and seeds 0 to 2: a rate that decays
+exponentially from $10^{-3}$ to $10^{-5}$ over the 3000 iterations. Compared with the
+constant-rate runs of the same code and seeds, it ended at $\sci{3.1}{-2}$, $\sci{2.3}{-2}$
+and $\sci{2.0}{-2}$ against $\sci{3.1}{-2}$, $\sci{2.7}{-2}$ and $\sci{9.3}{-2}$ on \PH, and
+at $\sci{1.7}{-2}$, $\sci{2.0}{-2}$ and $\sci{2.3}{-2}$ against $\sci{7.4}{-3}$,
+$\sci{4.6}{-3}$ and $\sci{4.4}{-3}$ on \PLtwo. On \PH\ this schedule ended at 1.00,
+0.85 and 0.22 times the constant-rate error, which is still more than ten times the
+error of the \AdamLBFGS\ arm; on \PLtwo\ it was 2.3 to 5.3 times worse. It did not close
+the gap; it is not a tuned \Adam\ baseline.
+
+\subsection{Collocation strategy}\label{S3:sec:strategy}
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{s4_lowdim_errmaps.pdf}
+\caption{Pointwise absolute error $\abs{\unet-\uex}$ on the $201\times201$ evaluation
+grid for seed~0 after \AdamLBFGS, with $\Nr=256$. Top row: \PH\ (time horizontal);
+bottom row: \PLtwo. Columns: \strat{grid-c}, \strat{random}, \strat{Sobol}, \strat{RAD}.
+Each row has one linear colour scale, in units of $10^{-3}$ and $10^{-4}$. The dashed
+line in the first panel is $t=1/32$, the first column of the cell-centred grid. One seed
+is shown; the statistics are in Tables~\ref{s4_lowdim:tab:strategy}
+and~\ref{s4_lowdim:tab:gridcontrol}.}
+\label{s4_lowdim:fig:errmaps}
+\end{figure}
+% src: research_benchmark/results/runs/heat1d_pred_seed0.npz, laplace2d_pred_seed0.npz -> code/s4_lowdim_figs.py errmaps
+
+% src: data/s4_lowdim_errmaps_info.json (computed by code/s4_lowdim_figs.py from research_benchmark/results/runs/heat1d_pred_seed0.npz)
+In the error field of seed~0 (Figure~\ref{s4_lowdim:fig:errmaps}) the largest error of
+\strat{grid-c} on \PH, $\sci{6.5}{-3}$, is at $t=0.025$.
+% src: data/s4_lowdim_gridcontrol.json (strategies.*.adam_lbfgs.share_sq_error_t_le_0.05)
+In the control experiment of Section~\ref{s4_lowdim:sec:strategy}, in 9 of 10 seeds between
+67 and 73 per cent of the squared error of \strat{grid-c} lies in $t\le0.05$, against a median
+of 25 per cent for \strat{random} (Table~\ref{s4_lowdim:tab:gridcontrol}).
+% src: data/s4_lowdim_gridcontrol.json (vs_random.adam_lbfgs: gridn per seed 1.16 1.50 5.33 1.05 1.25 0.52 5.96 0.94 7.21 3.65); verify_research_benchmark/v_summary.out ("cell-grid/random geo ratio 3.94 ... 0/6 p=0.031"; "node-grid/random 1.26 per-seed [1.08, 1.13, 5.2, 0.95, 1.27, 0.52] better 2/6 p=0.438"; "node-grid/cell-grid 0.32 ... 5/6 p=0.094"); verify_research_benchmark/v_runs.json; verify_research_benchmark/v_runs_extra.json
+The per-seed ratios of the node-centred grid \strat{grid-n} to \strat{random} in the control
+range from 0.52 to 7.2. In \textsf{V-bench}, with 6 seeds, \strat{grid-n} was 1.26 times
+\strat{random} (per-seed ratios 1.08, 1.13, 5.2, 0.95, 1.27 and 0.52; $p=0.44$) and 0.32
+times \strat{grid-c}, while the same code reproduced the penalty of \strat{grid-c}, 3.94
+times \strat{random} (worse in 6 of 6). It is not established that a grid with a column on
+the initial line loses all of the penalty. On \PLtwo\ the grid result concerns the
+cell-centred grid; \strat{grid-n} was not run there.
+
+% src: research_benchmark/pinnbench/samplers.py (RADSampler: period = 500, pool_factor = 8; for_lbfgs: one update); research_benchmark/pinnbench/core.py (run_batched: "it % rad_period == 0 and it < n_adam"; one update at the branch point)
+% src: refs.bib (wu2023, annote: arXiv:2207.10289, Sec. 3.3: "first trained using 15,000 steps of Adam and then 1,000 steps of L-BFGS ... resampled every 2,000 iterations (1,000 iterations using Adam followed by 1,000 iterations using L-BFGS)"; read 2026-10-01)
+\paragraph{The adaptive strategy.} In the \AdamLBFGS\ arm the set of \strat{RAD} is the
+\strat{Sobol} set for the first 500 iterations and is then redrawn four times only, from
+a pool of $8\Nr$ points: at iterations 500, 1000 and 1500 and once more before \LBFGS,
+the third set serving a single iteration. It is fixed during the 1500 \LBFGS\ iterations,
+in which most of the error is removed. \citet{wu2023}, in their Burgers example, first
+train for 16\,000 iterations and then redraw every 2000 iterations, half of which are
+\LBFGS\ iterations. On \PLthree, the one problem whose solution is not smooth and on which a
+residual-adaptive strategy would be expected to matter most, \strat{RAD} has the ratio 0.88
+to \strat{random}, better in 3 of 5 seeds.
+% src: research_benchmark/results/tables.md (T3)
+
+\paragraph{Sobol' points seed by seed.}
+% src: research_benchmark/results/tables.md (T3); verify_research_benchmark/v_stats.out (heat1d adam_lbfgs sobol per-seed ratios: 1.18, 1.12, 1.45, 1.25 above 1)
+The ratios of \strat{Sobol} to \strat{random} after \AdamLBFGS\ are 0.97, 0.54, 1.00, 0.99 and
+0.78 for \PH, \PLtwo, \PWone, \PWtwo\ and \PLthree; on \PH\ four of the ten per-seed ratios
+are above 1 (1.18, 1.12, 1.45 and 1.25), and on \PLthree\ \strat{Sobol} is better in 5 of 5
+seeds, which five seeds cannot make significant.
+
+% src: data/s4_lowdim_numbers.json (replication.lap2d_lbfgs_resample_over_random_3seeds: ratio 1.56, per seed 2.15, 1.90, 0.94), from verify_research_benchmark/v_runs.json
+\paragraph{Resampling after \LBFGS.} The three \textsf{V-bench} seeds on \PLtwo\ give the
+ratio 1.56 of \strat{resample} to \strat{random} after \AdamLBFGS\ (per seed 2.15, 1.90 and
+0.94; better in 1 of 3 seeds).
+
+\subsection{Point budget}\label{S3:sec:budget}
+
+\begin{table}[tbp]
+\centering
+\caption{Budget sweep on problem \PH, arm \AdamLBFGS, seeds 0 to 4: mean $\pm$
+sample standard deviation of $\errL$, and the ratio to \strat{random} with the same seed
+(geometric mean; in brackets the number of seeds in which the strategy is better and the
+exact two-sided Wilcoxon $p$-value, whose smallest attainable value is 0.0625). The row
+$\Nr=256$ is the benchmark, restricted to the same five seeds.}
+\label{s4_lowdim:tab:budget}
+% src: research_benchmark/results/budget_sweep.json; research_benchmark/results/tables.md (T6); paired ratios and p-values: data/s4_lowdim_numbers.json (budget), agreeing with verify_research_benchmark/v_json.out (budget sweep: grid/random 2.02, p=0.312; sobol/random 0.41, p=0.438)
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}rccccc@{}}
+\toprule
+ & \multicolumn{3}{c}{$\errL$, mean $\pm$ s.d.} & \multicolumn{2}{c}{ratio to \strat{random}} \\
+\cmidrule(lr){2-4}\cmidrule(l){5-6}
+$\Nr$ & \strat{grid-c} & \strat{random} & \strat{Sobol} & \strat{grid-c} & \strat{Sobol} \\
+\midrule
+%% BEGIN GENERATED s4_lowdim:tab:budget
+64 & $(7.21\pm3.09)\times10^{-2}$ & $(4.76\pm4.45)\times10^{-2}$ & $(1.64\pm1.27)\times10^{-2}$ & 2.02 (1/5; 0.312) & 0.41 (3/5; 0.438) \\
+256 & $(6.71\pm4.67)\times10^{-3}$ & $(1.45\pm0.34)\times10^{-3}$ & $(1.35\pm0.37)\times10^{-3}$ & 3.79 (0/5; 0.0625) & 0.93 (3/5; 0.438) \\
+1024 & $(1.23\pm0.45)\times10^{-3}$ & $(1.13\pm0.43)\times10^{-3}$ & $(1.15\pm0.41)\times10^{-3}$ & 1.11 (1/5; 0.438) & 1.02 (2/5; 0.812) \\
+%% END GENERATED s4_lowdim:tab:budget
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{s4_lowdim_budget.pdf}
+\caption{Budget sweep on problem \PH, arm \AdamLBFGS, seeds 0 to 4.
+(a)~Relative $L^2$ error $\errL$ against the number $\Nr$ of interior points for
+\strat{grid-c}, \strat{random} and \strat{Sobol}; dots: single seeds, lines: geometric
+means. (b)~Ratio of $\errL$ to that of \strat{random} with the same seed; lines: geometric
+mean of the ratios. Markers are displaced horizontally for legibility; the budgets are
+64, 256 and 1024.}
+\label{s4_lowdim:fig:budget}
+\end{figure}
+% src: research_benchmark/results/budget_sweep.json -> code/s4_lowdim_figs.py budget
+
+With 64 points neither paired difference is distinguishable from none
+(Table~\ref{s4_lowdim:tab:budget}).
+% src: verify_research_benchmark/v_summary.out ("heat N=1024: grid 0.0011, 0.00082; random 0.00129, 0.00081"); verify_research_benchmark/v_runs_budget.json
+\textsf{V-bench} confirms the agreement at 1024 points on two seeds (\strat{grid-c}
+$\sci{1.10}{-3}$ and $\sci{8.2}{-4}$; \strat{random} $\sci{1.29}{-3}$ and $\sci{8.1}{-4}$).
+We do not extend the conclusion of the sweep to the other problems or to larger budgets.
+
+\subsection{Error on time slices}\label{S3:sec:timeslice}
+
+% src: data/s4_lowdim_timeslices.json (summary); rows generated by code/s4_lowdim_timeslices.py merge -> data/s4_lowdim_timeslices_table.tex
+\begin{table}[tbp]
+\centering
+\caption{Problem \PH, $\Nr=256$, 10 seeds: relative $L^2$ error in per cent on the
+whole evaluation grid ($\errL$) and on single time slices ($\errT(t)$); geometric means
+over seeds, and the range over seeds at $t=1$. Figure~\ref{s4_lowdim:fig:timeslice} shows
+every run.}
+\label{s4_lowdim:tab:timeslice}
+\footnotesize
+\setlength{\tabcolsep}{4.5pt}
+\begin{tabular}{@{}llrrrrrrrr@{}}
+\toprule
+ & & & \multicolumn{6}{c}{$100\,\errT(t)$ at $t=$} & range at \\
+\cmidrule(lr){4-9}
+strategy & arm & $100\,\errL$ & 0 & 0.1 & 0.25 & 0.5 & 0.75 & 1 & $t=1$ \\
+\midrule
+%% BEGIN GENERATED s4_lowdim:tab:timeslice
+\strat{random} & \Adam & 1.58 & 0.572 & 1.09 & 3.82 & 24.9 & 420 & 5849 & 2360--52\,582 \\
+\strat{random} & \AdamLBFGS & 0.107 & 0.0436 & 0.0777 & 0.235 & 2.26 & 20.9 & 479 & 156--1241 \\
+\strat{Sobol} & \Adam & 2.06 & 0.625 & 1.50 & 5.36 & 41.2 & 536 & 7242 & 1965--107\,521 \\
+\strat{Sobol} & \AdamLBFGS & 0.116 & 0.0421 & 0.0886 & 0.349 & 3.49 & 32.6 & 567 & 198--1298 \\
+%% END GENERATED s4_lowdim:tab:timeslice
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+
+% src: data/s4_lowdim_timeslices.json (share_of_sq_error.t_le_0.25: medians 0.42 to 0.64 over the four cells, 0.08 to 0.91 over the 40 runs; runs[*].adam_lbfgs.lbfgs_iters)
+The error itself is not concentrated at early times: in these runs the time levels
+$t\le0.25$ carry 42 to 64 per cent of the squared error (medians of the four combinations of
+strategy and arm). Six of the 20 \LBFGS\ phases stopped on the tolerance of the PyTorch
+optimiser after 1365 to 1493 of their 1500 iterations.

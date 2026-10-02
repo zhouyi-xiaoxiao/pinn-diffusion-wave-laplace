@@ -1,0 +1,21 @@
+88 checkpoints; rel_l2 |recheck/study-1|: max 0.014 median 0.0043; H1: max 0.025
+  worst: sweep poisson pinn 5 100 study 1.3508e-02 recheck 1.3325e-02
+  worst: main poisson pinn 2 1 study 1.0910e-03 recheck 1.1037e-03
+  worst: main poisson pinn 5 1 study 8.7526e-03 recheck 8.6514e-03
+  worst: long laplace pinn 10 2 study 6.1295e-03 recheck 6.0597e-03
+  worst: main laplace ritz 10 1 study 1.7303e-02 recheck 1.7119e-02
+main cells on the re-check test set: mean (study mean) ; Ritz/PINN
+  laplace d=2: PINN 6.084e-03 (6.078e-03)  Ritz 1.877e-02 (1.882e-02)  ratio 3.09  PINN all below Ritz: True
+  laplace d=3: PINN 6.685e-03 (6.723e-03)  Ritz 1.423e-02 (1.421e-02)  ratio 2.13  PINN all below Ritz: True
+  laplace d=5: PINN 7.592e-03 (7.602e-03)  Ritz 1.114e-02 (1.113e-02)  ratio 1.47  PINN all below Ritz: True
+  laplace d=10: PINN 1.255e-02 (1.260e-02)  Ritz 1.881e-02 (1.896e-02)  ratio 1.50  PINN all below Ritz: True
+  laplace d=20: PINN 4.646e-02 (4.663e-02)  Ritz 4.605e-02 (4.613e-02)  ratio 0.99  PINN all below Ritz: False
+  poisson d=2: PINN 1.344e-03 (1.338e-03)  Ritz 5.725e-03 (5.740e-03)  ratio 4.26  PINN all below Ritz: True
+  poisson d=3: PINN 3.789e-03 (3.797e-03)  Ritz 1.427e-02 (1.426e-02)  ratio 3.77  PINN all below Ritz: True
+  poisson d=5: PINN 9.203e-03 (9.291e-03)  Ritz 1.502e-02 (1.509e-02)  ratio 1.63  PINN all below Ritz: True
+  poisson d=10: PINN 2.165e-02 (2.168e-02)  Ritz 7.505e-02 (7.488e-02)  ratio 3.47  PINN all below Ritz: True
+  poisson d=20: PINN 1.437e-01 (1.442e-01)  Ritz 1.269e-01 (1.263e-01)  ratio 0.88  PINN all below Ritz: False
+  long ('laplace', 'pinn', 16000) mean 5.826e-03 sd 2.63e-04 ['5.541e-03', '5.879e-03', '6.060e-03']
+  long ('laplace', 'ritz', 16000) mean 7.222e-03 sd 3.80e-04 ['6.790e-03', '7.374e-03', '7.503e-03']
+  equaltime ('laplace', 'ritz', 10000) mean 9.271e-03 sd 4.51e-04 ['8.861e-03', '9.198e-03', '9.754e-03']
+  equaltime ('poisson', 'ritz', 9000) mean 1.383e-02 sd 1.15e-03 ['1.508e-02', '1.358e-02', '1.282e-02']

@@ -1,0 +1,191 @@
+[
+ {
+  "d": 2,
+  "method": "ritz",
+  "cpu_ms_median": 7.412699999999984,
+  "cpu_ms_min": 6.341699999999939,
+  "cpu_ms_max": 7.972100000000014,
+  "wall_ms_median": 12.517720799951348,
+  "n_params": 8577
+ },
+ {
+  "d": 2,
+  "method": "pinn_forward",
+  "cpu_ms_median": 12.33329999999997,
+  "cpu_ms_min": 10.545999999999989,
+  "cpu_ms_max": 13.280400000000014,
+  "wall_ms_median": 18.848475000049802,
+  "n_params": 8577
+ },
+ {
+  "d": 2,
+  "method": "pinn_nested",
+  "cpu_ms_median": 13.613099999999978,
+  "cpu_ms_min": 12.495000000000012,
+  "cpu_ms_max": 14.845699999999962,
+  "wall_ms_median": 21.416162499917846,
+  "n_params": 8577
+ },
+ {
+  "d": 3,
+  "method": "ritz",
+  "cpu_ms_median": 8.04279999999995,
+  "cpu_ms_min": 7.815500000000064,
+  "cpu_ms_max": 8.365799999999979,
+  "wall_ms_median": 12.219058299979224,
+  "n_params": 8641
+ },
+ {
+  "d": 3,
+  "method": "pinn_forward",
+  "cpu_ms_median": 14.60939999999997,
+  "cpu_ms_min": 12.92029999999986,
+  "cpu_ms_max": 14.769599999999983,
+  "wall_ms_median": 20.87998749993858,
+  "n_params": 8641
+ },
+ {
+  "d": 3,
+  "method": "pinn_nested",
+  "cpu_ms_median": 17.351399999999906,
+  "cpu_ms_min": 16.080100000000108,
+  "cpu_ms_max": 19.428299999999954,
+  "wall_ms_median": 32.96897500003979,
+  "n_params": 8641
+ },
+ {
+  "d": 5,
+  "method": "ritz",
+  "cpu_ms_median": 7.174999999999976,
+  "cpu_ms_min": 6.433099999999925,
+  "cpu_ms_max": 8.153800000000011,
+  "wall_ms_median": 12.42267499992522,
+  "n_params": 8769
+ },
+ {
+  "d": 5,
+  "method": "pinn_forward",
+  "cpu_ms_median": 14.61199999999998,
+  "cpu_ms_min": 13.121100000000041,
+  "cpu_ms_max": 15.245999999999958,
+  "wall_ms_median": 35.02511249998861,
+  "n_params": 8769
+ },
+ {
+  "d": 5,
+  "method": "pinn_nested",
+  "cpu_ms_median": 21.920199999999923,
+  "cpu_ms_min": 20.667399999999958,
+  "cpu_ms_max": 23.626299999999922,
+  "wall_ms_median": 40.28029169994625,
+  "n_params": 8769
+ },
+ {
+  "d": 10,
+  "method": "ritz",
+  "cpu_ms_median": 8.191799999999994,
+  "cpu_ms_min": 5.304900000000146,
+  "cpu_ms_max": 9.325700000000126,
+  "wall_ms_median": 15.838404199985234,
+  "n_params": 9089
+ },
+ {
+  "d": 10,
+  "method": "pinn_forward",
+  "cpu_ms_median": 23.157899999999998,
+  "cpu_ms_min": 12.135999999999925,
+  "cpu_ms_max": 25.219900000000095,
+  "wall_ms_median": 36.74314580002829,
+  "n_params": 9089
+ },
+ {
+  "d": 10,
+  "method": "pinn_nested",
+  "cpu_ms_median": 42.199200000000125,
+  "cpu_ms_min": 24.183400000000077,
+  "cpu_ms_max": 44.078700000000026,
+  "wall_ms_median": 86.37834170003771,
+  "n_params": 9089
+ },
+ {
+  "d": 20,
+  "method": "ritz",
+  "cpu_ms_median": 4.612499999999997,
+  "cpu_ms_min": 3.9949999999997488,
+  "cpu_ms_max": 5.993999999999744,
+  "wall_ms_median": 4.65637079996668,
+  "n_params": 9729
+ },
+ {
+  "d": 20,
+  "method": "pinn_forward",
+  "cpu_ms_median": 14.478599999999986,
+  "cpu_ms_min": 13.509800000000283,
+  "cpu_ms_max": 18.039599999999822,
+  "wall_ms_median": 16.90243749999354,
+  "n_params": 9729
+ },
+ {
+  "d": 20,
+  "method": "pinn_nested",
+  "cpu_ms_median": 34.05909999999999,
+  "cpu_ms_min": 31.48130000000009,
+  "cpu_ms_max": 38.257999999999726,
+  "wall_ms_median": 41.697737499998766,
+  "n_params": 9729
+ },
+ {
+  "d": 50,
+  "method": "ritz",
+  "cpu_ms_median": 8.66139999999973,
+  "cpu_ms_min": 4.5348999999998085,
+  "cpu_ms_max": 10.334499999999736,
+  "wall_ms_median": 17.580295800053136,
+  "n_params": 11649
+ },
+ {
+  "d": 50,
+  "method": "pinn_forward",
+  "cpu_ms_median": 69.70569999999974,
+  "cpu_ms_min": 33.99269999999994,
+  "cpu_ms_max": 90.13519999999957,
+  "wall_ms_median": 134.20292909995624,
+  "n_params": 11649
+ },
+ {
+  "d": 50,
+  "method": "pinn_nested",
+  "cpu_ms_median": 189.8578999999998,
+  "cpu_ms_min": 85.46259999999997,
+  "cpu_ms_max": 221.09060000000014,
+  "wall_ms_median": 418.296329200075,
+  "n_params": 11649
+ },
+ {
+  "d": 100,
+  "method": "ritz",
+  "cpu_ms_median": 10.131699999999455,
+  "cpu_ms_min": 7.113700000000023,
+  "cpu_ms_max": 12.06110000000038,
+  "wall_ms_median": 21.637850000024628,
+  "n_params": 14849
+ },
+ {
+  "d": 100,
+  "method": "pinn_forward",
+  "cpu_ms_median": 162.3508000000001,
+  "cpu_ms_min": 108.29250000000029,
+  "cpu_ms_max": 209.05380000000096,
+  "wall_ms_median": 283.8837166999838,
+  "n_params": 14849
+ },
+ {
+  "d": 100,
+  "method": "pinn_nested",
+  "cpu_ms_median": 432.1343000000006,
+  "cpu_ms_min": 381.59790000000055,
+  "cpu_ms_max": 562.2755999999996,
+  "wall_ms_median": 926.9679625000208,
+  "n_params": 14849
+ }
+]

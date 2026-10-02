@@ -1,0 +1,6 @@
+('main', 'laplace', 'ritz', 10, 0, 100.0, 4000): stored rel_l2 1.911303401e-02  rerun 1.911303401e-02  reldiff 0.00e+00  cpu 22.5s (stored 14.0s) wall 165s
+('main', 'poisson', 'pinn', 2, 1, 1000.0, 4000): stored rel_l2 1.090991194e-03  rerun 1.090991194e-03  reldiff 0.00e+00  cpu 38.4s (stored 25.5s) wall 71s
+('main', 'poisson', 'ritz', 20, 2, 1.0, 4000): stored rel_l2 1.262874305e-01  rerun 1.262874305e-01  reldiff 0.00e+00  cpu 27.8s (stored 16.4s) wall 59s
+('main', 'laplace', 'pinn', 10, 0, 1000.0, 4000): stored rel_l2 1.337036211e-02  rerun 1.337036211e-02  reldiff 0.00e+00  cpu 52.7s (stored 35.5s) wall 102s
+('equaltime', 'poisson', 'ritz', 10, 1, 1.0, 9000): stored rel_l2 1.346853934e-02  rerun 1.346853934e-02  reldiff 0.00e+00  cpu 59.7s (stored 33.6s) wall 112s
+('main', 'poisson', 'ritz', 10, 2, 1.0, 4000): stored rel_l2 5.056827143e-02  rerun 5.056827143e-02  reldiff 0.00e+00  cpu 24.6s (stored 20.1s) wall 41s

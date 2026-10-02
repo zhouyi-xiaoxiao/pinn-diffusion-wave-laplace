@@ -1,0 +1,57 @@
+This repository contains two kinds of material under two licences.
+
+1. CODE -- MIT License
+   Applies to every source file: the script build_pdfs.sh at the root, and *.py and *.sh in code/,
+   research_benchmark/, research_highdim/, research_highdim_bound/, research_highdim_remedies/ (including
+   their src/, scripts/ and check/ folders), verify_research_benchmark/ and verify_research_highdim/.
+
+2. TEXT, FIGURES AND DATA -- Creative Commons Attribution 4.0 International (CC BY 4.0)
+   Applies to the article and its Supplementary Material (paper.pdf, supplement.pdf, main.tex,
+   supplement.tex, macros.tex, statements.tex, sections/, figures/, refs.bib),
+   to the documentation (*.md) and to every other file that is not a source file under 1, in particular the
+   result files (*.json, *.jsonl, *.csv, *.txt, *.out, *.log, *.npz, *.npy, *.png, *.pdf, *.tex) in the data,
+   results, inputs and check folders.
+
+No third-party code is redistributed in this repository.
+
+======================================================================================================
+1. MIT License
+======================================================================================================
+
+Copyright (c) 2026 Xiaoxiao Zhouyi
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+======================================================================================================
+2. Creative Commons Attribution 4.0 International (CC BY 4.0)
+======================================================================================================
+
+Copyright (c) 2026 Xiaoxiao Zhouyi
+
+The text, figures and data named above are licensed under the Creative Commons Attribution 4.0
+International License. You may copy and redistribute the material in any medium or format, and remix,
+transform and build upon it for any purpose, provided that you give appropriate credit, provide a link to
+the licence, and indicate if changes were made.
+
+Full licence text: https://creativecommons.org/licenses/by/4.0/legalcode
+Summary:           https://creativecommons.org/licenses/by/4.0/
+
+Suggested credit: Xiaoxiao Zhouyi, "Physics-informed neural networks and the Deep Ritz method for
+diffusion, wave and Laplace problems: a reproducible benchmark and its failure modes" (2026),
+https://github.com/zhouyi-xiaoxiao/pinn-diffusion-wave-laplace

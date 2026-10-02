@@ -1,0 +1,564 @@
+% =====================================================================================
+% sections/s6_highdim.tex -- Dimension scaling: PINN versus Deep Ritz for d = 2 to 20.
+%
+% Every number below is recomputed from the stored per-run records by
+%   code/s6_highdim_tables.py  -> data/s6_highdim_numbers.json, data/s6_highdim_tables.tex
+% Figures: code/s6_highdim_figs.py (plot-only).
+% 16 000 iterations at d = 20: code/s6_highdim_long_d20.py -> data/s6_highdim_long_d20.jsonl.
+% Diagnostics of the d = 20 networks: code/s6_highdim_diag.py -> data/s6_highdim_diag_d20.json.
+% Sections 6.7 and 6.8: code/s6_highdim_bound.py and code/s6_highdim_remedies.py
+%   -> data/s6_highdim_bound_{numbers.json,tables.tex}, data/s6_highdim_remedies_{recheck.json,tables.tex},
+%   figures/s6_bound.pdf, figures/s6_remedies_{ratios,altridge}.pdf, from the result files of
+%   research_highdim_bound/ and research_highdim_remedies/ (no training).
+% Table rows between GENERATED markers are written by these scripts (code/inject.py finds the
+% marker in any section file).  Further results, tables and figures: sections/S5_highdim.tex.
+% =====================================================================================
+\section{Dimension scaling: PINN versus Deep Ritz for \texorpdfstring{$d=2$}{d = 2} to 20}%
+\label{s6_highdim:sec}
+
+Neural solvers are usually motivated by problems in many dimensions, where a mesh is out
+of reach~\citep{eyu2018,sirignano2018,han2018}. This section measures how the accuracy and
+the cost of the PINN and of the Deep Ritz method change with the dimension, on the Laplace
+problem \Pone~\eqref{s2_problems:eq:p1} and the Poisson problem \Ptwo~\eqref{s2_problems:eq:p2}
+for $d=2,3,5,10,20$, with the protocol of Section~\ref{s3_methods:sec:highdim}: one network
+($d$--64--64--64--1, tanh), 1024 interior and 1024 boundary points redrawn at every
+iteration, \Adam\ with two learning-rate reductions, 4000 iterations unless stated,
+$\lam=1000$ for the PINN, $\bet=100$ (\Pone) and $\bet=1$ (\Ptwo) for Deep Ritz, and the
+error of the final network on 50\,000 held-out points. Each cell has three seeds (0, 1, 2).
+% src: research_highdim/scripts/hd_core.py (train: torch.manual_seed(seed), generator 1000+seed for both methods)
+Within a seed the two methods start from the same weights and see the same points, so the
+comparison is paired. One fact frames the results: \Ptwo\ has $\dn\uex=0$ and is the best
+case for the penalised energy, which is then unbiased, whereas \Pone\ is the generic,
+biased case (Proposition~\ref{s3_methods:prop:robin}); the PINN loss has no such bias
+(Remark~\ref{s3_methods:rem:consistent}). Sections~\ref{s6_highdim:sec:equal-its}
+to~\ref{s6_highdim:sec:weights} report the comparison. Section~\ref{s6_highdim:sec:bound} then
+proves an explicit stability constant for the unit cube, which turns the two terms of the PINN
+loss into a computable bound on the error of any network, and Section~\ref{s6_highdim:sec:remedies}
+tests two cheap remedies for the plateau that both methods reach on \Ptwo\ at $d=20$.
+
+% -------------------------------------------------------------------------------------
+\subsection{Accuracy at equal iterations}\label{s6_highdim:sec:equal-its}
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=0.8\textwidth]{s6_highdim_error.pdf}
+\caption{Held-out errors against the dimension for \Pone\ (left) and \Ptwo\ (right):
+relative $L^2$ error $\errL$ (top) and relative $H^1$-seminorm error $\errH$ (bottom) on
+50\,000 test points. Filled symbols joined by lines: mean over seeds 0--2 after 4000
+iterations (the values of Tables~\ref{s6_highdim:tab:p1} and~\ref{s6_highdim:tab:p2});
+small dots: the individual seeds. Open symbols: the same after 16\,000 iterations, run for
+\Pone\ at $d=10$ and for both problems at $d=20$. Dashed line: $\errL$ of the best affine
+approximation of $\uex$ (Proposition~\ref{s2_problems:prop:floors}). PINN in orange
+(squares), Deep Ritz in blue (circles); the two methods are offset horizontally for
+legibility.}
+\label{s6_highdim:fig:error}
+% src: research_highdim/results/runs*.jsonl; data/s6_highdim_long_d20.jsonl; data/closed_forms.json; script code/s6_highdim_figs.py
+\end{figure}
+
+% src: research_highdim/results/summary.csv; research_highdim/results/derived.txt (ratios, range overlap; boundary vs interior)
+For every $d\le10$ the PINN is the more accurate method on both problems
+(Tables~\ref{s6_highdim:tab:p1} and~\ref{s6_highdim:tab:p2},
+Figure~\ref{s6_highdim:fig:error}): the ratio of the mean errors lies between 1.46 and 4.29,
+and in each of the eight cells the three PINN seeds are below the three Deep Ritz seeds. The
+$H^1$-seminorm errors are ordered in the same way. At $d=20$ the two methods are level on
+\Pone\ (ratio 0.99, overlapping ranges) and Deep Ritz is 12 per cent lower on \Ptwo. In every
+cell the relative $L^2$ error on 20\,000 held-out boundary points is between 0.65 and 2.11
+times the interior error.
+% src: verify_research_highdim/results/v_summary.txt (rows 'main'); data/s6_highdim_numbers.json (vdim_main, vdim_P1_d20_ritz_sd_5_seeds = 4.06e-3)
+The verification code \textsf{V-dim} confirms the ordering: at $d=2$ and $d=10$, on both
+problems, each of its PINN seeds is below each of its Deep Ritz seeds
+(Table~\ref{s6_highdim:tab:vdim}). It also shows that three seeds understate the spread (on
+\Pone\ at $d=20$ its five Deep Ritz seeds have a standard deviation of $\sci{4.1}{-3}$ against
+$\sci{1.8}{-3}$ for our three), so we rely only on differences that hold for every seed.
+
+% -------------------------------------------------------------------------------------
+\subsection{Growth with the dimension, and trivial-predictor floors}\label{s6_highdim:sec:growth}
+
+% src: research_highdim/results/derived.txt (log-log slopes of the geometric-mean error); recomputed in data/s6_highdim_numbers.json (slopes_geomean); research_highdim/results/summary.csv (laplace, ritz: rel_l2_mean 1.8821e-2, 1.4214e-2, 1.1126e-2, 1.8964e-2 at d = 2, 3, 5, 10)
+At this fixed budget the error grows with $d$ for both methods, except Deep Ritz on \Pone\ for
+$d\le10$, where it is not monotone ($\sci{1.88}{-2}$, $\sci{1.42}{-2}$, $\sci{1.11}{-2}$ and
+$\sci{1.90}{-2}$ at $d=2$, 3, 5 and 10). A least-squares line through
+the logarithm of the geometric-mean error against $\log d$ over $d=2,\dots,10$ has slope 0.48
+(PINN) and 0.01 (Deep Ritz) on \Pone, and 1.71 and 1.46 on \Ptwo; with $d=20$ included the
+slopes are 0.86, 0.41, 1.92 and 1.35. These numbers describe one budget and four or five
+dimensions. They are not rates: Section~\ref{s6_highdim:sec:budget} shows that they change
+with the budget.
+% src: data/closed_forms.json (floors); research_highdim/results/summary.csv (rel_l2_centered_mean)
+Relative errors must be read against the floors of Proposition~\ref{s2_problems:prop:floors}.
+The solution of \Pone\ concentrates around its mean as $d$ grows, so both floors fall with $d$
+and plain $\errL$ flatters \Pone\ in high dimension: the centred error of the PINN rises from
+$\sci{9.2}{-3}$ at $d=2$ to $\sci{3.4}{-2}$ at $d=10$ and $\sci{1.73}{-1}$ at $d=20$, so the
+``4.7 per cent'' of Table~\ref{s6_highdim:tab:p1} at $d=20$ is 17 per cent of the fluctuation
+of $\uex$. For \Ptwo\ the affine floor is $0.1203$ in every dimension, and at $d=20$ both
+methods end above it ($0.144$ and $0.126$): after 4000 iterations neither improves on the
+best affine function.
+
+% -------------------------------------------------------------------------------------
+\subsection{The networks at \texorpdfstring{$d=20$}{d = 20}, and the effect of the budget}%
+\label{s6_highdim:sec:budget}
+
+% src: verify_research_highdim/results/v_affine.txt; verify_research_highdim/results/v_resid.txt (the 4000-iteration networks, three seeds each); data/s6_highdim_diag_d20.json (re-computation on other points: 0.18-0.20, 0.90; 0.82-0.83, 0.13-0.16, 0.35-0.36)
+The two methods are above the affine floor on \Ptwo\ at $d=20$ for different reasons. Split a
+function into its least-squares affine fit and a remainder. For the Deep Ritz networks the
+remainder has 0.18 to 0.20 times the norm of the remainder of $\uex$, and the residual
+$\norm{\lap\unet+f}/\norm{f}$ is 0.90: these networks are still essentially affine. The PINN
+networks are not. Their residual is 0.35 to 0.37, and their remainder has 0.83 to 0.84 times
+the right norm, but its correlation with the remainder of $\uex$ is only 0.14 to 0.16: the
+PINN has built curvature of the right size and the wrong shape. The following elementary
+bound says where its error sits.
+
+\begin{remark}\label{s6_highdim:rem:split}
+Let $v\in C^2(\overline{\Om})$, $\Om=(0,1)^d$, $e=v-\uex$ and $r=\lap v+f=\lap e$. Let
+$e_0\in H^1_0(\Om)$ be the weak solution of $\lap e_0=r$; then $e-e_0$ is harmonic and has
+the boundary values of $e$. Expanding $e_0$ and $r$ in the orthonormal Dirichlet
+eigenfunctions $\prod_{i}\sqrt2\sin(k_i\pi x_i)$ of $-\lap$, whose eigenvalues
+$\pi^2\sum_i k_i^2$ are at least $d\pi^2$, gives
+$\norm{e_0}_{L^2(\Om)}\le\norm{r}_{L^2(\Om)}/(d\pi^2)$. For \Ptwo, where
+$\norm{f}=\pi^2\norm{\uex}$, this reads
+$\norm{e_0}/\norm{\uex}\le d^{-1}\norm{\lap v+f}/\norm{f}$.
+\end{remark}
+
+\noindent
+% src: data/s6_highdim_numbers.json (e0_bound_P2_d20); research_highdim/results/summary.csv (bd_rel_l2_mean at d = 20: 0.158, 0.133)
+With the measured residuals, the part of the error that the interior residual accounts for is
+at most $0.37/20<0.02$ of $\norm{\uex}$ for the PINN and $0.90/20=0.045$ for Deep Ritz, out of
+total errors of $0.144$ and $0.126$. For both methods the error is thus mostly a harmonic
+function fixed by the mismatch on the boundary, which is 16 per cent (PINN) and 13 per cent
+(Deep Ritz) in relative $L^2$ norm. Corollary~\ref{s6_highdim:cor:bound}(c) completes this
+remark with an explicit constant for the harmonic part.
+
+\begin{table}[tbp]
+\centering
+\caption{Effect of the budget: $\errL$ in units of $10^{-2}$, mean $\pm$ sample standard
+deviation over seeds 0--2. ``16\,000'' is the same protocol with four times as many
+iterations (learning-rate reductions at 8000 and 12\,000). ``Equal compute'' is Deep Ritz
+with the number of iterations given in brackets, chosen to match the compute of the
+4000-iteration PINN run (Section~\ref{s6_highdim:sec:compute}). Last column: affine floor.
+A dash means not run.}
+\label{s6_highdim:tab:budget}
+\small
+\setlength{\tabcolsep}{4pt}
+% src: research_highdim/results/summary.csv (4000); research_highdim/results/extensions.json (d = 10: 16 000 and equal compute)
+% src: data/s6_highdim_long_d20.jsonl (d = 20: 16 000; script code/s6_highdim_long_d20.py)
+% generated by code/s6_highdim_tables.py -> data/s6_highdim_tables.tex
+\begin{tabular}{@{}lr cc cc c c@{}}
+\toprule
+ & & \multicolumn{2}{c}{4000 iterations} & \multicolumn{2}{c}{16\,000 iterations} & equal compute & \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-6}\cmidrule(lr){7-7}
+ & $d$ & PINN & Deep Ritz & PINN & Deep Ritz & Deep Ritz & floor\\
+\midrule
+\Pone & 10 & $1.260\pm0.084$ & $1.896\pm0.159$ & $0.588\pm0.027$ & $0.728\pm0.039$ & $0.934\pm0.047$ (10\,000) & 13.9 \\
+\Ptwo & 10 & $2.168\pm0.482$ & $7.488\pm2.553$ & -- & -- & $1.376\pm0.111$ (9000) & 12.0 \\
+\Pone & 20 & $4.663\pm0.248$ & $4.613\pm0.178$ & $0.757\pm0.023$ & $0.870\pm0.038$ & -- & 10.2 \\
+\Ptwo & 20 & $14.424\pm0.176$ & $12.633\pm0.022$ & $5.832\pm0.858$ & $9.102\pm0.808$ & -- & 12.0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% src: research_highdim/results/derived.txt (plateau block); data/s6_highdim_numbers.json (plateau_val_mean)
+The validation curves (Figure~\ref{s6_highdim:fig:curves}) show that these errors are limited
+by the budget. Within 250 iterations the error falls to about the affine floor; it then stalls
+before descending, and the stall lengthens with $d$; at $d=20$ neither method has left the
+plateau on \Ptwo\ when the 4000-iteration run ends. That networks fit the smoothest component
+first is a known tendency~\citep{rahaman2019}; we cite it as context, not as an explanation.
+% src: research_highdim/results/extensions.json (d = 10); data/s6_highdim_long_d20.jsonl, data/s6_highdim_numbers.json (extensions, budget_ratios, growth_P1_d10_to_d20)
+With four times the budget (Table~\ref{s6_highdim:tab:budget}) the errors at $d=10$ on \Pone\
+fall by a factor 2.1 (PINN) and 2.6 (Deep Ritz), and at $d=20$ on \Pone\ by a factor 6.2 and
+5.3. On \Ptwo\ at $d=20$ both methods leave the plateau and all six runs end below the affine
+floor: $\sci{5.83}{-2}$ for the PINN and $\sci{9.10}{-2}$ for Deep Ritz. These runs are not
+converged either: the error is still falling when the learning rate is reduced. With the larger
+budget the PINN is again the more accurate method in every seed at $d=20$ (ratio 1.15 on
+\Pone, 1.56 on \Ptwo), so the level or reversed ranking after 4000 iterations was an effect of
+the budget and, at least in part, of the uncentred input:
+% src: research_highdim_remedies/results/summary_exploratory.json (P1/d20/pinn/lift1/4000: 0.0219 to 0.0317; P1/d20/ritz/lift1/4000: 0.0442 to 0.0551)
+with the input centred, the PINN is the more accurate method on \Pone\ at $d=20$ after 4000
+iterations as well, in every seed (Section~\ref{s6_highdim:sec:remedies}). Much of the growth with
+$d$ was also an effect of the budget: from $d=10$ to $d=20$ the PINN error on \Pone\
+grows by a factor 3.7 after 4000 iterations and 1.3 after 16\,000 (Deep Ritz: 2.4 and 1.2).
+For \Pone, Table~\ref{s6_highdim:tab:p1} is therefore to be read as ``the number of iterations
+needed for a given accuracy grows with $d$''. For \Ptwo\ the corresponding long run at $d=10$
+was not made, and for neither problem was the approximation power of the network tested
+separately.
+
+% -------------------------------------------------------------------------------------
+\subsection{Cost per iteration}\label{s6_highdim:sec:cost}
+
+Deep Ritz needs only $\grad\unet$, one reverse pass whatever the dimension. The PINN needs
+$\lap\unet$, that is $d$ second derivatives, either by one further reverse pass per coordinate
+or by the forward propagation of Section~\ref{s3_methods:sec:highdim}, which evaluates the same
+loss. Two separate measurements on the same shared machine (Table~\ref{s6_highdim:tab:cost},
+Figure~\ref{s6_highdim:fig:cost}) agree in the following.
+% src: data/s6_highdim_numbers.json (cost_growth_d2_to_d100, nested_over_fwd_d_ge_10, cost_primary, cost_verifier); research_highdim/results/cost_vs_d.csv; verify_research_highdim/results/v_bench.txt
+From $d=2$ to $d=100$ the cost of a Deep Ritz iteration grows by a factor 1.98 or 1.55, from
+3.3 to 5.1\,ms in the quieter measurement, and that of a PINN iteration roughly linearly, as is
+known~\citep{hu2024}: by a factor 13.9 or 12.7 (forward Laplacian) and 32.5 or 26.2 (nested).
+At $d=100$ a PINN iteration costs about 11 to 13 times a Deep Ritz iteration with the forward
+Laplacian and about 29 to 32 times with the nested one; for $d\ge10$ the forward Laplacian is
+1.8 to 2.9 times cheaper than the nested one. The milliseconds themselves depend on the load
+and are not portable.
+
+% -------------------------------------------------------------------------------------
+\subsection{Accuracy at equal compute}\label{s6_highdim:sec:compute}
+
+Because a Deep Ritz iteration is cheaper, a comparison at equal iterations understates the
+method. Deep Ritz was therefore also run with the compute of the 4000-iteration PINN run
+at $d=10$.
+% src: research_highdim/scripts/run_study.py (phase ext, rule); data/s6_highdim_numbers.json (equal_compute_rule: 9594 -> 10000, 8889 -> 9000)
+The number of iterations was fixed before the runs, as the mean CPU time of the three PINN runs
+divided by the mean CPU time per iteration of the three Deep Ritz runs, rounded to a thousand:
+10\,000 on \Pone\ and 9000 on \Ptwo, that is 2.5 and 2.25 Deep Ritz iterations for one PINN
+iteration (the cost ratio measured at $d=10$ is 2.23 and 2.48 in the two measurements).
+% src: research_highdim/results/extensions.json (phase equaltime); research_highdim/results/summary.csv; data/s6_highdim_numbers.json (equal_compute_gain); verify_research_highdim/results/v_summary.txt (rows 'equaltime', 'eq9k'); notes/VERIFICATION.md (sec. 3.1, V10; sec. 3.3, item 5)
+The ranking reverses (Table~\ref{s6_highdim:tab:budget}): Deep Ritz reaches
+$\sci{9.34}{-3}\pm\sci{4.7}{-4}$ against $\sci{1.26}{-2}\pm\sci{8.4}{-4}$ for the PINN on
+\Pone, and $\sci{1.38}{-2}\pm\sci{1.1}{-3}$ against $\sci{2.17}{-2}\pm\sci{4.8}{-3}$ on \Ptwo,
+with disjoint seed ranges in both cases. \textsf{V-dim} agrees (seeds 7--9:
+$\sci{8.74}{-3}$, $\sci{9.09}{-3}$, $\sci{9.02}{-3}$ on \Pone; $\sci{1.38}{-2}$,
+$\sci{1.24}{-2}$, $\sci{1.50}{-2}$ on \Ptwo). In the re-check of
+Section~\ref{s6_highdim:sec:bound}, with a separately written trainer and three seeds, Deep Ritz
+at the CPU time of the PINN was also the more accurate on \Pone\ at $d=20$ (descriptive).
+% src: data/s6_highdim_bound_numbers.json (recheck_r2: P1_ritz_eqcpu_d20 rel_err 0.0092-0.0104, P1_pinn_d20 0.0459-0.0484)
+The ranking of the two methods thus depends on whether iterations or compute are counted. It
+does not show that Deep Ritz is the better method: at 16\,000 iterations each the PINN is ahead
+at $d=10$ on \Pone\ and at $d=20$ on both problems, although on \Pone\ that lead is of the size
+of the penalty bias of Deep Ritz (Section~\ref{s6_highdim:sec:weights}).
+
+% -------------------------------------------------------------------------------------
+\subsection{Sensitivity to the penalty weights, and the penalty bias}\label{s6_highdim:sec:weights}
+
+% src: research_highdim/results/sweep.csv (val_rel_l2; d = 5, seed 100); data/s6_highdim_robin_bias.json (weight_sweep_d5: bias 0.1640, 0.02645, 2.991e-3, 3.047e-4; trained_over_bias 0.98, 0.88, 3.44, 36.0)
+The weights were selected at $d=5$ from one run per value (Table~\ref{s6_highdim:tab:sweep}).
+On \Pone\ the error of Deep Ritz falls by a factor 16 from $\bet=1$ to $\bet=100$ and is level
+beyond; the computed penalty bias at $d=5$ explains the first part (it is 0.164 for $\bet=1$
+and $\sci{2.64}{-2}$ for $\bet=10$, and these two runs end at 0.98 and 0.88 times it), while
+for $\bet=100$ and $1000$ the runs end 3.4 and 36 times above the bias, at an error limited by
+the optimisation. On \Ptwo, Deep Ritz is flat, as expected from $\dn\uex=0$, and the PINN needs
+$\lam\ge10$.
+% src: verify_research_highdim/results/v_summary.txt (rows 'beta', 'lam1e4', 'main' at d = 10); notes/VERIFICATION.md (sec. 3.3, item 3: V11, V13)
+These are statements about $d=5$. At $d=10$ larger weights than the chosen ones do not help:
+on \Ptwo\ (\textsf{V-dim}, seeds 7--9) Deep Ritz with $\bet=10$ or $100$ and the PINN with
+$\lam=10^4$ stay on the affine plateau for the whole run (Supplementary
+Section~\ref{S5:sec:weights}).
+
+% src: data/s6_highdim_robin_bias.json (series: beta = 100; against_trained_networks); research_highdim_bound/results/bias_table.json (exact_over_article_series 0.99957 to 1.00026)
+The penalty bias of Deep Ritz on \Pone\ was computed for every $d$ of the study by a series in
+the Robin eigenfunctions and, exactly, up to $d=100$ by the representation of
+Proposition~\ref{sA_proofs:prop:exact};
+the two agree to $\sci{4.3}{-4}$ relative (Supplementary Section~\ref{S5:sec:bias} and
+Table~\ref{s6_highdim:tab:biasexact}). At $\bet=100$ the relative bias $\norm{\ubeta-\uex}/\norm{\uex}$
+falls from $\sci{5.5}{-3}$ at $d=2$ to $\sci{7.4}{-4}$ at $d=20$, roughly like $0.013/d$ to
+$0.015/d$ for $d\ge3$. At $d=2$ it is about the PINN's whole error ($\sci{6.1}{-3}$) and 0.29 of
+the Deep Ritz error. After 4000 iterations it is 27 to 33 per cent of the Deep Ritz error for
+$d\le5$ and 8 and 2 per cent at $d=10$ and 20, so at that budget the gap between the methods is
+mostly optimisation. After 16\,000 iterations it is 1.05 and 0.65 times the gap to the PINN at
+$d=10$ and 20: the lead of the PINN on \Pone\ at the larger budget is of the size of the bias
+that the fixed $\bet=100$ imposes on Deep Ritz, and it does not show that the PINN optimises
+its loss better.
+
+% src: research_highdim_bound/results/bias_table.tex (bound(b)/exact and article/exact at beta = 100); research_highdim_bound/results/bias_table.json
+The representation of Proposition~\ref{sA_proofs:prop:exact}, a one-dimensional integral over
+products of one-dimensional Robin eigenfunction sums, is valid for every $d$ and $\bet$. Against
+these exact values, the bound of Corollary~\ref{s6_highdim:cor:bound}(b) of the next section is 1.71 to 4.43 times the exact bias at
+$\bet=100$ for $d=2,\dots,100$, against 6.5 to 49.6 times for the bound of
+Proposition~\ref{s3_methods:prop:robin}(c). The numbers suggest that $d\,c(d)\to\sqrt{8/3}$ for
+$c(d)=\lim_{\bet\to\infty}\bet\norm{\ubeta-\uex}/\norm{\uex}$
+(Conjecture~\ref{s6_highdim:conj:dc}).
+
+
+% -------------------------------------------------------------------------------------
+\subsection{An explicit stability constant and a computable error bound}%
+\label{s6_highdim:sec:bound}
+
+Remark~\ref{s6_highdim:rem:split} bounds the part of the error that the interior residual
+accounts for; the rest is harmonic and has the boundary values of $v-g$. Its size is governed by
+\begin{equation}\label{s6_highdim:eq:kappa}
+\kappa_d=\sup\Bigl\{\frac{\nbd{\dn\psi}}{\norm{\lap\psi}}:\ \psi\in H^2(\Om)\cap H^1_0(\Om),\
+\psi\ne0\Bigr\},\qquad\Om=(0,1)^d,
+\end{equation}
+where $\nbd{\cdot}$ is the norm of $L^2(\dOm)$ with surface measure ($\abs{\dOm}=2d$). By
+Green's formula, $-\int_\Om w\,\lap\psi=-\int_{\dOm}w\,\dn\psi$ for harmonic $w$ and $\psi=0$ on
+$\dOm$, so $\kappa_d$ is the norm of the harmonic extension from $L^2(\dOm)$ to $L^2(\Om)$
+(Supplementary Section~\ref{sA_proofs:sec:kappa}). This is a classical quantity:
+$\kappa_d^2=1/\delta_1$, where $\delta_1$ is the first eigenvalue of the biharmonic Steklov
+problem $\lap^2u=0$ in $\Om$, $u=0$ and $\lap u=\delta_1\dn u$ on
+$\dOm$~\citep{ferrero2005fourth,bucur2009first,bucur2011first}
+(Proposition~\ref{s6_highdim:prop:steklov}). For convex domains of minimal width $\ell$, Payne's
+bound $\delta_1\ge2/\ell$~\citep{payne1968bounds}, as stated in~\citet[Lemma~5.3]{bucur2011first}
+(see also~\citep{philippin2010extending}), gives
+$\kappa_d^2\le\frac12$ on the unit cube in every dimension. The following theorem gives the exact
+order in $d$.
+% src: refs.bib (bucur2011first, annote: Lemma 5.3, Payne's bound; Section 3, Fichera's duality)
+
+\begin{theorem}[The harmonic-extension constant of the unit cube]\label{s6_highdim:thm:kappa}
+\StmtKappa
+\end{theorem}
+
+\begin{proposition}[Biharmonic Steklov eigenvalue]\label{s6_highdim:prop:steklov}
+\StmtSteklov
+\end{proposition}
+
+\begin{corollary}[Harmonic part, penalty bias and a computable error bound]\label{s6_highdim:cor:bound}
+\StmtCertificate
+\end{corollary}
+
+\noindent The proofs are in Supplementary Section~\ref{sA_proofs:sec:kappa}; every step was also
+checked numerically (finite differences on the faces, the partial-fraction identity, Rayleigh
+quotients of the extremal sequences, and the bound on 200 harmonic test functions per dimension).
+% src: research_highdim_bound/results/theorem2_checks.txt (A1-A7); research_highdim_bound/results/corollary_checks.txt; research_highdim_bound/results/posthoc_analyses.json (step8_check)
+Corollary~\ref{s6_highdim:cor:bound}(c) is Remark~\ref{s6_highdim:rem:split} completed by an
+explicit constant for the harmonic part; it needs neither $\uex$ nor a mesh, only the two
+quantities that the PINN loss estimates. The norm $\nbd{\cdot}$ uses the surface measure, so in
+terms of the root-mean-square boundary misfit, the quantity that the boundary term of the loss
+estimates, the factor is $\sqrt{2dU_d}$, which grows like $d^{1/4}$ (1.08 at $d=2$, 1.71 at
+$d=20$, 2.53 at $d=100$; Table~\ref{s6_highdim:tab:kappa}): in high dimension the boundary
+misfit weighs more in the bound, not less.
+% src: research_highdim_bound/results/table_theorem2.tex (columns sqrt(U_d), sqrt(2dU_d) and 2 sqrt(1+1/(d pi^2)))
+Part~(b) replaces the constant $2C_d$ of Proposition~\ref{s3_methods:prop:robin}(c), which lies
+between 2.00 and 2.10 for all $d$, by $\sqrt{U_d}$, which is 0.540, 0.326, 0.270 and 0.179 at
+$d=2$, 10, 20 and 100.
+
+\paragraph{Comparison with the classical bounds.} Most of that improvement is classical: Payne's
+bound already gives the constant $\sqrt{1/2}$, a factor 2.83 to 2.97 below $2C_d$ for
+$d=1,\dots,100$. Against Payne's constant, Theorem~\ref{s6_highdim:thm:kappa} gains the factor
+$\sqrt{(1/2)/U_d}$, which is 1 at $d=1$, 1.31 at $d=2$, 2.17 at $d=10$ and 3.95 at $d=100$.
+% src: research_highdim_bound/results/posthoc_analyses.json (payne_compare: article_over_payne 2.968 at d = 1 to 2.830 at d = 100; sqrt_payne_over_sqrtU); research_highdim_bound/results/table_payne.tex
+The elementary bound through the torsion function, $\kappa_d^2\le m_d$ with $m_d$ the largest
+normal derivative of the torsion function of the cube on its boundary
+(Remark~\ref{sA_proofs:rem:steklov}), already decreases with $d$, but slowly: $m_d=0.338$, 0.195, 0.170 and 0.137 at
+$d=2$, 10, 20 and 100. Against it the theorem gains $\sqrt{m_d/U_d}=1.08$, 1.36, 1.53 and 2.07
+(Table~\ref{s6_highdim:tab:kappa}). What the theorem adds is therefore the exact order
+$d^{-1/2}$ of $\kappa_d^2$, not a large constant at small $d$.
+% src: data/s6_highdim_torsion.json (m_d and sqrt(m_d/U_d); code/s6_highdim_torsion.py, two quadratures agreeing to 8e-11)
+The elementary lower bound $1/(2d)$, from the constant harmonic function, is larger than $L_d$ for
+$2\le d\le8$; $L_d$ is what gives the order $d^{-1/2}$ from below. How sharp $U_d$ is remains
+open: the computed Rayleigh quotients fall from $0.985\,U_d$ at $d=2$ to $0.874\,U_d$ at $d=10$
+and $0.637\,U_d$ at $d=100$, but the subspaces that can be afforded shrink with $d$, so these
+numbers neither support nor refute $\kappa_d^2/U_d\to1$; what is proved is
+$\frac12(1+o(1))\le\kappa_d^2/U_d\le1$. For the unit square see Supplementary
+Section~\ref{S5:sec:square}.
+% src: research_highdim_bound/check/out_r2/r2_thm2_edges.json (L_8 = 0.06037 < 1/16, L_9 = 0.05639 > 1/18); research_highdim_bound/results/table_theorem2.tex; research_highdim_bound/results/best_lower_bounds.json
+
+\paragraph{The bound on the trained networks.} Corollary~\ref{s6_highdim:cor:bound}(c) was
+evaluated on all 88 saved networks of this section, with norms estimated by Monte Carlo on
+$2\times10^5$ new interior and $2\times10^5$ new boundary points per $d$ and, as a second set, on
+the held-out test points. Three hypotheses were pre-registered and frozen before the
+confirmatory evaluation: H1, the bound exceeds the error of every network; H2, its efficiency
+$\eta=(B_{\mathrm{int}}+B_{\mathrm{bd}})/\norm{v-\uex}$ is at most 3 for every confirmatory
+network with $d\ge5$; H3, the seed-mean share $B_{\mathrm{bd}}/(B_{\mathrm{int}}+B_{\mathrm{bd}})$
+does not decrease with $d$. Seven of the 88 networks had been seen in a pilot evaluation and are
+treated as non-confirmatory (Supplementary Section~\ref{S5:sec:bound}).
+% src: research_highdim_bound/PREREG_T2.md; research_highdim_bound/results/inventory.json (88 checkpoints, 7 identical to pilot networks)
+% src: research_highdim_bound/results/decisions.json (H1: violations [], min_z_D fresh 222.06, hd 75.49, min_eta 1.744; H2: n_tested 57, 21 failures, eta_range [1.744, 5.456]; H3); research_highdim_bound/results/posthoc_analyses.json (eta_by_d_all88: d = 2 max 24.82, d = 3 max 8.31)
+H1 holds: on both sets and for all 88 networks the bound is above the error, by at least 75
+standard errors, and the smallest efficiency is 1.744. H2 fails: $\eta$ exceeds 3 for 21 of the
+57 confirmatory networks with $d\ge5$, with a maximum of 5.46 (Deep Ritz on \Ptwo\ at $d=5$);
+below $d=5$, where H2 made no claim, $\eta$ is up to 8.31 at $d=3$ and up to 24.8 at $d=2$. The
+bound is therefore a valid but loose certificate at small $d$, not an error estimator. H3 holds
+for all four (problem, method) pairs: the seed-mean share rises from 0.19 to 0.29 at $d=2$
+(0.056 for Deep Ritz on \Ptwo) to 0.84 to 0.98 at $d=20$ (Figure~\ref{s6_highdim:fig:bound}). Part
+of this trend is built into the constants, $1/(d\pi^2)$ for the interior and
+$\sqrt{2dU_d}\sim d^{1/4}$ for the boundary, so H3 alone does not show that the error itself is
+dominated by the boundary misfit; at $d=20$ Remark~\ref{s6_highdim:rem:split} does show it for the
+networks tested, since $B_{\mathrm{int}}$ is at most 0.36 of the error on every main network.
+% src: research_highdim_bound/results/share_by_d.csv; data/s6_highdim_bound_numbers.json (B_int_over_error_main_networks: d = 20 at most 0.355, d = 10 up to 0.805)
+% src: research_highdim_bound/check/out/c5_compare.json (eta_rel_diff_range [-0.0078, 0.0061]); research_highdim_bound/check/out/c4_fresh.jsonl (24 rows); research_highdim_bound/check/out_r2/r2_fresh.jsonl (21 rows); data/s6_highdim_bound_numbers.json (n_networks_bound_valid: 88 + 24 + 21; eta_d10_d20_all_networks 1.916 to 3.444; eta_by_d_all_networks d = 2: max 24.82; recheck_r2: pairs_ranked_like_error_equal_cpu 9/9, equal_iterations 4/9)
+The re-check repeated the evaluation with its own evaluator ($\eta$ within $-0.78$ to $+0.61$ per
+cent on all 88 networks, the same decisions) and retrained 45 networks with separately written
+trainers and other seeds, on \Pone, \Ptwo\ and two problems outside the study; this part was not
+pre-registered. Over all 133 networks evaluated the bound held in every case; its efficiency is
+1.92 to 3.44 at $d=10$ and 20 and up to 24.8 at $d=2$. At $d=20$ and equal CPU time the bound
+ranks all $3\times3$ pairs of a retrained PINN and Deep Ritz network as the error does; at equal
+iterations, where the errors of the two methods lie within the seed spread, it ranks only 4 of
+the 9 pairs correctly: a bound within a factor of about 2 of the error is not meant to resolve
+error differences much smaller than that factor.
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=0.78\textwidth]{s6_bound.pdf}
+\caption{(a) The bounds $U_d$, $L_d$ and $1/(2d)$ of Theorem~\ref{s6_highdim:thm:kappa} on
+$\kappa_d^2$, Payne's bound $\frac12$, the torsion-function bound $m_d$ of the cube
+(Remark~\ref{sA_proofs:rem:steklov}), the largest computed Rayleigh quotients, and the square of the
+constant $2C_d$ of Proposition~\ref{s3_methods:prop:robin}(c). (b) Efficiency $\eta$ and (c) boundary
+share of the bound of Corollary~\ref{s6_highdim:cor:bound}(c) for all 88 saved networks, new
+Monte-Carlo set: the main runs (lines: seed means; open markers: the seven networks seen in the
+pilot), the 16\,000-iteration and equal-compute runs at $d=10$ (triangles), and the 16 networks of
+the weight sweep at $d=5$ (grey, drawn slightly to the left of $d=5$). The dotted line in (b) is the
+pre-registered limit 3.}
+\label{s6_highdim:fig:bound}
+% src: research_highdim_bound/results/theorem2_checks.json; research_highdim_bound/results/restricted_lanczos.json; research_highdim_bound/results/eval_confirm.jsonl (88 networks: main 60, long and equaltime 12, sweep 16); data/s6_highdim_torsion.json; script code/s6_highdim_bound.py (plot only)
+\end{figure}
+
+\paragraph{Relation to the literature.} Besides the classical facts recalled above (Fichera's
+duality, Payne's bound, the torsion function), numerical bounds for $\delta_1$ on the square are
+in~\citet{kuttler1972remarks} and~\citet{ferrero2005fourth}. Theorem~\ref{s6_highdim:thm:kappa}
+adds a two-sided bound of $\kappa_d^2$ of the exact order $d^{-1/2}$ on the hypercube
+(equivalently, $\kappa_d$ is of exact order $d^{-1/4}$), with an elementary proof (sine series,
+the Cauchy--Schwarz inequality, partial fractions). In the literature searched for this work no
+bound of $\kappa_d^2$ of the order $d^{-1/2}$ was found.
+% src: research_highdim_bound/results/table_payne.tex; data/s6_highdim_torsion.json; refs.bib (bucur2011first, ferrero2005fourth, kuttler1972remarks, raulot2015sharp: annotes)
+A posteriori bounds for network approximations exist in other norms and settings:
+\citet{ernst2025certification} certify in the energy norm with constants not explicit in $d$;
+\citet{fuhrer2025aposteriori} measure the boundary misfit in $H^{1/2}(\dOm)$ with mesh-dependent
+constants; \citet{zeinhofer2025unified} work on $C^{1,1}$ domains with non-explicit constants;
+in the generalisation bounds of~\citet{mishra2023generalization} the boundary misfit enters through
+its square root with constants that contain norms of the network; and the bound
+$\max\abs{v-\uex}\le\max_{\dOm}\abs{v-g}+\frac18\max\abs{\lap v+f}$ from the maximum principle,
+explicit on the cube~\citep[Prop.~7]{mukherjee2026certification}, needs suprema, which the
+Monte-Carlo losses do not estimate (on our networks its sampled value was 5.7 to 42 times the
+bound of Corollary~\ref{s6_highdim:cor:bound}(c)). The closest form is in the error analysis of
+residual minimisation by~\citet[App.~B, eq.~(B2)]{shin2023error}: $\norm{u}\le C(\norm{\lap
+u}+\nbd{u})$, from the regularity theory of~\citet{bramble1970rayleigh}, linear in the $L^2$ norms
+of the residual and of the boundary misfit as in Corollary~\ref{s6_highdim:cor:bound}(c), but on
+smooth domains and with a constant that is not explicit. With Payne's constant a bound of this
+form follows at once from the duality, so Corollary~\ref{s6_highdim:cor:bound}(c) is an application
+of known theory with a better constant, not a new method. Imposing $v=g$
+exactly~\citep{sukumar2022exact} would remove $B_{\mathrm{bd}}$ and the penalty bias; it was not
+tested here. For the penalty bias, $O(1/\bet)$ is known on $C^{1,1}$ domains~\citep{muller2022},
+and error bounds with extrapolation exist for the penalty finite-element
+method~\citep{king1974penalty}; Proposition~\ref{sA_proofs:prop:exact} is a routine separation of
+variables whose value lies in the numbers it gives on the cube.
+% src: research_highdim_bound/results/decisions.json (H4: maxprinciple_over_L2bound: min 5.696, max 41.95); refs.bib (ernst2025certification, fuhrer2025aposteriori, zeinhofer2025unified, mishra2023generalization, mukherjee2026certification, shin2023error, sukumar2022exact, king1974penalty: annotes)
+
+% -------------------------------------------------------------------------------------
+\FloatBarrier
+\subsection{Two cheap remedies at \texorpdfstring{$d=20$}{d = 20}}%
+\label{s6_highdim:sec:remedies}
+
+At $d=20$ and 4000 iterations neither method improves on the best affine approximation of
+\Ptwo\ (Section~\ref{s6_highdim:sec:growth}); this is what is called the \emph{plateau} below: a
+test error no smaller than the affine floor. Two cheap remedies suggest themselves, and neither
+is new. The first, called \emph{presolve} here, writes the approximation as a fixed known part
+plus a network, as in the trial solutions of \citet{lagaris1998}, with a cheap Galerkin solution
+as the known part, as in Galerkin neural networks~\citep{ainsworth2021galerkin} and multi-level
+networks~\citep{aldirany2024multilevel}: the fixed part is the exact minimiser of the method's own
+population loss over affine functions, obtained from one $(d+1)\times(d+1)$ linear system
+(Proposition~\ref{sA_proofs:prop:presolve}). The second, called \emph{lift3c}, replaces the input
+$\x$ by the coordinate-wise Legendre features $P_1(t_i),P_2(t_i),P_3(t_i)$, $t_i=2x_i-1$, so that
+the first layer has $3d$ inputs. Polynomial input layers trained with a PINN loss are known, for
+high-frequency solutions: HOrderDNN~\citep{chang2022horderdnn}, whose first layer is a
+tensor-product polynomial basis, and its coordinate-wise successor
+K-HOrderDNN~\citep{zhang2025khorderdnn}, tested up to $d=10$ for PDEs and $d=50$ for function
+fitting; related are the first layers of Chebyshev-basis Kolmogorov--Arnold
+networks~\citep{shukla2024kan,mostajeran2025scaledcpikan} and feature-engineered or Fourier-feature
+PINNs~\citep{fazliani2025safenet,wangwang2021}. Mapping the input to $[-1,1]^d$ is common practice
+(the reference code of~\citet{raissi2019} does so), and the centred-input network $\mathcal N(2\x-1)$,
+called \emph{lift1}, is reported as a baseline. That low-degree or low-frequency components are
+learned first, which motivates both remedies, is known~\citep{rahaman2019,ghosh2022three,wangwang2021}.
+What is measured here is whether either remedy removes the plateau on \Ptwo, and how each changes
+the accuracy at $d=20$ on further problems, for both methods, at equal iterations and at equal CPU
+time.
+% src: refs.bib (chang2022horderdnn, zhang2025khorderdnn, raissi2019: annotes)
+
+\paragraph{Design.} The test was pre-registered: hypotheses, problems, seeds 10 to 14, budgets,
+metric and decision rule were fixed in a document whose hash and time were recorded in the
+repository before the first counted run (no external registry was used). Both remedies had been
+tried on \Pone\ and \Ptwo\ at $d=20$ in exploratory pilots with seeds 0 to 2 before the freeze, as
+had the centred input (on \Pone\ at $d=20$, on \Ptwo\ up to $d=16$) and, for Deep Ritz on \Pone,
+rep3, so the direction of their effects on these two problems was known. Only two problems were
+held out, on which neither remedy had been tried before the test (a related ridge had been used in
+an earlier pilot): the ridge \Pridge, $\uex=\cos(2s)$ with $s=d^{-1/2}\sum_i(2x_i-1)$, and
+\Pcospair, $\uex=\sum_{k\le d/2}\cos(\pi x_{2k-1})\cos(\pi x_{2k})$. On \Ptwo\ the lift features
+contain the solution up to $\sci{3.9}{-3}$, so \Ptwo\ is reported but excluded from the decision on
+the lift. The metric is the relative $L^2$ error on the held-out test points, and the effect of an
+arm is the seed-paired ratio $\rho=\errL(\text{plain})/\errL(\text{arm})$ ($\rho>1$: the arm is
+more accurate). By the frozen rule a remedy \emph{helps} on a problem if, for both methods,
+$\rho>1$ in at least 4 of 5 seeds with median $\rho\ge1.5$, at 4000 iterations and at equal CPU
+time; it \emph{hurts} if for one method a median $\rho$ is at most $1/1.1$; it is a \emph{general
+remedy} if it helps on \Pone\ and on \Pridge\ or \Pcospair\ and hurts on none of them. Two controls
+were pre-registered, for Deep Ritz only: \emph{lift3u}, which spans the same functions as lift3c
+but uses the uncentred feature $x_i$ in place of $P_1(t_i)$, and \emph{rep3}, the featureless input
+$(t,t,t)$ with $t=2\x-1$; the centred input lift1 was added for both methods as an exploratory arm
+after the frozen analysis. Three problems were added afterwards: under an addendum to the
+pre-registration, the ridge \Paltridge, $\uex=\cos(\pi s'+1)$ with
+$s'=d^{-1/2}\sum_i(-1)^{i+1}(2x_i-1)$ and $f=4\pi^2\uex$; and, in the descriptive second round of
+the re-check, \Psinlin, $\uex=\sum_{k\le d/2}\sin(\pi x_{2k-1})\,x_{2k}$ with $f=\pi^2\uex$, and
+\Pexpcos, $\uex=\sum_{k\le d/2}\ee^{x_{2k-1}}\cos x_{2k}$ with $f=0$. The full design, with the
+weights, the equal-CPU budgets and the later additions, is in Supplementary
+Section~\ref{S5:sec:remedies}.
+% src: research_highdim_remedies/PREREG_C1.md (header: pilots with seeds 0-2; sections 2.2, 2.3, 7); notes/VERIFICATION.md (sec. 4.3, pilots before the freeze); research_highdim_remedies/PREREG_FREEZE.json; research_highdim_remedies/results/checks.json (C5_floors poisson/d20: exact_lift3); research_highdim_remedies/PREREG_C1_P5.md; research_highdim_remedies/results/check_p5_formulas.json; research_highdim_remedies/check/selftest2.json
+
+\paragraph{Results.}
+% src: research_highdim_remedies/results/decision.json (per_problem; general_lift3c); research_highdim_remedies/results/summary.json (P1-P4 presolve and lift3c); research_highdim_remedies/results/runs_main20.jsonl (ridge, ritz, seed 10); research_highdim_remedies/results/decision.json (presolve/P2 pinn: median 0.941, min 0.909, max 0.982, wins 0; centring_clause: lift3u median 0.523, 0 of 5; rep3_P1_descriptive: median 0.880, 0 of 5)
+Presolve helps on \Pone\ only (median ratios 2.67 for Deep Ritz and 2.85 for the PINN, 5 of 5
+seeds each; Table~\ref{s6_highdim:tab:remedies}). On \Ptwo\ it is neutral by the frozen rule
+(median 1.00 for Deep Ritz) and for the PINN slightly worse in every seed (median 0.94, range 0.91
+to 0.98); it changes nothing on \Pcospair, where the affine minimiser is zero
+(Proposition~\ref{sA_proofs:prop:struct}), and hurts on the held-out ridge \Pridge\ (medians 0.66
+and 0.79, no seed better than plain). On the four pre-registered problems lift3c is more accurate
+than plain in 5 of 5 seeds for both methods, at 4000 iterations (median ratios 2.33 and 2.86 on
+\Pone, 2.27 and 1.77 on \Pridge, 2.83 and 4.02 on \Pcospair, for Deep Ritz and the PINN) and at
+equal CPU time, so by the frozen rule it is a general remedy on \Pone, \Pridge\ and \Pcospair.
+The controls do not attribute this gain to the Legendre features on every problem
+(Tables~\ref{sC_details:tab:controls} and~\ref{s6_highdim:tab:remedies5}(b)). On \Pone\ lift3u is
+less accurate than plain in every seed (median 0.52), which triggered the pre-registered centring
+clause, so no statement on the features is made there; no control reproduces the gain (rep3 0.88,
+0 of 5 seeds better; lift1 0.92 for Deep Ritz, 2 of 5), and lift3c is 2.43 (Deep Ritz) and 1.61
+(PINN) times more accurate than lift1, 5 of 5 seeds each. On \Pridge\ centring the input alone
+matches the whole gain for Deep Ritz, and the PINN is more accurate with lift1 than with lift3c in
+every seed (median 0.77). On \Pcospair\ lift3c also beats lift1 (2.23 and 2.39, 5 of 5), but for
+Deep Ritz the featureless reparametrisation rep3 gains about as much as lift3c there, as on \Ptwo\
+and \Pridge.
+% src: research_highdim_remedies/results/attribution.json; research_highdim_remedies/results/summary_exploratory.json; research_highdim_remedies/results/summary.json (rep3, lift3c)
+% src: research_highdim_remedies/PREREG_C1_P5.md; research_highdim_remedies/results/decision_p5.json; research_highdim_remedies/results/summary_p5.json; research_highdim_remedies/results/attribution.json (P5 pinn lift1_vs_plain 1.287, 5/5)
+\Paltridge\ was run with the study's own code under the addendum, frozen before these runs; it is
+not a blind test, since three seeds of the re-check had already shown the sign of the lift effect
+on it. There the lift hurts (Deep Ritz median ratio 0.59 at 4000 iterations and 0.32 at equal CPU
+time, 0 of 5 seeds better; PINN 0.88 and 0.72), and so does presolve (Deep Ritz 0.73, PINN 0.83),
+whereas the centred input alone makes the PINN more accurate (1.29, 5 of 5). By the extended rule
+of the addendum neither presolve nor lift3c is a general remedy on the five problems.
+% src: data/s6_highdim_remedies_recheck.json (P6 lift1/lift3c 1.011; P7/ritz/d20: plain_err 0.02504-0.02532, presolve/4000 median 4.507); research_highdim_remedies/check/selftest2.json (P7_floor_affine 0.0224)
+In the second round of the re-check (Deep Ritz, three seeds, a different implementation,
+descriptive) the gain of the lift on \Psinlin\ is again matched by centring the input, and
+\Pexpcos\ is on the plateau ($\errL=0.025$, affine floor 0.022), which presolve leaves (median
+ratio 4.51).
+
+\paragraph{What this shows and what it does not.} At $d=20$, with this network, optimiser,
+schedule and these weights, the accuracy of both methods depends strongly on how the input enters
+the first layer, in a way that differs between problems; no single mechanism (centring the input or
+the polynomial features) accounts for it on every problem.
+% src: research_highdim_remedies/results/summary.json (plain, d20); research_highdim_remedies/results/summary_p5.json (plain, d20); research_highdim_remedies/results/checks.json (C5_floors: test_affine); research_highdim_remedies/results/checks_p5.json (C5); data/s6_highdim_remedies_recheck.json (P6/ritz/d20 plain_err 0.0997-0.1155, P7/ritz/d20 plain_err 0.02504-0.02532); research_highdim_remedies/check/selftest2.json (P6_floor_affine 0.1716, P7_floor_affine 0.0224)
+Of the five problems of the study only \Ptwo\ is on the plateau after 4000 iterations
+(plain $\errL=0.126$ for Deep Ritz and $0.145$ for the PINN, against the affine floor $0.119$ on
+the test set), and of the two of the re-check only \Pexpcos; on the others plain already ends
+below the affine floor, so there the comparison is
+one of accuracy at a fixed budget, not of escaping a plateau.
+% src: research_highdim_remedies/results/summary.json (P2/d20: ritz lift3c, lift3u, rep3; pinn lift3c); research_highdim_remedies/results/summary_exploratory.json (P2/d20/ritz/lift1/4000: min 0.0699, max 0.0914; P2/d20/pinn/lift1/4000: min 0.0670, max 0.0796); research_highdim_remedies/results/checks.json (C5_floors poisson/d20: test_affine 0.1193, exact_lift3 3.9e-3); research_highdim_remedies/results/attribution.json and Table s6_highdim:tab:remedies5(b) (P2 lift1/lift3c: 4.22 Deep Ritz, 7.51 PINN, 5/5)
+On \Ptwo\ presolve does not leave the plateau. lift3c does, for both methods and in every seed.
+For Deep Ritz the gain cannot be attributed to its features, although they contain the solution of
+\Ptwo\ up to $\sci{3.9}{-3}$: the featureless control rep3 is more accurate still (median ratio
+8.10 against 6.59) and lift3u gains as much (6.71). The centred input alone (lift1, exploratory)
+already ends below the affine floor in every seed for both methods ($\errL=0.070$ to $0.091$ for
+Deep Ritz and $0.067$ to $0.080$ for the PINN, against 0.119), but with less gain than lift3c, which
+is 4.22 times (Deep Ritz) and 7.51 times (PINN) more accurate than lift1 in median, 5 of 5 seeds
+each (Table~\ref{s6_highdim:tab:remedies5}(b)); for the PINN, for which no featureless control was
+run, the features thus add to centring on \Ptwo. At this budget the plateau of \Ptwo\ is therefore not robust to centring
+the input, which is common practice. As a remedy the result is negative: neither remedy is general,
+and neither is new as a method. What is added is a measurement of both, for the PINN and Deep Ritz
+side by side, at equal iterations and at equal CPU time, on two problems held out from the pilots
+and three added later, with two pre-registered controls for Deep Ritz (lift3u, rep3) and an
+exploratory centred-input arm for both methods.
+
+% -------------------------------------------------------------------------------------
+\subsection{Comparison with published results}\label{s6_highdim:sec:limits}
+
+% src: research_highdim/results/extensions.json (long, laplace, d = 10, 16 000 iterations: pinn 5.590e-3, 5.928e-3, 6.130e-3; ritz 6.830e-3, 7.438e-3, 7.568e-3); refs.bib (eyu2018, annote)
+For \Pone\ at $d=10$, \citet{eyu2018} report a relative $L^2$ error of about 0.4 per cent after
+50\,000 iterations with a 671-parameter network and $\bet=10^3$. Our mean errors at $d=10$ after
+16\,000 iterations are 0.59 per cent (PINN) and 0.73 per cent (Deep Ritz), with best seeds at 0.56
+and 0.68 per cent, for a different network, sampling and schedule. The orders of magnitude agree;
+we do not claim to reproduce their number. For the Neumann example whose solution \Ptwo\ shares,
+they report 1.3 per cent at $d=5$ and 1.9 per cent at $d=10$ with the Ritz method and no boundary
+penalty; equation, boundary condition, network and budget differ from ours, so this is not a
+like-for-like comparison with Table~\ref{s6_highdim:tab:p2}.
+% src: refs.bib (chen2020comparison, annote: abstract of arXiv:2005.04554, checked 2026-10-01)
+\citet{chen2020comparison} set the deep Galerkin method~\citep{sirignano2018}, whose loss is the
+residual least-squares loss of a PINN, against the Deep Ritz method on elliptic problems with
+boundary conditions imposed by penalty. They report that Deep Ritz can outperform the residual
+method even for smooth solutions, with a clear dependence on the dimension, that the residual
+method can outperform Deep Ritz for solutions of low regularity, and that imposing the boundary
+condition exactly, where that is possible, gives a better solution and an easier training. Our
+finding that the PINN is the more accurate method per iteration for $d\le10$ on two smooth
+problems is therefore not a general ranking, and it does not contradict theirs: networks,
+sampling, penalty weights and budgets differ, and our own ranking changes with what is counted
+and with the budget. What the two studies have in common is that neither loss dominates the
+other.

@@ -1,0 +1,62 @@
+{
+ "heat1d": {
+  "n_eval": 40401,
+  "n_constraint_train": 300,
+  "n_eval_coinciding_with_constraint_train": 4,
+  "fraction_coinciding": 9.900745031063588e-05,
+  "n_eval_on_box_boundary": 800,
+  "min_distance_eval_to_box_face": 0.0,
+  "min_distance_over_pi": 0.0,
+  "n_r": 256,
+  "n_grid_c_collocation_coinciding_with_eval": 0,
+  "fraction_of_eval_that_are_grid_c_collocation": 0.0
+ },
+ "wave1d": {
+  "n_eval": 40401,
+  "n_constraint_train": 300,
+  "n_eval_coinciding_with_constraint_train": 4,
+  "fraction_coinciding": 9.900745031063588e-05,
+  "n_eval_on_box_boundary": 800,
+  "min_distance_eval_to_box_face": 0.0,
+  "min_distance_over_pi": 0.0,
+  "n_r": 1024,
+  "n_grid_c_collocation_coinciding_with_eval": 0,
+  "fraction_of_eval_that_are_grid_c_collocation": 0.0
+ },
+ "wave2d": {
+  "n_eval": 137781,
+  "n_constraint_train": 1365,
+  "n_eval_coinciding_with_constraint_train": 1241,
+  "fraction_coinciding": 0.009007047415826565,
+  "n_eval_on_box_boundary": 19202,
+  "min_distance_eval_to_box_face": 0.0,
+  "min_distance_over_pi": 0.0,
+  "n_r": 512,
+  "n_grid_c_collocation_coinciding_with_eval": 0,
+  "fraction_of_eval_that_are_grid_c_collocation": 0.0
+ },
+ "laplace2d": {
+  "n_eval": 40401,
+  "n_constraint_train": 400,
+  "n_eval_coinciding_with_constraint_train": 4,
+  "fraction_coinciding": 9.900745031063588e-05,
+  "n_eval_on_box_boundary": 800,
+  "min_distance_eval_to_box_face": 0.0,
+  "min_distance_over_pi": 0.0,
+  "n_r": 256,
+  "n_grid_c_collocation_coinciding_with_eval": 0,
+  "fraction_of_eval_that_are_grid_c_collocation": 0.0
+ },
+ "laplace3d": {
+  "n_eval": 64000,
+  "n_constraint_train": 864,
+  "n_eval_coinciding_with_constraint_train": 0,
+  "fraction_coinciding": 0.0,
+  "n_eval_on_box_boundary": 0,
+  "min_distance_eval_to_box_face": 0.03926990816987219,
+  "min_distance_over_pi": 0.01249999999999993,
+  "n_r": 512,
+  "n_grid_c_collocation_coinciding_with_eval": 512,
+  "fraction_of_eval_that_are_grid_c_collocation": 0.008
+ }
+}

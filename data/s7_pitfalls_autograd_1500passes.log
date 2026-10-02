@@ -1,0 +1,69 @@
+(i) {"slice_grad_is_None": true, "none_returns_per_call": 3, "without_allow_unused_raises": "The differentiated Tensor at index 0 appears to not have been used in the graph", "max_abs_residual_faulty": 0.0, "residual_faulty_requires_grad": false, "max_abs_residual_correct": 0.03900334984064102, "note": "untrained network, first 64 training points"}
+(ii) {"exact_solution_cos": {"max_abs_faulty": 0.0, "max_abs_correct": 3.552713678800501e-15}, "non_solution_exp": {"max_abs_faulty": 0.0, "max_abs_correct": 19.610009395666957}, "analytic_max_of_non_solution_residual": 20.739208802178716}
+pass    0  loss 1.0113e-01     0.1s
+pass   25  loss 1.8500e-03     3.2s
+pass   50  loss 7.2524e-04     6.1s
+pass   75  loss 3.8582e-04     9.2s
+pass  100  loss 2.5163e-04    14.3s
+pass  125  loss 1.8014e-04    19.7s
+pass  150  loss 1.1534e-04    26.7s
+pass  175  loss 7.0423e-05    32.0s
+pass  200  loss 5.7029e-05    37.3s
+pass  225  loss 4.6253e-05    42.7s
+pass  250  loss 3.8342e-05    48.1s
+pass  275  loss 4.0369e-05    52.2s
+pass  300  loss 3.2043e-05    56.5s
+pass  325  loss 2.5531e-05    61.0s
+pass  350  loss 2.9869e-05    65.6s
+pass  375  loss 2.1642e-05    70.3s
+pass  400  loss 2.6204e-05    74.8s
+pass  425  loss 2.8135e-05    79.0s
+pass  450  loss 3.1448e-05    83.2s
+pass  475  loss 2.0718e-05    87.4s
+pass  500  loss 2.1065e-05    91.8s
+pass  525  loss 1.4524e-05    96.1s
+pass  550  loss 1.6404e-05   100.2s
+pass  575  loss 1.7093e-05   104.5s
+pass  600  loss 2.5972e-05   108.8s
+pass  625  loss 1.6996e-05   113.3s
+pass  650  loss 1.2316e-05   118.0s
+pass  675  loss 1.5188e-05   122.8s
+pass  700  loss 2.1069e-05   127.5s
+pass  725  loss 2.0512e-05   132.3s
+pass  750  loss 1.7989e-05   136.9s
+pass  775  loss 1.7748e-05   141.6s
+pass  800  loss 1.7199e-05   146.4s
+pass  825  loss 1.1226e-05   151.4s
+pass  850  loss 1.0759e-05   157.4s
+pass  875  loss 1.6269e-05   164.4s
+pass  900  loss 1.7401e-05   172.3s
+pass  925  loss 3.4285e-05   179.0s
+pass  950  loss 1.4165e-05   185.2s
+pass  975  loss 1.2240e-05   190.7s
+pass 1000  loss 1.0777e-05   196.5s
+pass 1025  loss 1.1771e-05   200.1s
+pass 1050  loss 1.2720e-05   203.0s
+pass 1075  loss 9.9791e-06   205.9s
+pass 1100  loss 9.6091e-06   208.6s
+pass 1125  loss 9.8757e-06   211.4s
+pass 1150  loss 3.0884e-05   214.2s
+pass 1175  loss 1.7843e-05   216.9s
+pass 1200  loss 1.4708e-05   219.7s
+pass 1225  loss 8.3920e-06   222.4s
+pass 1250  loss 1.3018e-05   224.9s
+pass 1275  loss 7.9479e-06   228.1s
+pass 1300  loss 1.1171e-05   230.6s
+pass 1325  loss 1.0590e-05   233.1s
+pass 1350  loss 9.7284e-06   235.6s
+pass 1375  loss 1.4448e-05   238.3s
+pass 1400  loss 9.0154e-06   241.1s
+pass 1425  loss 1.1401e-05   243.7s
+pass 1450  loss 9.3482e-06   246.2s
+pass 1475  loss 1.1882e-05   248.5s
+pass 1499  loss 5.6099e-06   250.6s
+(iv) {"rel_L2_network_vs_exact": 1.3531786080978385, "rel_L2_network_vs_target": 0.0058999288495611354, "rel_L2_target_vs_exact": 1.3528466172496503, "rms_true_residual_of_network": 6.720920562744141, "rms_true_residual_points": 19683}
+     {"t": 0.0, "amplitude": 0.9973394189094453, "exp_minus_t": 1.0, "cos_omega_t": 1.0, "rel_L2_vs_exact": 0.00875228897866031, "rel_L2_vs_target": 0.00875228897866031, "abs_L2_vs_exact": 0.00433281632606946, "max_abs_on_boundary": 0.005497295409440994}
+     {"t": 0.5, "amplitude": 0.6067393713525416, "exp_minus_t": 0.6065306597126334, "cos_omega_t": -0.6056998670788134, "rel_L2_vs_exact": 2.001722214849792, "rel_L2_vs_target": 0.00491104049612052, "abs_L2_vs_exact": 0.6002192472590232, "max_abs_on_boundary": 0.010791409760713577}
+     {"t": 1.0, "amplitude": 0.36831176703046115, "exp_minus_t": 0.36787944117144233, "cos_omega_t": -0.26625534204141565, "rel_L2_vs_exact": 2.38334405562242, "rel_L2_vs_target": 0.01021406845719211, "abs_L2_vs_exact": 0.3141475676891694, "max_abs_on_boundary": 0.013280969113111496}
+     {"t": 2.0, "amplitude": 0.149983087661413, "exp_minus_t": 0.1353352832366127, "cos_omega_t": -0.8582161856688175, "rel_L2_vs_exact": 1.175962569440674, "rel_L2_vs_target": 0.3539195930299802, "abs_L2_vs_exact": 0.49961886674984024, "max_abs_on_boundary": 0.08177898824214935}
+     {"t": 3.0, "amplitude": 0.07666611691991566, "exp_minus_t": 0.049787068367863944, "cos_omega_t": 0.7232646301628758, "rel_L2_vs_exact": 0.9072929324432114, "rel_L2_vs_target": 2.3118618161522266, "abs_L2_vs_exact": 0.32485786496679714, "max_abs_on_boundary": 0.1614234298467636}

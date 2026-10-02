@@ -1,0 +1,37 @@
+d=2 laplace: max|Lap u*+f|=0.00e+00  grad err=0.00e+00  |recheck-study exact|=0.00e+00
+d=2 poisson: max|Lap u*+f|=3.55e-15  grad err=4.44e-16  |recheck-study exact|=0.00e+00
+   fwd-vs-nested f64: |u|=1.4e-16 lap=9.7e-17 rel=1.6e-15
+   f32 laplace: study-fwd PINN loss 263.174805 vs the separately written nested 263.174805; study Ritz 105.273506 vs recheck 105.273506
+   f32 poisson: study-fwd PINN loss 831.541382 vs the separately written nested 831.541382; study Ritz 313.462097 vs recheck 313.462097
+d=3 laplace: max|Lap u*+f|=0.00e+00  grad err=0.00e+00  |recheck-study exact|=0.00e+00
+d=3 poisson: max|Lap u*+f|=3.55e-15  grad err=4.44e-16  |recheck-study exact|=0.00e+00
+   fwd-vs-nested f64: |u|=1.4e-16 lap=9.7e-17 rel=7.4e-16
+   f32 laplace: study-fwd PINN loss 292.269012 vs the separately written nested 292.269012; study Ritz 175.364441 vs recheck 175.364441
+   f32 poisson: study-fwd PINN loss 721.882202 vs the separately written nested 721.882202; study Ritz 405.356995 vs recheck 405.356995
+d=5 laplace: max|Lap u*+f|=0.00e+00  grad err=0.00e+00  |recheck-study exact|=0.00e+00
+d=5 poisson: max|Lap u*+f|=3.55e-15  grad err=2.22e-16  |recheck-study exact|=0.00e+00
+   fwd-vs-nested f64: |u|=8.3e-17 lap=5.5e-17 rel=1.3e-15
+   f32 laplace: study-fwd PINN loss 418.131531 vs the separately written nested 418.131531; study Ritz 418.133636 vs recheck 418.133636
+   f32 poisson: study-fwd PINN loss 600.529724 vs the separately written nested 600.529724; study Ritz 555.75415 vs recheck 555.75415
+d=10 laplace: max|Lap u*+f|=0.00e+00  grad err=0.00e+00  |recheck-study exact|=4.44e-16
+d=10 poisson: max|Lap u*+f|=5.33e-15  grad err=2.22e-16  |recheck-study exact|=0.00e+00
+   fwd-vs-nested f64: |u|=1.1e-16 lap=5.2e-17 rel=8.9e-16
+   f32 laplace: study-fwd PINN loss 2165.1106 vs the separately written nested 2165.1106; study Ritz 4330.22266 vs recheck 4330.22266
+   f32 poisson: study-fwd PINN loss 632.717468 vs the separately written nested 632.717468; study Ritz 1170.23633 vs recheck 1170.23633
+d=20 laplace: max|Lap u*+f|=0.00e+00  grad err=0.00e+00  |recheck-study exact|=8.88e-16
+d=20 poisson: max|Lap u*+f|=7.11e-15  grad err=1.11e-16  |recheck-study exact|=0.00e+00
+   fwd-vs-nested f64: |u|=9.7e-17 lap=6.9e-17 rel=9.5e-16
+   f32 laplace: study-fwd PINN loss 6165.94727 vs the separately written nested 6165.94678; study Ritz 24663.7793 vs recheck 24663.7773
+   f32 poisson: study-fwd PINN loss 558.830994 vs the separately written nested 558.830994; study Ritz 2044.45081 vs recheck 2044.45093
+d=2: every pt has exactly one bdry coord: 1.0000; face freq min/max 0.4998/0.5002 (expect 0.5000); frac at 1: 0.4980
+   study sampler: one bdry coord 1.0000; face freq 0.4997/0.5003; frac at 1 0.5020
+d=5: every pt has exactly one bdry coord: 1.0000; face freq min/max 0.1991/0.2007 (expect 0.2000); frac at 1: 0.5005
+   study sampler: one bdry coord 1.0000; face freq 0.1997/0.2008; frac at 1 0.5002
+d=20: every pt has exactly one bdry coord: 1.0000; face freq min/max 0.0489/0.0513 (expect 0.0500); frac at 1: 0.5006
+   study sampler: one bdry coord 1.0000; face freq 0.0489/0.0507; frac at 1 0.4992
+params d=10: 9089 expected 64*10+8449 = 9089
+d=2: P1 const floor 0.6614, affine floor 0.2500; P2 affine floor 0.1203
+d=3: P1 const floor 0.6614, affine floor 0.2500; P2 affine floor 0.1203
+d=5: P1 const floor 0.5292, affine floor 0.2000; P2 affine floor 0.1203
+d=10: P1 const floor 0.3669, affine floor 0.1387; P2 affine floor 0.1203
+d=20: P1 const floor 0.2686, affine floor 0.1015; P2 affine floor 0.1203

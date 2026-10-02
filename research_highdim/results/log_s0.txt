@@ -1,0 +1,11 @@
+chosen weights: {('laplace', 'ritz'): (100.0, 0.010285903699696064), ('laplace', 'pinn'): (1000.0, 0.007158537395298481), ('poisson', 'ritz'): (1.0, 0.01598874107003212), ('poisson', 'pinn'): (1000.0, 0.009759081527590752)}
+[main] laplace  ritz d=10 seed=0 w=100: rel_l2=1.911e-02 h1=9.625e-02 bd=1.957e-02 val=1.896e-02 4.5 ms/it  wall=255s
+[main] laplace  pinn d=10 seed=0 w=1000: rel_l2=1.337e-02 h1=6.707e-02 bd=1.638e-02 val=1.319e-02 9.7 ms/it  wall=39s
+[main] poisson  ritz d= 2 seed=0 w=1: rel_l2=6.032e-03 h1=2.784e-02 bd=4.305e-03 val=5.922e-03 4.1 ms/it  wall=17s
+[main] poisson  pinn d= 2 seed=0 w=1000: rel_l2=1.899e-03 h1=1.072e-02 bd=4.100e-03 val=1.925e-03 7.2 ms/it  wall=29s
+[main] poisson  ritz d= 3 seed=0 w=1: rel_l2=1.529e-02 h1=5.749e-02 bd=1.220e-02 val=1.537e-02 4.3 ms/it  wall=18s
+[main] poisson  pinn d= 3 seed=0 w=1000: rel_l2=3.468e-03 h1=1.641e-02 bd=6.328e-03 val=3.541e-03 8.2 ms/it  wall=33s
+[main] poisson  ritz d= 5 seed=0 w=1: rel_l2=1.539e-02 h1=6.889e-02 bd=1.290e-02 val=1.528e-02 4.6 ms/it  wall=19s
+[main] poisson  pinn d= 5 seed=0 w=1000: rel_l2=9.304e-03 h1=4.141e-02 bd=1.281e-02 val=9.032e-03 8.9 ms/it  wall=36s
+[main] poisson  ritz d=10 seed=0 w=1: rel_l2=7.258e-02 h1=2.274e-01 bd=7.186e-02 val=7.378e-02 5.0 ms/it  wall=20s
+[main] poisson  pinn d=10 seed=0 w=1000: rel_l2=2.123e-02 h1=8.723e-02 bd=2.732e-02 val=2.156e-02 10.9 ms/it  wall=44s

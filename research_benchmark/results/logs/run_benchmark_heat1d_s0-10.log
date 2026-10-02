@@ -1,0 +1,25 @@
+=== heat1d: 50 stacked models, {'n_r': 256, 'n_adam': 3000, 'branch_at': 1500}, device=mps
+  [heat1d] adam it=500 median rel_l2=1.810e-01 t=33.0s
+  [heat1d] adam it=1000 median rel_l2=5.827e-02 t=53.5s
+  [heat1d] adam it=1500 median rel_l2=2.913e-02 t=74.4s
+  [heat1d] adam it=2000 median rel_l2=2.309e-02 t=95.4s
+  [heat1d] adam it=2500 median rel_l2=2.679e-02 t=116.8s
+  [heat1d] adam it=3000 median rel_l2=1.841e-02 t=139.3s
+  [heat1d] lbfgs it=250 median rel_l2=6.730e-03 t=27.5s
+  [heat1d] lbfgs it=500 median rel_l2=3.638e-03 t=58.1s
+  [heat1d] lbfgs it=750 median rel_l2=2.395e-03 t=91.5s
+  [heat1d] lbfgs it=1000 median rel_l2=1.868e-03 t=126.9s
+  [heat1d] lbfgs it=1250 median rel_l2=1.538e-03 t=297.6s
+  [heat1d] lbfgs it=1500 median rel_l2=1.396e-03 t=545.1s
+=== heat1d done in 789.7s  timing={'batch_size': 50, 't_adam_total': 139.30947075200675, 't_adam_to_branch': 74.39079936500548, 't_lbfgs_total': 545.1392323330001, 'lbfgs_batched_fevals': 10918, 'device': 'mps', 'wall_total_s': 789.713634967804}
+   adam       grid      rel_l2 mean 2.982e-02 std 2.977e-02 median 1.577e-02
+   adam       random    rel_l2 mean 4.333e-02 std 6.433e-02 median 1.692e-02
+   adam       resample  rel_l2 mean 3.703e-02 std 1.897e-02 median 3.164e-02
+   adam       sobol     rel_l2 mean 2.405e-02 std 1.997e-02 median 1.515e-02
+   adam       rad       rel_l2 mean 1.485e-02 std 5.227e-03 median 1.447e-02
+   adam_lbfgs grid      rel_l2 mean 6.155e-03 std 4.013e-03 median 5.217e-03
+   adam_lbfgs random    rel_l2 mean 1.248e-03 std 3.861e-04 median 1.236e-03
+   adam_lbfgs resample  rel_l2 mean 1.455e-03 std 1.005e-03 median 1.246e-03
+   adam_lbfgs sobol     rel_l2 mean 1.219e-03 std 4.053e-04 median 1.223e-03
+   adam_lbfgs rad       rel_l2 mean 1.164e-03 std 5.191e-04 median 1.005e-03
+DONE

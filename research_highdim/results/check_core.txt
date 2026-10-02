@@ -1,0 +1,13 @@
+laplace d=2: max|Δu*+f|=0.00e+00  max|∇u*-analytic|=0.00e+00
+laplace d=3: max|Δu*+f|=0.00e+00  max|∇u*-analytic|=0.00e+00
+laplace d=5: max|Δu*+f|=0.00e+00  max|∇u*-analytic|=0.00e+00
+laplace d=10: max|Δu*+f|=0.00e+00  max|∇u*-analytic|=0.00e+00
+poisson d=2: max|Δu*+f|=3.55e-15  max|∇u*-analytic|=4.44e-16
+poisson d=3: max|Δu*+f|=7.11e-15  max|∇u*-analytic|=4.44e-16
+poisson d=5: max|Δu*+f|=5.33e-15  max|∇u*-analytic|=2.22e-16
+poisson d=10: max|Δu*+f|=7.11e-15  max|∇u*-analytic|=2.22e-16
+boundary sampler: all on ∂Ω: True  face freq×d: [0.986, 1.014, 1.003, 0.992, 1.005]
+forward-vs-nested d=2 (float64): max|Δ diff|=9.71e-17 max|∇ diff|=1.39e-16 max|u diff|=1.56e-16
+   float32 loss: forward=57.1631584 nested=57.1631584; max param-grad diff=1.19e-07
+forward-vs-nested d=10 (float64): max|Δ diff|=6.25e-17 max|∇ diff|=6.94e-17 max|u diff|=1.11e-16
+   float32 loss: forward=51.2806053 nested=51.2806053; max param-grad diff=5.96e-08

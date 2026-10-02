@@ -1,0 +1,28 @@
+{'max_abs_fd_laplacian_h1e-3': 3.488320743372242e-07, 'max_abs_boundary_mismatch': 1.0089179387505115e-16}
+  [laplace3d_smooth] adam it=500 median rel_l2=1.592e-01 t=40.5s
+  [laplace3d_smooth] adam it=1000 median rel_l2=7.779e-02 t=77.3s
+  [laplace3d_smooth] adam it=1500 median rel_l2=5.424e-02 t=106.5s
+  [laplace3d_smooth] adam it=2000 median rel_l2=4.212e-02 t=136.8s
+  [laplace3d_smooth] adam it=2500 median rel_l2=4.927e-02 t=166.4s
+  [laplace3d_smooth] adam it=3000 median rel_l2=3.141e-02 t=196.3s
+  [laplace3d_smooth] lbfgs it=250 median rel_l2=1.613e-02 t=27.8s
+  [laplace3d_smooth] lbfgs it=500 median rel_l2=9.656e-03 t=56.8s
+  [laplace3d_smooth] lbfgs it=750 median rel_l2=6.850e-03 t=84.1s
+  [laplace3d_smooth] lbfgs it=1000 median rel_l2=5.017e-03 t=108.0s
+  [laplace3d_smooth] lbfgs it=1250 median rel_l2=4.079e-03 t=143.5s
+  [laplace3d_smooth] lbfgs it=1500 median rel_l2=3.131e-03 t=179.9s
+  [laplace3d] adam it=500 median rel_l2=3.611e-01 t=52.5s
+  [laplace3d] adam it=1000 median rel_l2=2.063e-01 t=111.4s
+  [laplace3d] adam it=1500 median rel_l2=1.662e-01 t=171.1s
+  [laplace3d] adam it=2000 median rel_l2=1.663e-01 t=228.5s
+  [laplace3d] adam it=2500 median rel_l2=1.372e-01 t=283.9s
+  [laplace3d] adam it=3000 median rel_l2=1.279e-01 t=333.3s
+  [laplace3d] lbfgs it=250 median rel_l2=9.187e-02 t=19.6s
+  [laplace3d] lbfgs it=500 median rel_l2=6.348e-02 t=38.4s
+  [laplace3d] lbfgs it=750 median rel_l2=5.454e-02 t=57.0s
+  [laplace3d] lbfgs it=1000 median rel_l2=4.722e-02 t=76.8s
+  [laplace3d] lbfgs it=1250 median rel_l2=4.506e-02 t=97.0s
+  [laplace3d] lbfgs it=1500 median rel_l2=4.126e-02 t=118.8s
+L3s Adam rel_l2 3.253e-02 +- 5.639e-03 | Adam->L-BFGS rel_l2 3.323e-03 +- 7.552e-04 [2.710e-03, 4.611e-03], linf 1.142e-02 +- 4.661e-03
+L3 Adam rel_l2 1.347e-01 +- 3.731e-02 | Adam->L-BFGS rel_l2 3.719e-02 +- 2.552e-03 [3.361e-02, 4.036e-02], linf 7.223e-02 +- 1.343e-02
+paired ratio L3/L3s: [13.03367036 10.78035383 14.10855742 10.98859071  8.75452163] geo-mean 11.378142148462395

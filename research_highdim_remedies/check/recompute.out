@@ -1,0 +1,79 @@
+counts {('runs_d10.jsonl', 'd10'): 36, ('runs_eqcpu.jsonl', 'eqcpu'): 45, ('runs_main20.jsonl', 'main20'): 160, ('runs_posthoc_lift1.jsonl', 'posthoc_lift1'): 40, ('runs_repro.jsonl', 'repro'): 12, ('runs_stall.jsonl', 'stall'): 6, ('runs_sweep.jsonl', 'sweep'): 8, ('runs_timing.jsonl', 'timing'): 8}
+first counted finished_at ('2026-10-01T18:00:17+0100', 'repro') last ('2026-10-01T19:32:30+0100', 'posthoc_lift1')
+timing/sweep finished range  2026-10-01T17:57:12+0100
+duplicate keys [('sweep', 'ridge', 'ritz', 5, 100, 'plain', 4000, True), ('sweep', 'cospair', 'ritz', 5, 100, 'plain', 4000, True)]
+P1/d20/ritz/presolve/main20 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 2.6695, 'mn': 1.6731, 'mx': 3.4048, 'wins': 5, 'mean_err': 0.019340864010155202, 'mean_plain': 0.047537220269441606}
+P1/d20/ritz/lift3c/main20 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 2.3281, 'mn': 2.0834, 'mx': 2.6582, 'wins': 5, 'mean_err': 0.020391150563955306, 'mean_plain': 0.047537220269441606}
+P1/d20/ritz/lift3u/main20 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 0.5231, 'mn': 0.4656, 'mx': 0.5652, 'wins': 0, 'mean_err': 0.09182066023349762, 'mean_plain': 0.047537220269441606}
+P1/d20/ritz/rep3/main20 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 0.8802, 'mn': 0.8064, 'mx': 0.9886, 'wins': 0, 'mean_err': 0.05421386733651161, 'mean_plain': 0.047537220269441606}
+P1/d20/ritz/lift3c/eqcpu {'seeds': [10, 11, 12, 13, 14], 'iters': [3250], 'med': 1.8464, 'mn': 1.6667, 'mx': 2.1258, 'wins': 5, 'mean_err': 0.025498257577419282, 'mean_plain': 0.047537220269441606}
+P1/d20/ritz/lift1/posthoc_lift1 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 0.9168, 'mn': 0.829, 'mx': 1.1715, 'wins': 2, 'mean_err': 0.049071256816387174, 'mean_plain': 0.047537220269441606}
+P1/d20/pinn/presolve/main20 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 2.8545, 'mn': 1.7247, 'mx': 3.8358, 'wins': 5, 'mean_err': 0.018180434219539167, 'mean_plain': 0.04796069636940956}
+P1/d20/pinn/lift3c/main20 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 2.8597, 'mn': 2.6316, 'mx': 3.3639, 'wins': 5, 'mean_err': 0.016534006223082542, 'mean_plain': 0.04796069636940956}
+P1/d20/pinn/lift3c/eqcpu {'seeds': [10, 11, 12, 13, 14], 'iters': [3650], 'med': 2.544, 'mn': 2.3409, 'mx': 3.0107, 'wins': 5, 'mean_err': 0.01865517683327198, 'mean_plain': 0.04796069636940956}
+P1/d20/pinn/lift1/posthoc_lift1 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 1.7791, 'mn': 1.4563, 'mx': 2.2682, 'wins': 5, 'mean_err': 0.026648172363638877, 'mean_plain': 0.04796069636940956}
+P2/d20/ritz/presolve/main20 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 0.998, 'mn': 0.9964, 'mx': 1.0023, 'wins': 2, 'mean_err': 0.12652562856674193, 'mean_plain': 0.12636371850967407}
+P2/d20/ritz/lift3c/main20 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 6.5938, 'mn': 6.4856, 'mx': 6.6941, 'wins': 5, 'mean_err': 0.019183940812945367, 'mean_plain': 0.12636371850967407}
+P2/d20/ritz/lift3u/main20 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 6.7131, 'mn': 6.5861, 'mx': 6.9109, 'wins': 5, 'mean_err': 0.018723421543836594, 'mean_plain': 0.12636371850967407}
+P2/d20/ritz/rep3/main20 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 8.0974, 'mn': 7.7782, 'mx': 8.1452, 'wins': 5, 'mean_err': 0.015812736004590988, 'mean_plain': 0.12636371850967407}
+P2/d20/ritz/lift3c/eqcpu {'seeds': [10, 11, 12, 13, 14], 'iters': [3350], 'med': 6.2247, 'mn': 6.1507, 'mx': 6.2799, 'wins': 5, 'mean_err': 0.02032139077782631, 'mean_plain': 0.12636371850967407}
+P2/d20/ritz/lift1/posthoc_lift1 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 1.5657, 'mn': 1.3867, 'mx': 1.8028, 'wins': 5, 'mean_err': 0.08112462759017944, 'mean_plain': 0.12636371850967407}
+P2/d20/pinn/presolve/main20 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 0.9413, 'mn': 0.9086, 'mx': 0.9816, 'wins': 0, 'mean_err': 0.15367132425308228, 'mean_plain': 0.14494537115097045}
+P2/d20/pinn/lift3c/main20 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 14.5951, 'mn': 10.3455, 'mx': 15.0503, 'wins': 5, 'mean_err': 0.010747198574244976, 'mean_plain': 0.14494537115097045}
+P2/d20/pinn/lift3c/eqcpu {'seeds': [10, 11, 12, 13, 14], 'iters': [3550], 'med': 13.3333, 'mn': 9.525, 'mx': 13.9931, 'wins': 5, 'mean_err': 0.011758950352668763, 'mean_plain': 0.14494537115097045}
+P2/d20/pinn/lift1/posthoc_lift1 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 1.9512, 'mn': 1.8464, 'mx': 2.1908, 'wins': 5, 'mean_err': 0.07248132824897766, 'mean_plain': 0.14494537115097045}
+P3/d20/ritz/presolve/main20 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 0.664, 'mn': 0.1439, 'mx': 0.8686, 'wins': 0, 'mean_err': 0.10243488848209381, 'mean_plain': 0.03736688867211342}
+P3/d20/ritz/lift3c/main20 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 2.2729, 'mn': 2.1179, 'mx': 2.7527, 'wins': 5, 'mean_err': 0.015659597329795362, 'mean_plain': 0.03736688867211342}
+P3/d20/ritz/lift3u/main20 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 1.2581, 'mn': 0.9696, 'mx': 1.3996, 'wins': 4, 'mean_err': 0.030806520208716392, 'mean_plain': 0.03736688867211342}
+P3/d20/ritz/rep3/main20 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 2.3696, 'mn': 2.059, 'mx': 3.2051, 'wins': 5, 'mean_err': 0.014969789236783982, 'mean_plain': 0.03736688867211342}
+P3/d20/ritz/lift3c/eqcpu {'seeds': [10, 11, 12, 13, 14], 'iters': [3200], 'med': 1.9079, 'mn': 1.7282, 'mx': 2.2607, 'wins': 5, 'mean_err': 0.01890627630054951, 'mean_plain': 0.03736688867211342}
+P3/d20/ritz/presolve/eqcpu {'seeds': [10, 11, 12, 13, 14], 'iters': [3700], 'med': 0.59, 'mn': 0.1421, 'mx': 0.798, 'wins': 0, 'mean_err': 0.10687554404139518, 'mean_plain': 0.03736688867211342}
+P3/d20/ritz/lift1/posthoc_lift1 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 2.3807, 'mn': 2.1503, 'mx': 3.1208, 'wins': 5, 'mean_err': 0.015156459994614124, 'mean_plain': 0.03736688867211342}
+P3/d20/pinn/presolve/main20 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 0.7948, 'mn': 0.6317, 'mx': 0.9778, 'wins': 0, 'mean_err': 0.031823530420660974, 'mean_plain': 0.024715064093470573}
+P3/d20/pinn/lift3c/main20 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 1.7659, 'mn': 1.4471, 'mx': 1.8253, 'wins': 5, 'mean_err': 0.014651239104568958, 'mean_plain': 0.024715064093470573}
+P3/d20/pinn/lift3c/eqcpu {'seeds': [10, 11, 12, 13, 14], 'iters': [3750], 'med': 1.6617, 'mn': 1.3865, 'mx': 1.7422, 'wins': 5, 'mean_err': 0.015383405238389969, 'mean_plain': 0.024715064093470573}
+P3/d20/pinn/lift1/posthoc_lift1 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 2.2161, 'mn': 1.8896, 'mx': 2.3897, 'wins': 5, 'mean_err': 0.011579830385744571, 'mean_plain': 0.024715064093470573}
+P4/d20/ritz/presolve/main20 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 1.0, 'mn': 1.0, 'mx': 1.0, 'wins': 0, 'mean_err': 0.20568983256816864, 'mean_plain': 0.20568983256816864}
+P4/d20/ritz/lift3c/main20 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 2.8272, 'mn': 2.5115, 'mx': 2.9441, 'wins': 5, 'mean_err': 0.07355302274227142, 'mean_plain': 0.20568983256816864}
+P4/d20/ritz/lift3u/main20 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 1.5964, 'mn': 1.5093, 'mx': 2.0339, 'wins': 5, 'mean_err': 0.12373376190662384, 'mean_plain': 0.20568983256816864}
+P4/d20/ritz/rep3/main20 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 2.6466, 'mn': 2.5029, 'mx': 2.9376, 'wins': 5, 'mean_err': 0.07771386057138444, 'mean_plain': 0.20568983256816864}
+P4/d20/ritz/lift3c/eqcpu {'seeds': [10, 11, 12, 13, 14], 'iters': [3350], 'med': 2.5615, 'mn': 2.2476, 'mx': 2.6663, 'wins': 5, 'mean_err': 0.08130870163440704, 'mean_plain': 0.20568983256816864}
+P4/d20/ritz/lift1/posthoc_lift1 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 1.2989, 'mn': 1.2461, 'mx': 1.4634, 'wins': 5, 'mean_err': 0.15715979039669037, 'mean_plain': 0.20568983256816864}
+P4/d20/pinn/presolve/main20 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 1.0, 'mn': 1.0, 'mx': 1.0, 'wins': 0, 'mean_err': 0.24641552269458772, 'mean_plain': 0.24641552269458772}
+P4/d20/pinn/lift3c/main20 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 4.0168, 'mn': 3.8309, 'mx': 4.2332, 'wins': 5, 'mean_err': 0.061078251153230664, 'mean_plain': 0.24641552269458772}
+P4/d20/pinn/lift3c/eqcpu {'seeds': [10, 11, 12, 13, 14], 'iters': [3750], 'med': 3.8548, 'mn': 3.6672, 'mx': 4.0569, 'wins': 5, 'mean_err': 0.06372594982385635, 'mean_plain': 0.24641552269458772}
+P4/d20/pinn/lift1/posthoc_lift1 {'seeds': [10, 11, 12, 13, 14], 'iters': [4000], 'med': 1.7009, 'mn': 1.625, 'mx': 1.9223, 'wins': 5, 'mean_err': 0.1425605982542038, 'mean_plain': 0.24641552269458772}
+P1/d10/ritz/presolve/d10 {'seeds': [10, 11, 12], 'iters': [4000], 'med': 1.6247, 'mn': 1.5527, 'mx': 1.975, 'wins': 3, 'mean_err': 0.010188712428013483, 'mean_plain': 0.01750417860845725}
+P1/d10/ritz/lift3c/d10 {'seeds': [10, 11, 12], 'iters': [4000], 'med': 1.3756, 'mn': 1.2771, 'mx': 1.6969, 'wins': 3, 'mean_err': 0.012091618962585926, 'mean_plain': 0.01750417860845725}
+P2/d10/ritz/presolve/d10 {'seeds': [10, 11, 12], 'iters': [4000], 'med': 0.8659, 'mn': 0.6676, 'mx': 0.9831, 'wins': 0, 'mean_err': 0.09379864484071732, 'mean_plain': 0.0782619019349416}
+P2/d10/ritz/lift3c/d10 {'seeds': [10, 11, 12], 'iters': [4000], 'med': 4.8735, 'mn': 3.9414, 'mx': 5.4542, 'wins': 3, 'mean_err': 0.01647152192890644, 'mean_plain': 0.0782619019349416}
+P3/d10/ritz/presolve/d10 {'seeds': [10, 11, 12], 'iters': [4000], 'med': 0.7354, 'mn': 0.7106, 'mx': 0.8834, 'wins': 0, 'mean_err': 0.03288564831018448, 'mean_plain': 0.025472193335493405}
+P3/d10/ritz/lift3c/d10 {'seeds': [10, 11, 12], 'iters': [4000], 'med': 2.0119, 'mn': 1.536, 'mx': 2.292, 'wins': 3, 'mean_err': 0.013260137600203356, 'mean_plain': 0.025472193335493405}
+P4/d10/ritz/presolve/d10 {'seeds': [10, 11, 12], 'iters': [4000], 'med': 1.0, 'mn': 1.0, 'mx': 1.0, 'wins': 0, 'mean_err': 0.17527020474274954, 'mean_plain': 0.17527020474274954}
+P4/d10/ritz/lift3c/d10 {'seeds': [10, 11, 12], 'iters': [4000], 'med': 4.6802, 'mn': 3.6885, 'mx': 4.6886, 'wins': 3, 'mean_err': 0.040277883410453796, 'mean_plain': 0.17527020474274954}
+plain P1 ritz [0.048, 0.0457, 0.0534, 0.0433, 0.0474] mean 0.0475
+plain P1 pinn [0.0465, 0.0461, 0.0542, 0.0445, 0.0485] mean 0.048
+plain P2 ritz [0.1263, 0.1267, 0.126, 0.1268, 0.1261] mean 0.1264
+plain P2 pinn [0.1406, 0.147, 0.1467, 0.1469, 0.1436] mean 0.1449
+plain P3 ritz [0.0425, 0.0375, 0.0348, 0.0342, 0.0379] mean 0.0374
+plain P3 pinn [0.0255, 0.0239, 0.0257, 0.0223, 0.0262] mean 0.0247
+plain P4 ritz [0.2121, 0.1949, 0.213, 0.2084, 0.2] mean 0.2057
+plain P4 pinn [0.247, 0.2351, 0.2497, 0.2565, 0.2438] mean 0.2464
+cpu_shift range 0.0005150000000071486 0.03584599999999227
+P4 identical ritz [True, True, True, True, True] [0.0, 0.0, 0.0, 0.0, 0.0]
+P4 identical pinn [True, True, True, True, True] [0.0, 0.0, 0.0, 0.0, 0.0]
+stall plain [(10, 0.9015, 0.0476, 8450), (11, 0.929, 0.0645, 8750), (12, 0.8412, 0.0594, 8500)]
+stall presolve [(10, 0.0541, 0.124, None), (11, -0.0, 0.1265, None), (12, -0.0, 0.1266, None)]
+ridge ritz s10 plain/presolve 0.04247714579105377 0.2952868342399597
+load range 6.76171875 153.4130859375
+wall max 50.16003203392029
+Thalf P1 plain [1600, 1550, 1800, 1450, 1700]
+Thalf P2 plain [None, None, None, None, None]
+Thalf P1 presolve [650, 550, 650, 650, 600]
+Thalf P2 presolve [None, None, None, None, None]
+Thalf P1 lift3c [1000, 950, 1050, 1000, 1000]
+Thalf P2 lift3c [50, 50, 50, 50, 50]
+Thalf P1 lift3u [None, None, None, None, None]
+Thalf P2 lift3u [50, 50, 50, 50, 50]
+Thalf P1 rep3 [700, 700, 700, 700, 650]
+Thalf P2 rep3 [850, 800, 850, 850, 950]

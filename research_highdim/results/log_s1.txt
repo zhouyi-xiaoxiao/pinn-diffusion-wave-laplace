@@ -1,0 +1,17 @@
+chosen weights: {('laplace', 'ritz'): (100.0, 0.010285903699696064), ('laplace', 'pinn'): (1000.0, 0.007158537395298481), ('poisson', 'ritz'): (1.0, 0.01598874107003212), ('poisson', 'pinn'): (1000.0, 0.009759081527590752)}
+[main] laplace  ritz d= 2 seed=1 w=100: rel_l2=1.899e-02 h1=6.511e-02 bd=1.292e-02 val=1.899e-02 9.8 ms/it  wall=224s
+[main] laplace  pinn d= 2 seed=1 w=1000: rel_l2=7.101e-03 h1=2.520e-02 bd=5.818e-03 val=7.067e-03 6.0 ms/it  wall=24s
+[main] laplace  ritz d= 3 seed=1 w=100: rel_l2=1.802e-02 h1=6.307e-02 bd=1.395e-02 val=1.812e-02 3.8 ms/it  wall=15s
+[main] laplace  pinn d= 3 seed=1 w=1000: rel_l2=9.541e-03 h1=3.370e-02 bd=1.014e-02 val=9.519e-03 7.0 ms/it  wall=28s
+[main] laplace  ritz d= 5 seed=1 w=100: rel_l2=1.192e-02 h1=5.388e-02 bd=1.270e-02 val=1.207e-02 4.3 ms/it  wall=17s
+[main] laplace  pinn d= 5 seed=1 w=1000: rel_l2=6.978e-03 h1=3.089e-02 bd=8.822e-03 val=7.097e-03 7.6 ms/it  wall=31s
+[main] laplace  ritz d=10 seed=1 w=100: rel_l2=1.730e-02 h1=8.829e-02 bd=1.736e-02 val=1.720e-02 4.8 ms/it  wall=20s
+[main] laplace  pinn d=10 seed=1 w=1000: rel_l2=1.171e-02 h1=6.092e-02 bd=1.445e-02 val=1.164e-02 10.6 ms/it  wall=43s
+[main] poisson  ritz d= 2 seed=1 w=1: rel_l2=6.780e-03 h1=2.548e-02 bd=4.898e-03 val=6.685e-03 4.7 ms/it  wall=19s
+[main] poisson  pinn d= 2 seed=1 w=1000: rel_l2=1.091e-03 h1=5.878e-03 bd=2.238e-03 val=1.092e-03 7.4 ms/it  wall=30s
+[main] poisson  ritz d= 3 seed=1 w=1: rel_l2=1.215e-02 h1=5.353e-02 bd=1.080e-02 val=1.226e-02 5.0 ms/it  wall=20s
+[main] poisson  pinn d= 3 seed=1 w=1000: rel_l2=3.714e-03 h1=1.821e-02 bd=6.833e-03 val=3.724e-03 8.1 ms/it  wall=33s
+[main] poisson  ritz d= 5 seed=1 w=1: rel_l2=1.462e-02 h1=6.665e-02 bd=1.295e-02 val=1.451e-02 5.0 ms/it  wall=20s
+[main] poisson  pinn d= 5 seed=1 w=1000: rel_l2=8.753e-03 h1=3.861e-02 bd=1.241e-02 val=8.499e-03 8.5 ms/it  wall=34s
+[main] poisson  ritz d=10 seed=1 w=1: rel_l2=1.015e-01 h1=3.279e-01 bd=1.031e-01 val=1.040e-01 5.4 ms/it  wall=22s
+[main] poisson  pinn d=10 seed=1 w=1000: rel_l2=2.671e-02 h1=9.949e-02 bd=3.317e-02 val=2.765e-02 14.7 ms/it  wall=59s

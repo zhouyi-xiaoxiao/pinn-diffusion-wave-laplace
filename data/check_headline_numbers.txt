@@ -1,0 +1,45 @@
+[ok] 350 final errors, 175 networks: 350 rows, 175 networks
+[ok] L-BFGS arm better in all 175 pairs: 175 of 175
+[ok] geometric means, heat1d: 2.119e-02 -> 1.560e-03 (text 0.021 -> 0.0016)
+[ok] geometric means, laplace2d: 7.780e-03 -> 3.390e-04 (text 0.0078 -> 0.00034)
+[ok] Wave1: all 50 runs between 41 and 51 per cent: 50 runs, 0.414 to 0.512
+[ok] Wave2, Lap3: strategy means between 3.6 and 5.0 per cent: 0.0356 to 0.0501
+[ok] Heat: cell-centred grid about four times worse than random, 10 of 10 seeds: ratio 4.21, worse in 10/10
+[ok] verification code V-bench: 39 of 40: string '39 of 40' in verify_research_benchmark/v_summary.out
+[ok] verification code V-bench: node-centred grid 1.26 times random (6 seeds): strings 'node-grid/random' and '1.26' in v_summary.out
+[ok] Heat, Lap2: L-BFGS arm 8 to 13 times below the best logged Adam iterate, in 49/50 and 50/50 runs: ratios 0.124 and 0.077; 49/50 and 50/50
+[ok] Heat, Lap2: L-BFGS arm 14 to 23 times below the last Adam iterate: ratios 0.0738 and 0.0435 (factors 13.6 and 23.0; the text quotes 0.074 and 0.044)
+[ok] Heat, control experiment: 16 points in the strip remove the penalty, 16 points at t = 1/2 do not: column at 1/64: 0.92 x random; column at 1/2: 4.77 x random (worse in 10/10); column in strip against placebo 0.19, 10/10, p = 0.0020
+[ok] Heat, control experiment: cell-centred grid 4.31, node-centred grid 1.98 times random: grid-c 4.31 (1/10 better), grid-n 1.98 (p = 0.049)
+[ok] Heat, 1024 points: strategies agree: grid/random 1.11 (p=0.44), Sobol/random 1.02
+[ok] Heat: slice t = 1 above 100 per cent in all 40 runs (20 networks, both arms): 40 of 40
+[ok] Heat: space-time error after L-BFGS about 0.1 per cent: 1.07e-03, 1.16e-03
+[ok] Wave2, longer L-BFGS phase: 0.6 to 0.9 per cent, three seeds: 9.31e-03, 8.98e-03, 5.68e-03
+[ok] Lap3s: 0.3 per cent: mean 3.32e-03 over 5 seeds
+[ok] finite differences three to five orders of magnitude faster than a single network on the CPU (measurement B): time ratio 1.91e+03 to 1.34e+05
+[ok] finite differences more than 400 times faster in every timing (measurements A, B, C); smallest ratio 4.8e2: smallest ratio 475.6 (C: 476 to 2.08e+04)
+[ok] finite differences at equal or better accuracy: FD error / PINN error 0.11 to 0.47
+[ok] Wave1, longer runs: 0.34 to 0.38 in both arms, three seeds: 0.371, 0.343, 0.380, 0.376, 0.337, 0.381
+[ok] d <= 10: PINN 1.5 to 4.3 times more accurate: 1.46 to 4.29
+[ok] d = 20, 4000 iterations: both above the affine level on PoiD: PINN 0.1442, Deep Ritz 0.1263, floor 0.1203
+[ok] d = 20, 16 000 iterations: 12 runs: {('laplace', 'pinn'): 3, ('laplace', 'ritz'): 3, ('poisson', 'pinn'): 3, ('poisson', 'ritz'): 3}
+[ok] d = 20, 16 000 iterations: all PoiD runs below the affine level: largest 0.0987
+[ok] d = 20, 16 000 iterations: PINN more accurate in every seed: laplace: PINN max 7.83e-03, Deep Ritz min 8.39e-03; poisson: PINN max 6.58e-02, Deep Ritz min 8.26e-02
+[ok] equal compute at d = 10: Deep Ritz more accurate on both problems: laplace: Deep Ritz 9.34e-03, PINN 1.26e-02; poisson: Deep Ritz 1.38e-02, PINN 2.17e-02
+[ok] cost from d = 2 to 100: Deep Ritz below 2x, PINN above 12x (both measurements): primary: Deep Ritz x1.98, PINN (forward) x13.9; verification: Deep Ritz x1.55, PINN (forward) x12.7
+[ok] bound of Section 6.7, Corollary (c), valid on all 133 networks evaluated (88 saved, 24 + 21 retrained): 88 + 24 + 21, all valid: True
+[ok] efficiency 1.9 to 3.4 at d = 10 and 20, up to 25 at d = 2: 1.916 to 3.444; d = 2 max 24.82
+[ok] constants of Table s6_highdim:tab:kappa agree with their formulas; sqrt(d) U_d -> 1/pi: sqrt(d) U_d at d = 1e6: 0.318310
+[ok] equal compute at d = 20 (re-check, LapD, three seeds): Deep Ritz more accurate than the PINN in every pair: Deep Ritz at the PINN's CPU time 0.0092 to 0.0104, PINN 0.0459 to 0.0484
+[ok] sqrt(2 d U_d) grows (factor of the root-mean-square boundary misfit): 1.08 at d = 2 to 2.53 at d = 100: d=1: 1.000, d=2: 1.081, d=3: 1.149, d=5: 1.259, d=10: 1.457, d=20: 1.709, d=50: 2.132, d=100: 2.529
+[ok] remedies: each helps on some problems and hurts on others; neither general on the five problems: presolve {'P1': 'HELPS', 'P3': 'HURTS', 'P4': 'NEUTRAL/MIXED', 'P5': 'HURTS'}; lift3c {'P1': 'HELPS', 'P3': 'HELPS', 'P4': 'HELPS', 'P5': 'HURTS'}; frozen verdict on P1-P4: lift3c GENERAL REMEDY
+[ok] plateau on PoiD at d = 20: plain above the affine floor; centred input (lift1, exploratory) below it in every seed, both methods: ritz: plain min 0.1260, lift1 max 0.0914; pinn: plain min 0.1406, lift1 max 0.0796; floor 0.1193
+[ok] PoiD at d = 20: lift3c below the affine floor in every seed, both methods; rep3 (Deep Ritz) as well: ritz: lift3c max 0.0195; pinn: lift3c max 0.0142; ritz rep3 max 0.0162; floor 0.1193
+[ok] AltRidgeD (added after the pre-registered test): lift3c less accurate than plain for both methods (median ratio < 1): ritz: median 0.59, pinn: median 0.88
+[ok] pre-registered efficiency target (eta <= 3 for d >= 5) fails on 21 of 57 networks: FAILS: 21 of 57
+[ok] presolve does not help on PoiD (the plateau problem): ritz: median 1.00, pinn: median 0.94
+[ok] residual made zero by differentiation with respect to a slice: PDE term identically zero: max over 23550 iterations = 0.0; 70650 of 70650 calls None
+[ok] faulty operator returns 0 on a solution and on a non-solution; the correct one separates them: {"exact_solution_cos": {"max_abs_faulty": 0.0, "max_abs_correct": 3.552713678800501e-15}, "non_solution_exp": {"max_abs_faulty": 0.0, "max_abs_correct": 19.610009395666957}, "analytic_max_of_non_solution_residual": 20.739208802178716}
+[ok] the same with 1500 passes: PDE term identically zero: max over 235500 iterations = 0.0
+[ok] data on one face: five seeds, both loss terms between 2.7e-4 and 2.2e-3, distances 1.6 to 13 from Lap3: loss terms 2.75e-04 to 2.20e-03; distances 1.62, 12.51, 13.22, 7.28, 1.63
+ALL HEADLINE CHECKS PASSED

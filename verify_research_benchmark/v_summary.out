@@ -1,0 +1,54 @@
+re-check vs study, same (problem, strategy, seed): Adam | Adam->L-BFGS
+  heat1d|grid|0|256|fixed                recheck 9.982e-03 | 5.831e-03   study 1.043e-02 | 6.055e-03   LBFGS<Adam: True  t_arm=33s
+  heat1d|random|0|256|fixed              recheck 3.081e-02 | 1.853e-03   study 1.200e-02 | 1.734e-03   LBFGS<Adam: True  t_arm=26s
+  heat1d|nodegrid|0|256|fixed            recheck 1.467e-02 | 2.003e-03   study n/a   LBFGS<Adam: True  t_arm=23s
+  heat1d|grid|1|256|fixed                recheck 1.303e-02 | 1.316e-02   study 1.582e-02 | 1.359e-02   LBFGS<Adam: False  t_arm=23s
+  heat1d|random|1|256|fixed              recheck 2.746e-02 | 9.760e-04   study 4.142e-02 | 9.304e-04   LBFGS<Adam: True  t_arm=30s
+  heat1d|nodegrid|1|256|fixed            recheck 7.926e-03 | 1.107e-03   study n/a   LBFGS<Adam: True  t_arm=24s
+  heat1d|grid|2|256|fixed                recheck 1.312e-02 | 3.539e-03   study 8.438e-02 | 3.213e-03   LBFGS<Adam: True  t_arm=21s
+  heat1d|random|2|256|fixed              recheck 9.308e-02 | 1.334e-03   study 2.191e-01 | 1.392e-03   LBFGS<Adam: True  t_arm=20s
+  heat1d|nodegrid|2|256|fixed            recheck 1.463e-02 | 6.936e-03   study n/a   LBFGS<Adam: True  t_arm=31s
+  laplace2d|grid|0|256|fixed             recheck 4.655e-02 | 2.341e-04   study 4.864e-03 | 2.713e-04   LBFGS<Adam: True  t_arm=50s
+  laplace2d|random|0|256|fixed           recheck 7.392e-03 | 2.228e-04   study 4.691e-03 | 3.310e-04   LBFGS<Adam: True  t_arm=49s
+  laplace2d|grid|1|256|fixed             recheck 5.616e-03 | 3.486e-04   study 5.658e-03 | 3.240e-04   LBFGS<Adam: True  t_arm=47s
+  laplace2d|random|1|256|fixed           recheck 4.554e-03 | 4.766e-04   study 4.305e-03 | 7.893e-04   LBFGS<Adam: True  t_arm=50s
+  laplace2d|grid|2|256|fixed             recheck 1.760e-03 | 2.850e-04   study 2.132e-03 | 4.028e-04   LBFGS<Adam: True  t_arm=65s
+  laplace2d|random|2|256|fixed           recheck 4.395e-03 | 5.116e-04   study 6.093e-03 | 4.941e-04   LBFGS<Adam: True  t_arm=46s
+  wave2d|random|0|512|fixed              recheck 2.685e-01 | 8.416e-02   study 2.700e-01 | 8.155e-02   LBFGS<Adam: True  t_arm=36s
+  laplace3d|sobol|0|512|fixed            recheck 1.432e-01 | 3.899e-02   study 1.334e-01 | 3.791e-02   LBFGS<Adam: True  t_arm=50s
+  wave1d|random|0|1024|fixed             recheck 4.673e-01 | 4.450e-01   study 4.674e-01 | 4.448e-01   LBFGS<Adam: True  t_arm=60s
+  laplace2d|random|0|256|resample        recheck 1.066e-02 | 4.789e-04   study 3.473e-02 | 3.690e-04   LBFGS<Adam: True  t_arm=64s
+  laplace2d|random|1|256|resample        recheck 1.530e-02 | 9.068e-04   study 1.787e-02 | 8.137e-04   LBFGS<Adam: True  t_arm=69s
+  laplace2d|random|2|256|resample        recheck 1.846e-02 | 4.787e-04   study 1.525e-02 | 3.985e-04   LBFGS<Adam: True  t_arm=52s
+  heat1d|sobol|0|256|fixed               recheck 8.462e-02 | 1.300e-03   study 3.148e-02 | 1.358e-03   LBFGS<Adam: True  t_arm=27s
+  heat1d|sobol|1|256|fixed               recheck 9.670e-03 | 1.156e-03   study 4.050e-03 | 1.102e-03   LBFGS<Adam: True  t_arm=23s
+  heat1d|sobol|2|256|fixed               recheck 5.878e-03 | 1.173e-03   study 6.081e-02 | 1.236e-03   LBFGS<Adam: True  t_arm=25s
+  laplace2d|sobol|0|256|fixed            recheck 2.001e-02 | 2.399e-04   study 7.075e-03 | 2.051e-04   LBFGS<Adam: True  t_arm=83s
+  laplace2d|sobol|1|256|fixed            recheck 5.962e-03 | 2.920e-04   study 5.775e-03 | 2.310e-04   LBFGS<Adam: True  t_arm=55s
+  laplace2d|sobol|2|256|fixed            recheck 1.911e-03 | 4.568e-04   study 2.531e-03 | 4.255e-04   LBFGS<Adam: True  t_arm=62s
+  heat1d|grid|3|256|fixed                recheck 1.181e-02 | 2.018e-03   study 3.098e-02 | 1.931e-03   LBFGS<Adam: True  t_arm=26s
+  heat1d|random|3|256|fixed              recheck 1.429e-02 | 1.934e-03   study 1.139e-02 | 1.770e-03   LBFGS<Adam: True  t_arm=25s
+  heat1d|nodegrid|3|256|fixed            recheck 9.062e-02 | 1.840e-03   study n/a   LBFGS<Adam: True  t_arm=31s
+  heat1d|grid|4|256|fixed                recheck 6.640e-02 | 8.772e-03   study 1.825e-02 | 8.769e-03   LBFGS<Adam: True  t_arm=24s
+  heat1d|random|4|256|fixed              recheck 1.109e-02 | 1.302e-03   study 1.498e-02 | 1.435e-03   LBFGS<Adam: True  t_arm=35s
+  heat1d|nodegrid|4|256|fixed            recheck 1.257e-02 | 1.657e-03   study n/a   LBFGS<Adam: True  t_arm=29s
+  heat1d|grid|5|256|fixed                recheck 3.744e-02 | 7.600e-03   study 8.600e-02 | 7.675e-03   LBFGS<Adam: True  t_arm=37s
+  heat1d|random|5|256|fixed              recheck 2.050e-02 | 1.613e-03   study 2.166e-02 | 1.567e-03   LBFGS<Adam: True  t_arm=27s
+  heat1d|nodegrid|5|256|fixed            recheck 1.543e-02 | 8.440e-04   study n/a   LBFGS<Adam: True  t_arm=26s
+  heat1d|grid|0|1024|fixed               recheck 7.831e-03 | 1.098e-03   study n/a   LBFGS<Adam: True  t_arm=65s
+  heat1d|random|0|1024|fixed             recheck 1.108e-02 | 1.288e-03   study n/a   LBFGS<Adam: True  t_arm=46s
+  heat1d|grid|1|1024|fixed               recheck 8.947e-02 | 8.192e-04   study n/a   LBFGS<Adam: True  t_arm=51s
+  heat1d|random|1|1024|fixed             recheck 4.525e-03 | 8.083e-04   study n/a   LBFGS<Adam: True  t_arm=66s
+L-BFGS arm better than Adam arm in 39 of 40 of the re-check runs
+re-check/study Adam->L-BFGS error, identical configs: n=27 geo ratio 0.98, range 0.60-1.26
+heat1d N=256, Adam->L-BFGS
+  cell-grid/random     geo ratio 3.94 per-seed [3.15, 13.48, 2.65, 1.04, 6.74, 4.71] better 0/6 wilcoxon p=0.031
+  node-grid/random     geo ratio 1.26 per-seed [1.08, 1.13, 5.2, 0.95, 1.27, 0.52] better 2/6 wilcoxon p=0.438
+  node-grid/cell-grid  geo ratio 0.32 per-seed [0.34, 0.08, 1.96, 0.91, 0.19, 0.11] better 5/6 wilcoxon p=0.094
+  means: cell-grid 6.82e-03 +- 3.98e-03, random 1.50e-03 +- 3.65e-04, node-grid 2.40e-03 +- 2.27e-03
+  sobol/random seeds0-2 [0.7  1.18 0.88] geo 0.9
+laplace2d N=256
+  grid [0.0002341  0.0003486  0.00028498] random [0.00022276 0.00047664 0.00051159] sobol [0.00023986 0.00029197 0.00045679]
+  grid/random [1.05 0.73 0.56] geo 0.75 | sobol/random [1.08 0.61 0.89] geo 0.84
+  Adam arm: resample/fixed-random [1.44 3.36 4.2 ] geo 2.73
+heat N=1024: {'heat1d|grid|0|1024|fixed': 0.0011, 'heat1d|random|0|1024|fixed': 0.00129, 'heat1d|grid|1|1024|fixed': 0.00082, 'heat1d|random|1|1024|fixed': 0.00081}

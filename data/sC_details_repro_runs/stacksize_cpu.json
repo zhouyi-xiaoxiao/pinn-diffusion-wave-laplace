@@ -1,0 +1,46 @@
+{
+ "device": "cpu",
+ "problem": "heat1d",
+ "n_r": 256,
+ "n_adam": 600,
+ "branch_at": 300,
+ "network": "(random, seed 0)",
+ "torch_version": "2.14.1",
+ "stacks": {
+  "A: (random,0), (random,1)": {
+   "stack_size": 2,
+   "adam_rel_l2": 0.10724145661190294,
+   "adam_final_loss": 0.005216436460614204,
+   "adam_lbfgs_rel_l2": 0.013030212083928789,
+   "adam_lbfgs_final_loss": 0.00016494473675265908
+  },
+  "B: (random,0), (grid,5)": {
+   "stack_size": 2,
+   "adam_rel_l2": 0.10724145661190294,
+   "adam_final_loss": 0.005216436460614204,
+   "adam_lbfgs_rel_l2": 0.013030212083928789,
+   "adam_lbfgs_final_loss": 0.00016494473675265908
+  },
+  "C: (random,0), (random,1), (grid,5), (sobol,2), (sobol,3)": {
+   "stack_size": 5,
+   "adam_rel_l2": 0.10724145661190294,
+   "adam_final_loss": 0.005216436460614204,
+   "adam_lbfgs_rel_l2": 0.013030212083928789,
+   "adam_lbfgs_final_loss": 0.00016494473675265908
+  },
+  "D: (grid,5), (random,0)": {
+   "stack_size": 2,
+   "adam_rel_l2": 0.10724145661190294,
+   "adam_final_loss": 0.005216436460614204,
+   "adam_lbfgs_rel_l2": 0.013030212083928789,
+   "adam_lbfgs_final_loss": 0.00016494473675265908
+  },
+  "A again": {
+   "stack_size": 2,
+   "adam_rel_l2": 0.10724145661190294,
+   "adam_final_loss": 0.005216436460614204,
+   "adam_lbfgs_rel_l2": 0.013030212083928789,
+   "adam_lbfgs_final_loss": 0.00016494473675265908
+  }
+ }
+}

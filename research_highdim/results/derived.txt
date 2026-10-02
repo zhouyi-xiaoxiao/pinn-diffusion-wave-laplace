@@ -1,0 +1,49 @@
+--- log-log slope of geo-mean test error vs d (error ~ d^p)
+laplace  pinn rel_l2           p(2..10)= 0.48  p(2..20)= 0.86  err(10)/err(2)=  2.15  err(20)/err(2)=   7.96
+laplace  pinn rel_l2_centered  p(2..10)= 0.86  p(2..20)= 1.28  err(10)/err(2)=  3.86  err(20)/err(2)=  19.51
+laplace  pinn rel_h1semi       p(2..10)= 0.73  p(2..20)= 1.06  err(10)/err(2)=  3.16  err(20)/err(2)=  12.00
+laplace  ritz rel_l2           p(2..10)= 0.01  p(2..20)= 0.41  err(10)/err(2)=  1.02  err(20)/err(2)=   2.48
+laplace  ritz rel_l2_centered  p(2..10)= 0.39  p(2..20)= 0.83  err(10)/err(2)=  1.83  err(20)/err(2)=   6.08
+laplace  ritz rel_h1semi       p(2..10)= 0.29  p(2..20)= 0.65  err(10)/err(2)=  1.60  err(20)/err(2)=   4.46
+poisson  pinn rel_l2           p(2..10)= 1.71  p(2..20)= 1.92  err(10)/err(2)= 16.59  err(20)/err(2)= 112.23
+poisson  pinn rel_l2_centered  p(2..10)= 1.71  p(2..20)= 1.92  err(10)/err(2)= 16.59  err(20)/err(2)= 112.23
+poisson  pinn rel_h1semi       p(2..10)= 1.52  p(2..20)= 1.72  err(10)/err(2)= 12.13  err(20)/err(2)=  68.36
+poisson  ritz rel_l2           p(2..10)= 1.46  p(2..20)= 1.35  err(10)/err(2)= 12.74  err(20)/err(2)=  22.36
+poisson  ritz rel_l2_centered  p(2..10)= 1.46  p(2..20)= 1.35  err(10)/err(2)= 12.74  err(20)/err(2)=  22.36
+poisson  ritz rel_h1semi       p(2..10)= 1.22  p(2..20)= 1.21  err(10)/err(2)=  8.23  err(20)/err(2)=  16.97
+--- PINN vs Ritz at equal iterations: ratio of mean rel-L2 (Ritz/PINN), and do the 3-seed ranges overlap?
+laplace  d= 2: Ritz/PINN =  3.10   ranges overlap: False
+laplace  d= 3: Ritz/PINN =  2.11   ranges overlap: False
+laplace  d= 5: Ritz/PINN =  1.46   ranges overlap: False
+laplace  d=10: Ritz/PINN =  1.50   ranges overlap: False
+laplace  d=20: Ritz/PINN =  0.99   ranges overlap: True
+poisson  d= 2: Ritz/PINN =  4.29   ranges overlap: False
+poisson  d= 3: Ritz/PINN =  3.76   ranges overlap: False
+poisson  d= 5: Ritz/PINN =  1.62   ranges overlap: False
+poisson  d=10: Ritz/PINN =  3.45   ranges overlap: False
+poisson  d=20: Ritz/PINN =  0.88   ranges overlap: False
+--- CPU ms/iter in the main runs (mean over 3 seeds x 2 problems; load-contaminated, see benchmark)
+ritz d= 2:  4.09  [3.64, 4.69]
+ritz d= 3:  4.03  [3.41, 5.03]
+ritz d= 5:  4.52  [3.88, 5.96]
+ritz d=10:  4.18  [3.50, 5.03]
+ritz d=20:  4.66  [4.10, 5.23]
+pinn d= 2:  6.18  [5.41, 6.79]
+pinn d= 3:  7.08  [6.26, 9.34]
+pinn d= 5:  8.13  [6.82, 9.84]
+pinn d=10:  9.62  [8.87, 11.67]
+pinn d=20: 17.13  [17.02, 17.25]
+--- plateau: validation rel-L2 at selected iterations (mean over seeds)
+laplace  pinn d=10: 250:0.143  500:0.125  1000:0.049  1500:0.020  2000:0.019  3000:0.013  4000:0.012
+laplace  pinn d=20: 250:0.111  500:0.105  1000:0.094  1500:0.070  2000:0.057  3000:0.047  4000:0.047
+laplace  ritz d=10: 250:0.143  500:0.124  1000:0.059  1500:0.036  2000:0.023  3000:0.019  4000:0.019
+laplace  ritz d=20: 250:0.111  500:0.105  1000:0.093  1500:0.069  2000:0.052  3000:0.046  4000:0.046
+poisson  pinn d=10: 250:0.129  500:0.149  1000:0.128  1500:0.071  2000:0.037  3000:0.023  4000:0.022
+poisson  pinn d=20: 250:0.129  500:0.130  1000:0.160  1500:0.156  2000:0.150  3000:0.144  4000:0.144
+poisson  ritz d=10: 250:0.143  500:0.141  1000:0.138  1500:0.137  2000:0.098  3000:0.078  4000:0.076
+poisson  ritz d=20: 250:0.131  500:0.132  1000:0.136  1500:0.133  2000:0.131  3000:0.127  4000:0.127
+--- boundary vs interior: rel-L2 on the boundary / rel-L2 in the interior (mean of seeds)
+laplace  pinn: d=2:0.79  d=3:1.14  d=5:1.28  d=10:1.23  d=20:1.10
+laplace  ritz: d=2:0.65  d=3:0.88  d=5:1.09  d=10:1.01  d=20:1.05
+poisson  pinn: d=2:2.11  d=3:1.83  d=5:1.38  d=10:1.27  d=20:1.09
+poisson  ritz: d=2:0.77  d=3:0.83  d=5:0.87  d=10:0.99  d=20:1.05

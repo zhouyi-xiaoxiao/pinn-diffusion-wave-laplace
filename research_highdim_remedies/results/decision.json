@@ -1,0 +1,443 @@
+{
+ "rule": "PREREG_C1.md section 7",
+ "per_problem": {
+  "presolve/P1": {
+   "verdict": "HELPS",
+   "detail": {
+    "ritz": {
+     "at4000": {
+      "median": 2.6694943788924443,
+      "min": 1.673110603262736,
+      "max": 3.4047850352741267,
+      "wins": 5,
+      "n": 5
+     },
+     "cond4000": true,
+     "eqcpu": {
+      "median": 2.6694943788924443,
+      "min": 1.673110603262736,
+      "max": 3.4047850352741267,
+      "wins": 5,
+      "n": 5
+     },
+     "condeq": true,
+     "eq_source": "4000-it runs (CPU ratio 1.017 <= 1.05)",
+     "hurts_here": false
+    },
+    "pinn": {
+     "at4000": {
+      "median": 2.854491490481974,
+      "min": 1.7246739910657158,
+      "max": 3.8357982295996518,
+      "wins": 5,
+      "n": 5
+     },
+     "cond4000": true,
+     "eqcpu": {
+      "median": 2.854491490481974,
+      "min": 1.7246739910657158,
+      "max": 3.8357982295996518,
+      "wins": 5,
+      "n": 5
+     },
+     "condeq": true,
+     "eq_source": "4000-it runs (CPU ratio 0.959 <= 1.05)",
+     "hurts_here": false
+    }
+   },
+   "feature_matched": false,
+   "complete": true
+  },
+  "presolve/P2": {
+   "verdict": "NEUTRAL/MIXED",
+   "detail": {
+    "ritz": {
+     "at4000": {
+      "median": 0.9979843550925049,
+      "min": 0.9963511984721181,
+      "max": 1.0022835909228762,
+      "wins": 2,
+      "n": 5
+     },
+     "cond4000": false,
+     "eqcpu": {
+      "median": 0.9979843550925049,
+      "min": 0.9963511984721181,
+      "max": 1.0022835909228762,
+      "wins": 2,
+      "n": 5
+     },
+     "condeq": false,
+     "eq_source": "4000-it runs (CPU ratio 1.008 <= 1.05)",
+     "hurts_here": false
+    },
+    "pinn": {
+     "at4000": {
+      "median": 0.9413422089501144,
+      "min": 0.9086324343557061,
+      "max": 0.9815659901465399,
+      "wins": 0,
+      "n": 5
+     },
+     "cond4000": false,
+     "eqcpu": {
+      "median": 0.9413422089501144,
+      "min": 0.9086324343557061,
+      "max": 0.9815659901465399,
+      "wins": 0,
+      "n": 5
+     },
+     "condeq": false,
+     "eq_source": "4000-it runs (CPU ratio 1.031 <= 1.05)",
+     "hurts_here": false
+    }
+   },
+   "feature_matched": true,
+   "complete": true
+  },
+  "presolve/P3": {
+   "verdict": "HURTS",
+   "detail": {
+    "ritz": {
+     "at4000": {
+      "median": 0.6640068564268351,
+      "min": 0.1438504561179841,
+      "max": 0.8686287503583351,
+      "wins": 0,
+      "n": 5
+     },
+     "cond4000": false,
+     "eqcpu": {
+      "median": 0.5900429660835274,
+      "min": 0.14214029929217886,
+      "max": 0.7979943032800231,
+      "wins": 0,
+      "n": 5
+     },
+     "condeq": false,
+     "eq_source": "eqcpu runs ({'iters': 3700, 'median_cpu_plain': 8.293858000002786, 'median_cpu_total_presolve': 8.971142999999074, 'ratio': 1.0816610315725277})",
+     "hurts_here": true
+    },
+    "pinn": {
+     "at4000": {
+      "median": 0.7947618688481412,
+      "min": 0.6317212836644203,
+      "max": 0.9777869428144884,
+      "wins": 0,
+      "n": 5
+     },
+     "cond4000": false,
+     "eqcpu": {
+      "median": 0.7947618688481412,
+      "min": 0.6317212836644203,
+      "max": 0.9777869428144884,
+      "wins": 0,
+      "n": 5
+     },
+     "condeq": false,
+     "eq_source": "4000-it runs (CPU ratio 0.997 <= 1.05)",
+     "hurts_here": true
+    }
+   },
+   "feature_matched": false,
+   "complete": true
+  },
+  "presolve/P4": {
+   "verdict": "NEUTRAL/MIXED",
+   "detail": {
+    "ritz": {
+     "at4000": {
+      "median": 1.0,
+      "min": 1.0,
+      "max": 1.0,
+      "wins": 0,
+      "n": 5
+     },
+     "cond4000": false,
+     "eqcpu": {
+      "median": 1.0,
+      "min": 1.0,
+      "max": 1.0,
+      "wins": 0,
+      "n": 5
+     },
+     "condeq": false,
+     "eq_source": "4000-it runs (CPU ratio 0.986 <= 1.05)",
+     "hurts_here": false
+    },
+    "pinn": {
+     "at4000": {
+      "median": 1.0,
+      "min": 1.0,
+      "max": 1.0,
+      "wins": 0,
+      "n": 5
+     },
+     "cond4000": false,
+     "eqcpu": {
+      "median": 1.0,
+      "min": 1.0,
+      "max": 1.0,
+      "wins": 0,
+      "n": 5
+     },
+     "condeq": false,
+     "eq_source": "4000-it runs (CPU ratio 1.017 <= 1.05)",
+     "hurts_here": false
+    }
+   },
+   "feature_matched": false,
+   "complete": true
+  },
+  "lift3c/P1": {
+   "verdict": "HELPS",
+   "detail": {
+    "ritz": {
+     "at4000": {
+      "median": 2.328080853441599,
+      "min": 2.083414177016964,
+      "max": 2.6582376094584657,
+      "wins": 5,
+      "n": 5
+     },
+     "cond4000": true,
+     "eqcpu": {
+      "median": 1.8463816553951986,
+      "min": 1.6666559662003335,
+      "max": 2.125844969137096,
+      "wins": 5,
+      "n": 5
+     },
+     "condeq": true,
+     "eq_source": "eqcpu runs",
+     "hurts_here": false
+    },
+    "pinn": {
+     "at4000": {
+      "median": 2.8597439906583486,
+      "min": 2.631558442817176,
+      "max": 3.363853542035678,
+      "wins": 5,
+      "n": 5
+     },
+     "cond4000": true,
+     "eqcpu": {
+      "median": 2.5439850276789815,
+      "min": 2.340920181264154,
+      "max": 3.010733442781449,
+      "wins": 5,
+      "n": 5
+     },
+     "condeq": true,
+     "eq_source": "eqcpu runs",
+     "hurts_here": false
+    }
+   },
+   "feature_matched": false,
+   "complete": true
+  },
+  "lift3c/P2": {
+   "verdict": "HELPS",
+   "detail": {
+    "ritz": {
+     "at4000": {
+      "median": 6.593779970284024,
+      "min": 6.485644204536284,
+      "max": 6.694144912363064,
+      "wins": 5,
+      "n": 5
+     },
+     "cond4000": true,
+     "eqcpu": {
+      "median": 6.224655070359074,
+      "min": 6.150669241167579,
+      "max": 6.279894263401169,
+      "wins": 5,
+      "n": 5
+     },
+     "condeq": true,
+     "eq_source": "eqcpu runs",
+     "hurts_here": false
+    },
+    "pinn": {
+     "at4000": {
+      "median": 14.595072838893499,
+      "min": 10.34551939518909,
+      "max": 15.050322289074998,
+      "wins": 5,
+      "n": 5
+     },
+     "cond4000": true,
+     "eqcpu": {
+      "median": 13.333330507667885,
+      "min": 9.52500174140041,
+      "max": 13.993089095518275,
+      "wins": 5,
+      "n": 5
+     },
+     "condeq": true,
+     "eq_source": "eqcpu runs",
+     "hurts_here": false
+    }
+   },
+   "feature_matched": true,
+   "complete": true
+  },
+  "lift3c/P3": {
+   "verdict": "HELPS",
+   "detail": {
+    "ritz": {
+     "at4000": {
+      "median": 2.2729475752408117,
+      "min": 2.1178749758039963,
+      "max": 2.7526808310111415,
+      "wins": 5,
+      "n": 5
+     },
+     "cond4000": true,
+     "eqcpu": {
+      "median": 1.9078939376543744,
+      "min": 1.728172545305344,
+      "max": 2.2606733878630463,
+      "wins": 5,
+      "n": 5
+     },
+     "condeq": true,
+     "eq_source": "eqcpu runs",
+     "hurts_here": false
+    },
+    "pinn": {
+     "at4000": {
+      "median": 1.765890822166097,
+      "min": 1.447129248144134,
+      "max": 1.8252789295608527,
+      "wins": 5,
+      "n": 5
+     },
+     "cond4000": true,
+     "eqcpu": {
+      "median": 1.6616989754773062,
+      "min": 1.3864939164520298,
+      "max": 1.7421602760863497,
+      "wins": 5,
+      "n": 5
+     },
+     "condeq": true,
+     "eq_source": "eqcpu runs",
+     "hurts_here": false
+    }
+   },
+   "feature_matched": false,
+   "complete": true
+  },
+  "lift3c/P4": {
+   "verdict": "HELPS",
+   "detail": {
+    "ritz": {
+     "at4000": {
+      "median": 2.827207434771485,
+      "min": 2.511528917635285,
+      "max": 2.944130146131261,
+      "wins": 5,
+      "n": 5
+     },
+     "cond4000": true,
+     "eqcpu": {
+      "median": 2.5615436404610614,
+      "min": 2.247603568886791,
+      "max": 2.6663146063624223,
+      "wins": 5,
+      "n": 5
+     },
+     "condeq": true,
+     "eq_source": "eqcpu runs",
+     "hurts_here": false
+    },
+    "pinn": {
+     "at4000": {
+      "median": 4.016799527780729,
+      "min": 3.830917617267623,
+      "max": 4.233178340891449,
+      "wins": 5,
+      "n": 5
+     },
+     "cond4000": true,
+     "eqcpu": {
+      "median": 3.8547739664573126,
+      "min": 3.66724725558446,
+      "max": 4.05693269255005,
+      "wins": 5,
+      "n": 5
+     },
+     "condeq": true,
+     "eq_source": "eqcpu runs",
+     "hurts_here": false
+    }
+   },
+   "feature_matched": false,
+   "complete": true
+  }
+ },
+ "complete": true,
+ "general_presolve": "PROBLEM-SPECIFIC (every cell shown)",
+ "general_lift3c": "GENERAL REMEDY",
+ "centring_clause": {
+  "lift3c": {
+   "wins": 5,
+   "losses": 0,
+   "median": 2.328080853441599
+  },
+  "lift3u": {
+   "wins": 0,
+   "losses": 5,
+   "median": 0.5230980563312748
+  },
+  "triggered": true,
+  "consequence": "P1 lift effect attributed to input centring/scale; no statement about Legendre features on P1"
+ },
+ "rep3_P1_descriptive": {
+  "median": 0.8802021775039269,
+  "min": 0.8064253025975882,
+  "max": 0.9885586179947161,
+  "wins": 0,
+  "n": 5
+ },
+ "failure_flags": {
+  "neither_helps_on_P3_or_P4": false,
+  "presolve_P1_gain_disappears_at_equal_cpu": false,
+  "repro_failed": false
+ },
+ "stall": {
+  "verdict": "CONFIRMED",
+  "gamma_plain": [
+   0.901527609136667,
+   0.9289558603415147,
+   0.8411774059464491
+  ],
+  "gamma_presolve": [
+   0.05409227486269029,
+   -5.827815240521012e-07,
+   -4.582143272075866e-07
+  ],
+  "rel_l2_plain": [
+   0.04764128476381302,
+   0.06450997292995453,
+   0.059379320591688156
+  ],
+  "rel_l2_presolve": [
+   0.12399940192699432,
+   0.12654243409633636,
+   0.12656867504119873
+  ],
+  "T_half_plain": [
+   8450,
+   8750,
+   8500
+  ],
+  "T_half_presolve": [
+   null,
+   null,
+   null
+  ]
+ }
+}

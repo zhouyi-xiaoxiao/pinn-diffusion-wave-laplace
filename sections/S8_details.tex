@@ -1,0 +1,554 @@
+% =====================================================================================
+% sections/S8_details.tex -- Supplementary Section S8: implementation details, validation, full
+% tables, reproducibility and verification.  All `% src:` paths are relative to the root of the
+% repository.
+% The tabular environments between the markers "%% BEGIN GENERATED <name>" and
+% "%% END GENERATED <name>" are written by code/sC_details_tables.py from the stored
+% result files and from the code of the experiments (Table sC_details:tab:controls by
+% code/s6_highdim_remedies.py).  Do not edit them by hand: re-run the script.  Every number in the
+% prose is in data/sC_details_numbers.json (same script).
+% Labels keep the prefix sC_details: (sec, sec:settings, sec:validation, sec:tables, sec:repro,
+% sec:verification, tab:hyper, tab:full, tab:paired, tab:optim, tab:fdconv, tab:cost, tab:controls).
+% =====================================================================================
+\section{Implementation details, validation and full tables}
+\label{sC_details:sec}
+
+This section lists the settings of every experiment, validates the driver that trains
+many networks at once, gives the complete tables behind Sections~\ref{s4_lowdim:sec}
+and~\ref{s5_hard:sec}, and records what is reproducible and what was re-checked. Its
+tables follow the text.
+
+% -------------------------------------------------------------------------------------
+\subsection{Settings of the experiments}\label{sC_details:sec:settings}
+
+Table~\ref{sC_details:tab:hyper} covers Sections~\ref{s4_lowdim:sec}--\ref{s7_pitfalls:sec}. The script that writes it imports network sizes, point
+sets and iteration counts from the released code, reads seeds, stack sizes and devices
+from the stored run records, and stops if a script no longer contains a setting that the
+table prints.
+% src: code/sC_details_tables.py; data/sC_details_numbers.json (lowdim_config, highdim_config, further_experiments, oneface)
+
+Single networks are trained with the \LBFGS~\citep{liu1989} of
+PyTorch~\citep{paszke2019} (strong-Wolfe line search, memory 50).
+% src: research_benchmark/pinnbench/core.py (run_single: torch.optim.LBFGS arguments)
+Stacks use our own version: one two-loop history per network; Armijo backtracking with
+constant $10^{-4}$, the step of a network being halved until that network accepts it (at
+most 20 trials); and a curvature pair $(s,y)$ stored only if
+$y\cdot s>10^{-10}\norm{y}\,\norm{s}$. In exact arithmetic nothing couples the networks of
+a stack; in floating point it does, through rounding (Section~\ref{sC_details:sec:repro}).
+% src: research_benchmark/pinnbench/core.py (batched_lbfgs: memory=50, c1=1e-4, max_ls=20; cautious update)
+
+% -------------------------------------------------------------------------------------
+\subsection{Validation of the stacked driver}\label{sC_details:sec:validation}
+
+The 175 networks of the benchmark were trained in six stacks. The loss of a stack is the
+sum of the losses of its $S$ networks and \Adam~\citep{kingma2015} treats every parameter
+separately, so in exact arithmetic one \Adam\ run on a stack is $S$ independent runs.
+Three checks cover rounding and \LBFGS.
+
+\emph{Loss.} For all five problems the loss assembled in one forward pass equals its
+term-by-term evaluation, and the loss of a stack of three networks equals the
+single-network loss (largest relative difference 0).
+% src: research_benchmark/checks/verify_losses.out; research_benchmark/scripts/verify_losses.py
+
+\emph{Adam.} On \PH\ and \PLtwo\ ($\Nr=1024$, five strategies, seeds 0 and 1: 20
+configurations, CPU) the training losses of the stacked and the single-network run differ
+relatively by 0 at iteration 1, by at most $\sci{6.6}{-8}$ at iteration 50 and by at most
+$\sci{1.5}{-7}$ at iteration 100.
+% src: research_benchmark/results/validate_batched.json (adam_loss_reldiff_it1, _it50, _it100); data/sC_details_numbers.json (validation)
+Rounding then separates the trajectories: after 600 iterations the ratio of the two
+final errors $\errL$ lies between 0.72 and 1.88.
+% src: research_benchmark/results/validate_batched.json (adam_rel_l2_batched, adam_rel_l2_single)
+
+\emph{\LBFGS.} In the same configurations, 300 iterations of the stacked \LBFGS\ were
+compared with 300 iterations of that of PyTorch, each from its own \Adam\ state at
+iteration 300. The ratio of the final errors $\errL$, stacked over single, has geometric
+mean 1.10 (range 0.94 to 1.25) on \PH\ and 1.04 (0.87 to 1.37) on \PLtwo: the stacked
+version is 4 to 10 per cent less accurate in geometric mean, a difference smaller than
+the spread that rounding alone produced under \Adam.
+% src: research_benchmark/results/validate_batched.json (lbfgs_rel_l2_batched, lbfgs_rel_l2_single)
+
+These checks have two limits: they used $\Nr=1024$ and $300+300$ iterations, and they
+were run before the loss was re-assembled into one forward pass (the first check shows
+that the re-assembly leaves the loss unchanged).
+% src: data/checks/study_records.json (benchmark.validation_predates_single_pass_loss); notes/VERIFICATION.md (sec. 2.6, validation of the stacked driver); research_benchmark/checks/verify_losses.out
+At the settings of the benchmark, whose runs used the re-assembled loss, the verification
+code \textsf{V-bench} of Section~\ref{sC_details:sec:verification} (one network, CPU, different
+derivative code, the \LBFGS\ of PyTorch) shares 27 configurations with the stacked
+driver; the ratio of its \AdamLBFGS\ errors to those of the stacked driver has geometric
+mean 0.98 (range 0.60 to 1.26).
+% src: verify_research_benchmark/v_summary.out (identical configs: n=27 geo ratio 0.98, range 0.60-1.26); verify_research_benchmark/v_runs.json, v_runs_extra.json; research_benchmark/results/benchmark_runs.csv; notes/VERIFICATION.md (sec. 2.6: single-pass loss introduced before the stored benchmark blocks; the earlier heat block is in runs_superseded/)
+
+% -------------------------------------------------------------------------------------
+\subsection{Full tables}\label{sC_details:sec:tables}
+
+Table~\ref{sC_details:tab:full} adds the geometric means and the $L^\infty$ errors to
+Table~\ref{s4_lowdim:tab:main}. Table~\ref{sC_details:tab:paired} gives every paired
+comparison of a strategy with \strat{random} and the per-seed test of the optimiser arms
+(Section~\ref{s3_methods:sec:stats}). Table~\ref{sC_details:tab:fdconv} is the convergence
+study of the finite-difference baselines: the observed order is 1.99 to 2.01 for \PH,
+\PWone, \PWtwo\ and \PLtwo, and 1.97, 2.70 and 1.89 for \PLthree\
+(Section~\ref{s5_hard:sec}).
+% src: research_benchmark/results/classical.csv (observed_order_rel_l2)
+
+Table~\ref{sC_details:tab:cost} keeps three time measurements apart. Measurement~A timed
+400 \Adam\ and 200 \LBFGS\ iterations of the single-network reference driver on four CPU
+threads and scaled them to $1500+1500$, while the load average of the 12-core machine
+rose from 95 to 167.
+% src: research_benchmark/results/timing_single.json (loadavg_start, loadavg_end); research_benchmark/scripts/time_single.py
+Measurement~B is the time of the 36 runs of \textsf{V-bench} at the
+benchmark's $\Nr$, at a load average of about 20 to 45; 12 of them (on \PH\ and \PLtwo)
+stopped on the \LBFGS\ tolerance before iteration 1500, the earliest after 1178
+iterations.
+% src: verify_research_benchmark/v_runs.json, v_runs_extra.json (adam_lbfgs.time, lbfgs_iters, nfev); data/checks/machine_load.json (lowdim_verification_runs_B); data/sC_details_numbers.json (verifier_lowdim.B)
+Measurement~C is the training time of the \AdamLBFGS\ arm of the GPU stacks that produced
+the errors of the benchmark, divided by the number of networks in the stack (25 or 50):
+6.9 to 13.9~s per network. It is reached only when that many networks are trained at once,
+and the load during these runs was not recorded.
+% src: research_benchmark/results/runs/*_s*-*.json (timing: t_adam_to_branch, t_lbfgs_total, batch_size); data/sC_details_numbers.json (cost_summary.run_C_range_s)
+A is 5.1 to 8.3 times the median of B, and no timing was repeated for this article. The
+ratio of the PINN time to that of the cheapest finite-difference solve of at least its
+accuracy is $\sci{1.7}{4}$ to $\sci{7.7}{5}$ with A, $\sci{1.9}{3}$ to $\sci{1.3}{5}$
+with B and $\sci{4.8}{2}$ to $\sci{2.1}{4}$ with C; Section~\ref{s5_hard:sec} quotes all
+three.
+% src: data/sC_details_numbers.json (cost, cost_summary), computed from timing_single.json, classical.csv, v_runs*.json and the run files of the benchmark
+
+% -------------------------------------------------------------------------------------
+\subsection{Reproducibility}\label{sC_details:sec:repro}
+
+\emph{Seeds.} In the low-dimensional experiments the seed $s$ initialises the generator
+of PyTorch before the network is built and, as the pair $(s,7919)$, the NumPy generator
+of the point sets; the strategies and arms of a seed thus share an initial network. In
+$d$ dimensions $s$ fixes the network and $1000+s$ the training points, for both methods
+alike; the weights $\lam$ and $\bet$ were chosen with seed 100.
+% src: research_benchmark/pinnbench/core.py (torch.manual_seed(seed)); research_benchmark/pinnbench/samplers.py (default_rng([seed, 7919])); research_highdim/scripts/hd_core.py (train); research_highdim/results/sweep.csv
+
+\emph{Bit-level reproducibility.} The single-thread CPU runs of
+Section~\ref{s6_highdim:sec} are reproducible bit for bit: the verification
+repeated seven of them, one of 16\,000 iterations, and recovered the stored $\errL$ to
+all ten printed digits.
+% src: verify_research_highdim/results/v_determinism.txt (7 lines, reldiff 0.00e+00); notes/VERIFICATION.md (sec. 3.1, V6 and V16)
+% src: data/sC_details_repro.json, data/sC_details_repro.txt (reruns: heat 300 of 300, wave2d 150 of 150, gridcontrol_B 120 of 120 final values identical; curves identical; L-BFGS evaluations 10918, 2755, 3652 recovered), code/sC_details_repro.py
+The stacked runs, in single precision on the GPU backend, are also reproducible bit for bit
+on the machine used. Three stacks were repeated with unchanged code: the
+benchmark stacks of \PH\ (50 networks) and \PWtwo\ (25 networks), and stack B of the control
+experiment of Section~\ref{s4_lowdim:sec:strategy} (20 networks). Every stored final value (300, 150 and 120 of them), every logged curve and
+the number of loss evaluations of \LBFGS\ were recovered exactly.
+% src: data/sC_details_repro.json (gridcontrol_stack_A_vs_benchmark_heat: Adam arms identical in 20 of 20, L-BFGS arms in 0 of 20, first different logged iteration 1550, final-error ratio 0.72 to 1.09; stack_size: mps 7.818e-2 / 1.080e-2 in stacks of two, 8.464e-2 / 8.586e-3 in the stack of five; cpu identical)
+The result of one network does, however, depend on the stack in which it is trained. Stack
+A of the control experiment (40 networks) and the benchmark stack of \PH\ (50 networks) contain the same 20
+pairs of strategy and seed (\strat{random} and \strat{grid-c}, seeds 0 to 9), trained by the
+same code. Their \Adam\ arms agree bit for bit, but their \LBFGS\ arms differ from the first
+logged iteration after the switch (iteration 1550), and the final errors differ by factors
+0.72 to 1.09. In a direct test (\PH, \strat{random}, seed 0, 300 \Adam\ and 300 \LBFGS\
+iterations) the network gave identical results in three stacks of two networks, with
+different partners and orders, and in a repetition, but not in a stack of five:
+$\errL=\sci{7.82}{-2}$ against $\sci{8.46}{-2}$ after \Adam\ and $\sci{1.08}{-2}$ against
+$\sci{8.59}{-3}$ after \AdamLBFGS. On the CPU all five stacks gave identical results. The
+mechanism, presumably the rounding of operations over the whole stack on the GPU backend,
+was not investigated, and other hardware was not tested. A seed therefore fixes a run only
+together with the size of the stack in which it is trained; the label of one strategy
+effect depends on it (Section~\ref{s4_lowdim:sec:strategy}).
+% src: research_benchmark/results/runs_superseded/heat1d_s0-5_separate-forward-passes.json vs research_benchmark/results/runs/heat1d_s0-10.json; data/sC_details_numbers.json (superseded_heat_block)
+A first block of the heat benchmark (seeds 0 to 4) differs from the stored one in the code
+path (the loss assembled from separate forward passes) and in the stack size (25 networks
+instead of 50), and was superseded by the 10-seed block. For equal seeds the loss at
+iteration 1 is identical in all 25 networks and the final error in none: the ratio of the
+two values of $\errL$ has geometric mean 0.98 (range 0.60 to 1.95) after \AdamLBFGS\ and
+0.76 (0.03 to 9.9) after \Adam. The superseded block enters no result.
+
+\emph{Software and compute.} All runs used Python 3.14.6, PyTorch 2.14.1, NumPy 2.5.3 and
+SciPy~1.18.1~\citep{virtanen2020} under macOS 26.7 on one shared 12-core Apple-silicon
+machine (versions read from the environment when the tables were generated).
+% src: data/sC_details_numbers.json (software: read from the environment by code/sC_details_tables.py); data/checks/study_records.json (benchmark.software_at_run_time: torch 2.14.1, numpy 2.5.3, scipy 1.18.1)
+The six stacks of the benchmark took 241 to 790 s each (2623 s together); the run notes
+put all low-dimensional computations at about 95 minutes, which cannot be re-measured.
+The 88 runs of the dimension study sum to 5051 s of wall-clock time under load. The longer
+runs, the control experiments and the demonstrations of Section~\ref{s7_pitfalls:sec} are not
+included.
+% src: research_benchmark/results/runs/*.json (timing.wall_total_s); data/checks/study_records.json (benchmark.compute_minutes: total about 95); notes/VERIFICATION.md (sec. 2.2: not verifiable; sec. 2.6); research_highdim/results/runs*.jsonl (wall_s); verify_research_highdim/results/v_agg.txt (V3: wall total s 5051)
+
+% -------------------------------------------------------------------------------------
+\subsection{Verification}\label{sC_details:sec:verification}
+
+The benchmark and the dimension study were re-checked with the aim of refuting them, with the
+verification codes \textsf{V-bench} and \textsf{V-dim}, whose scope and limits are stated in
+Section~\ref{s3_methods:sec:verif}; the longer runs, the control experiments and the
+demonstrations listed there are not covered.
+% src: notes/VERIFICATION.md (sec. 2.1); verify_research_benchmark/v_stats.out; v_summary.out; v_fd.out
+For the benchmark, the verification re-aggregated the 350 rows from the raw run files and
+reproduced the statistics of Tables~\ref{sC_details:tab:full} and~\ref{sC_details:tab:paired};
+trained 40 configurations with \textsf{V-bench} (derivatives propagated forward through the
+layers), among them a \strat{grid-n} control; and re-derived the finite-difference errors, except
+those of \PWone, from closed-form solutions of the discrete schemes and from its own sparse
+solver.
+% src: notes/VERIFICATION.md (sec. 3.1: V3, V4, V5, V6, V10, V14 to V16); verify_research_highdim/results/v_reeval.txt
+For the dimension study, it re-aggregated the 88 run records; re-evaluated the 88 stored
+networks on its own 50\,000 test points (largest change of $\errL$: 1.4 per cent; no
+ordering changed); repeated seven runs bit for bit; trained 73 networks with
+\textsf{V-dim} and other seeds; re-measured the cost per iteration at lower load; and
+solved the Robin problem of Observation~\ref{s3_methods:obs:robin} by finite differences.
+% src: notes/VERIFICATION.md (sec. 2.2, 2.3, 3.2 and 3.3)
+No key result was reversed. Where the verification gave a different value, the article reports
+both or states only what both support: \LBFGS\ won 39 of the 40 pairs of \textsf{V-bench}; the strategy effects on \PLtwo, which are smaller in \textsf{V-bench}; the
+finite-difference speed-up of three to five orders of magnitude for a single network; and the
+statements on the mechanism at $d=20$ and on the penalty weights, which are restricted to what both
+codes show (Section~\ref{s6_highdim:sec}). The total compute could not be verified.
+
+% src: notes/VERIFICATION.md (sec. 4); research_highdim_bound/check/out/c5_compare.json; research_highdim_bound/check/out/c4_fresh.jsonl; research_highdim_bound/check/out_r2/r2_fresh.jsonl; research_highdim_remedies/check/reimpl_summary.txt (medians per cell; P5/ritz/d20/rep3 1.21, 2/3); research_highdim_remedies/results/summary_p5.json (P5/d20/ritz/rep3/4000 median 0.9315); research_highdim_remedies/results/summary.json; research_highdim_remedies/check/reimpl2_summary.txt
+The analyses of Sections~\ref{s6_highdim:sec:bound} and~\ref{s6_highdim:sec:remedies} were
+pre-registered and then re-checked in two rounds with separately written code within the same
+project (Section~\ref{s3_methods:sec:verif}); no gap was found in the proofs. The first round
+re-evaluated all 88 networks of the bound (efficiency within $-0.78$ to $+0.61$ per cent of the
+stored values, the same decisions).
+% src: research_highdim_bound/check/out/c4_fresh.jsonl (24 rows, eta 1.974 to 5.187; fields without standard errors); research_highdim_bound/check/c4_fresh_train.py
+It also retrained 24 networks with seeds 11 to 13, on \Ptwo\ and on a harmonic problem outside the
+study at $d=5$ and 10: the bound held in all, with $\eta$ between 1.97 and 5.19 (no standard errors
+were recorded for these networks).
+% src: research_highdim_bound/check/out_r2/r2_fresh.jsonl (21 rows: bound > err in all, min z 92.57, eta per cell, rel_err, iters, lap_check_rel <= 2.2e-15); research_highdim_bound/check/r2_fresh_train.py; data/s6_highdim_bound_numbers.json (recheck_r2: recomputed from r2_fresh.jsonl)
+Its second round retrained 21 further networks with another separately written trainer (its
+forward Laplacian agrees with the trace of the automatic-differentiation Hessian to
+$\sci{2.2}{-15}$ relative) and seeds 31 to 33: \Pone\ at $d=20$ with the PINN, with Deep Ritz and
+with Deep Ritz at the CPU time of the PINN (12\,900 to 14\,600 iterations), \Ptwo\ at $d=2$, and
+the problem $\uex=\sin(\pi d^{-1/2}\sum_ix_i)$, outside the study, at $d=5$. The bound was above
+the error in all 21 networks, by at least 92.5 standard errors, with $\eta$ from 1.92 to 1.93
+(\Pone, PINN, $d=20$), 2.06 to 2.08 (Deep Ritz) and 2.14 to 2.17 (Deep Ritz at equal CPU time),
+8.1 to 11.2 and 9.2 to 18.4 (\Ptwo\ at $d=2$, PINN and Deep Ritz) and 1.63 to 2.68 (the new
+problem). The second round also computed a Rayleigh quotient for the unit square on the harmonic
+side (Section~\ref{S5:sec:square}) and $d\,c(d)$ up to $d=10^6$ without mode
+truncation (Conjecture~\ref{s6_highdim:conj:dc}). For the remedies, the first round retrained Deep
+Ritz (three seeds) on \Pone, \Pridge\ and \Paltridge, with the arms presolve, lift3c, lift3u,
+rep3 and lift1, and the PINN on \Paltridge; its median ratios against plain lie on the same side
+of 1 as those of the study's runs in every cell that both contain, except rep3 for Deep Ritz on
+\Paltridge\ at $d=20$ (1.21, two of three seeds better, against 0.93). The second round
+(Deep Ritz, three seeds, descriptive) ran \Psinlin\ and \Pexpcos; three planned cells of it were
+not run (Section~\ref{S5:sec:remedies}).
+
+% -------------------------------------------------------------------------------------
+% Tables of this section.  They are collected here, after the text, so that no sentence is
+% interrupted by a sequence of float pages.
+\clearpage
+% src (both parts of the table): code/sC_details_tables.py, which reads
+%      research_benchmark/pinnbench/{problems,core,samplers}.py,
+%      research_benchmark/scripts/{run_benchmark,run_budget_sweep,validate_batched,time_single,run_oneface}.py,
+%      research_benchmark/results/{benchmark_runs.csv,runs/*.json,budget_sweep.json,oneface_laplace3d.json,timing_single.json},
+%      research_highdim/scripts/{hd_core,bench_cost}.py, research_highdim/results/runs*.jsonl,
+%      verify_research_benchmark/{vpinn.py,v_runs.json,v_runs_extra.json,v_runs_budget.json},
+%      code/{s4_lowdim_timeslices,s5_hard_wave2d_long,s5_hard_laplace3d_smooth,s6_highdim_long_d20,s7_pitfalls,s4_lowdim_gridcontrol}.py
+% src (footnote a): code/s4_lowdim_timeslices.py (eval_dtype float64)
+\begin{table}[p]
+\centering
+\caption{Settings of every experiment; this part: the low-dimensional problems.
+``$2\times128$'' means two hidden layers of 128 units; all networks have $\tanh$
+activations and the default initialisation of PyTorch. Constraint points are the initial
+and boundary points of Table~\ref{s3_methods:tab:setup}; evaluation points are held out
+(Table~\ref{s2_problems:tab:problems}). ``Stack of $S$'': $S$ networks trained at once by
+the stacked driver (Section~\ref{sC_details:sec:validation}). GPU: the Metal backend of
+PyTorch on an Apple-silicon machine. The longer runs, the control experiments and the
+demonstrations are listed as configured in their scripts.}
+\label{sC_details:tab:hyper}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+%% BEGIN GENERATED sC_details:tab:hyper
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.9cm}>{\raggedright\arraybackslash}p{3.3cm}>{\raggedright\arraybackslash}p{3.5cm}>{\raggedright\arraybackslash}p{1.25cm}>{\raggedright\arraybackslash}p{2.05cm}>{\raggedright\arraybackslash}p{1.9cm}@{}}
+\toprule
+Experiment & Network (parameters); $\Nr$ and strategy; constraint points & Optimiser; iterations & Seeds & Driver, device & Evaluation points \\
+\midrule
+\multicolumn{6}{@{}p{15.8cm}@{}}{\emph{Low-dimensional problems} (package \code{pinnbench}; Sections~\ref{s4_lowdim:sec} and~\ref{s5_hard:sec}). Loss~\eqref{s3_methods:eq:pinn} with $\lam=1$; \Adam\ with constant learning rate $10^{-3}$; \LBFGS\ with memory 50; single precision. ``As benchmark'': as in the benchmark row of the same problem.} \\[3pt]
+Benchmark, \PH & $2\times128$ (17\,025); 256, five strategies; 300 & \Adam: 3000; \AdamLBFGS: 1500\,+\,1500 & 0--9 & stack of 50, GPU & $201\times201$ \\
+Benchmark, \PLtwo & $3\times128$ (33\,537); 256; 400 & as for \PH & 0--9 & 2 stacks of 25, GPU & $201\times201$ \\
+Benchmark, \PWone & $3\times64$ (8577); 1024; 300 & as for \PH & 0--4 & stack of 25, GPU & $201\times201$ \\
+Benchmark, \PWtwo & $2\times50$ (2801); 512; 1365 & as for \PH & 0--4 & stack of 25, GPU & $21\times81\times81$ \\
+Benchmark, \PLthree & $2\times100$ (10\,601); 512; 864 & as for \PH & 0--4 & stack of 25, GPU & $40^3$ \\
+Budget sweep, \PH & as benchmark; 64 and 1024; \strat{grid-c}, \strat{random}, \strat{Sobol} & as benchmark & 0--4 & stack of 15, GPU & as benchmark \\
+Verification code \textsf{V-bench} (Section~\ref{sC_details:sec:verification}) & as benchmark; for \PH\ also \strat{grid-n} and $\Nr=1024$ & as benchmark, PyTorch \LBFGS & \PH: 0--5; \PLtwo: 0--2; else 0 & single network, CPU, 4 threads & as benchmark \\
+Grid control (Section~\ref{s4_lowdim:sec:strategy}), \PH & as benchmark; 256: \strat{random}, \strat{grid-c}, \strat{grid-n}, \strat{grid-c} shifted in $t$; 272: \strat{grid-c} with one further column & as benchmark & 0--9 & stacks of 40 and 20, GPU & as benchmark \\
+Time slices, \PH & as benchmark; 256; \strat{random}, \strat{Sobol} & as benchmark, PyTorch \LBFGS & 0--9 & single network, CPU & as benchmark$^{a}$ \\
+Longer runs, \PWtwo & as benchmark; 512; \strat{Sobol} & \Adam: 10\,000; \Adam\ 1500, then PyTorch \LBFGS\ up to 10\,000 in total & 0--2 & single network, CPU & as benchmark \\
+Longer runs, \PWone & as benchmark; 1024; \strat{Sobol} & \Adam: 41\,000; \Adam\ 1500, then PyTorch \LBFGS\ up to 41\,000 in total & 0--2 & single network, CPU & as benchmark \\
+Compatible data, \PLthreeS\ and \PLthree & as \PLthree; 512; \strat{Sobol} & as benchmark & 0--4 & stack of 5, CPU & as \PLthree \\
+Driver validation (Section~\ref{sC_details:sec:validation}), \PH, \PLtwo & as benchmark; 1024; five strategies & \Adam: 600; \AdamLBFGS: 300\,+\,300 & 0, 1 & stack of 10 and single network, CPU & as benchmark \\
+Timing A (Table~\ref{sC_details:tab:cost}), five problems & as benchmark; \strat{Sobol} & 400 \Adam\ and 200 PyTorch \LBFGS\ iterations timed, scaled to 1500\,+\,1500 & 0 & single network, CPU, 4 threads & --- \\
+Finite differences, five problems & $n$ cells per direction (Table~\ref{sC_details:tab:fdconv}) & direct solve or time stepping, double precision; time: best of 3 & --- & NumPy, SciPy, CPU & as benchmark \\
+\bottomrule
+\end{tabular}
+%% END GENERATED sC_details:tab:hyper
+
+\vspace{3pt}
+\begin{minipage}{15.8cm}\footnotesize
+$^{a}$~The trained single-precision networks are evaluated in double precision.
+\end{minipage}
+\end{table}
+
+% src (footnote b): data/checks/study_records.json (highdim.sweep_runs_before_changes); notes/VERIFICATION.md (sec. 3.4); research_highdim/results/runs.jsonl (13 sweep records without cpu_time_s, 5 PINN sweep records without lap_impl)
+\begin{table}[p]
+\ContinuedFloat
+\centering
+\caption[]{(continued) The $d$-dimensional problems and the demonstrations of Section~\ref{s7_pitfalls:sec}.}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+%% BEGIN GENERATED sC_details:tab:hyper2
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.9cm}>{\raggedright\arraybackslash}p{3.3cm}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}p{1.25cm}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{2.25cm}@{}}
+\toprule
+Experiment & Problems, dimensions, weights; or network, points & Optimiser; iterations & Seeds & Runs; driver, device & Evaluation points \\
+\midrule
+\multicolumn{6}{@{}p{15.8cm}@{}}{\emph{Problems \Pone\ and \Ptwo\ in $d$ dimensions} (module \code{hd_core}; Section~\ref{s6_highdim:sec}). Network $3\times64$ with $64d+8449$ parameters; $\Nr=\Nb=1024$, redrawn at every iteration; Adam, learning rate $10^{-3}$, multiplied by 0.1 after 50 and after 75 per cent of the run; one network per run, single precision, CPU, one thread.} \\[3pt]
+Choice of weights & $d=5$; $\lam,\bet\in\{1,10,100,1000\}$ & 4000 & 100 & 16 runs$^{b}$ & 5000 validation points \\
+Main study & $d=2,3,5,10,20$; $\lam=1000$; $\bet=100$ (\Pone), $1$ (\Ptwo) & 4000 & 0--2 & 60 runs & 50\,000 test points, seed $10\,000+d$ \\
+Longer schedule & \Pone, $d=10$, both methods & 16\,000 & 0--2 & 6 runs & as main study \\
+Equal CPU time & Deep Ritz, $d=10$ & 10\,000 (\Pone), 9000 (\Ptwo) & 0--2 & 6 runs & as main study \\
+Longer schedule, $d=20$ & \Pone\ and \Ptwo, $d=20$, both methods & 16\,000 & 0--2 & 12 runs & as main study \\
+Cost per iteration & $d=2,3,5,10,20,50,100$; Deep Ritz, PINN with forward and with nested Laplacian & 5 warm-up iterations, then 7 rounds of 10 timed iterations for each variant & 0 & CPU time of the process & --- \\
+\midrule
+\multicolumn{6}{@{}p{15.8cm}@{}}{\emph{Demonstrations of Section~\ref{s7_pitfalls:sec}}; single precision.} \\[3pt]
+Zero residual (Section~\ref{s7_pitfalls:sec:autograd}) & 3--50--50--1; 10\,000 uniform points, batches of 64; faulty residual, data term $\ee^{{-t}}S$, 400 boundary points at $t=0$ & Adam, learning rate $10^{-3}$; 150 passes, 23\,550 iterations (also 1500 passes) & 0 & single network, CPU, 1 thread & $21\times81\times81$ of \PWtwo \\
+Data on one face (Section~\ref{s7_pitfalls:sec:oneface}) & $2\times100$ (10\,601); closed $21^3$ grid (9261 points); datum on the 441 points with $x=\pi$ only & AdamW, learning rate $10^{-3}$, weight decay 0.01 (the default); 2000 & 0--4 & stack of 5, GPU & $40^3$, against $\uex$ of \PLthree \\
+\bottomrule
+\end{tabular}
+%% END GENERATED sC_details:tab:hyper2
+
+\vspace{3pt}
+\begin{minipage}{15.8cm}\footnotesize
+$^{b}$~The first 13 of these 16 runs used four threads, and the five PINN runs among them
+the nested Laplacian; the loss is the same
+(Section~\ref{S2:sec:lap}).
+\end{minipage}
+\end{table}
+
+% src: research_benchmark/results/benchmark_summary.csv (cross-checked against benchmark_runs.csv by code/sC_details_tables.py); research_benchmark/results/tables.md (T1)
+\begin{table}[p]
+\centering
+\caption{Held-out errors of the benchmark: mean, sample standard deviation (s.d.)\ and
+geometric mean (geo.)\ over seeds of the relative $L^2$ error $\errL$, and mean and s.d.\
+of the $L^\infty$ error $\errI$, for the network after the last iteration. Both arms have
+3000 iterations. The notation $2.98\mathrm{e}{-}2$ means $\sci{2.98}{-2}$.}
+\label{sC_details:tab:full}
+\footnotesize
+\setlength{\tabcolsep}{3.4pt}
+%% BEGIN GENERATED sC_details:tab:full
+\begin{tabular}{@{}l rrr rr @{\hspace{10pt}} rrr rr@{}}
+\toprule
+ & \multicolumn{5}{c}{\Adam} & \multicolumn{5}{c}{\AdamLBFGS} \\
+\cmidrule(lr){2-6}\cmidrule(l){7-11}
+ & \multicolumn{3}{c}{$\errL$} & \multicolumn{2}{c}{$\errI$} & \multicolumn{3}{c}{$\errL$} & \multicolumn{2}{c}{$\errI$} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-6}\cmidrule(lr){7-9}\cmidrule(l){10-11}
+Strategy & mean & s.d. & geo. & mean & s.d. & mean & s.d. & geo. & mean & s.d. \\
+\midrule
+\multicolumn{11}{@{}l}{\PH: $\Nr=256$, 10 seeds} \\
+\strat{grid-c} & $2.98\mathrm{e}{-}2$ & $2.98\mathrm{e}{-}2$ & $2.13\mathrm{e}{-}2$ & $1.48\mathrm{e}{-}2$ & $3.47\mathrm{e}{-}3$ & $6.16\mathrm{e}{-}3$ & $4.01\mathrm{e}{-}3$ & $5.01\mathrm{e}{-}3$ & $6.33\mathrm{e}{-}3$ & $4.02\mathrm{e}{-}3$ \\
+\strat{random} & $4.33\mathrm{e}{-}2$ & $6.43\mathrm{e}{-}2$ & $2.47\mathrm{e}{-}2$ & $1.79\mathrm{e}{-}2$ & $9.67\mathrm{e}{-}3$ & $1.25\mathrm{e}{-}3$ & $3.86\mathrm{e}{-}4$ & $1.19\mathrm{e}{-}3$ & $1.69\mathrm{e}{-}3$ & $7.51\mathrm{e}{-}4$ \\
+\strat{resample} & $3.70\mathrm{e}{-}2$ & $1.90\mathrm{e}{-}2$ & $3.29\mathrm{e}{-}2$ & $1.97\mathrm{e}{-}2$ & $7.12\mathrm{e}{-}3$ & $1.45\mathrm{e}{-}3$ & $1.00\mathrm{e}{-}3$ & $1.25\mathrm{e}{-}3$ & $1.88\mathrm{e}{-}3$ & $1.05\mathrm{e}{-}3$ \\
+\strat{Sobol} & $2.41\mathrm{e}{-}2$ & $2.00\mathrm{e}{-}2$ & $1.77\mathrm{e}{-}2$ & $1.11\mathrm{e}{-}2$ & $3.41\mathrm{e}{-}3$ & $1.22\mathrm{e}{-}3$ & $4.05\mathrm{e}{-}4$ & $1.15\mathrm{e}{-}3$ & $1.34\mathrm{e}{-}3$ & $6.20\mathrm{e}{-}4$ \\
+\strat{RAD} & $1.48\mathrm{e}{-}2$ & $5.23\mathrm{e}{-}3$ & $1.40\mathrm{e}{-}2$ & $1.59\mathrm{e}{-}2$ & $8.72\mathrm{e}{-}3$ & $1.16\mathrm{e}{-}3$ & $5.19\mathrm{e}{-}4$ & $1.07\mathrm{e}{-}3$ & $1.06\mathrm{e}{-}3$ & $3.97\mathrm{e}{-}4$ \\
+\midrule
+\multicolumn{11}{@{}l}{\PLtwo: $\Nr=256$, 10 seeds} \\
+\strat{grid-c} & $6.00\mathrm{e}{-}3$ & $4.56\mathrm{e}{-}3$ & $4.91\mathrm{e}{-}3$ & $1.05\mathrm{e}{-}2$ & $4.39\mathrm{e}{-}3$ & $2.41\mathrm{e}{-}4$ & $8.27\mathrm{e}{-}5$ & $2.28\mathrm{e}{-}4$ & $7.37\mathrm{e}{-}4$ & $2.66\mathrm{e}{-}4$ \\
+\strat{random} & $8.66\mathrm{e}{-}3$ & $9.88\mathrm{e}{-}3$ & $6.22\mathrm{e}{-}3$ & $1.11\mathrm{e}{-}2$ & $6.19\mathrm{e}{-}3$ & $4.87\mathrm{e}{-}4$ & $1.65\mathrm{e}{-}4$ & $4.63\mathrm{e}{-}4$ & $1.02\mathrm{e}{-}3$ & $3.98\mathrm{e}{-}4$ \\
+\strat{resample} & $5.09\mathrm{e}{-}2$ & $3.38\mathrm{e}{-}2$ & $3.96\mathrm{e}{-}2$ & $3.23\mathrm{e}{-}2$ & $1.87\mathrm{e}{-}2$ & $4.40\mathrm{e}{-}4$ & $1.58\mathrm{e}{-}4$ & $4.19\mathrm{e}{-}4$ & $9.87\mathrm{e}{-}4$ & $3.87\mathrm{e}{-}4$ \\
+\strat{Sobol} & $4.08\mathrm{e}{-}3$ & $1.62\mathrm{e}{-}3$ & $3.80\mathrm{e}{-}3$ & $9.05\mathrm{e}{-}3$ & $3.07\mathrm{e}{-}3$ & $2.55\mathrm{e}{-}4$ & $7.19\mathrm{e}{-}5$ & $2.48\mathrm{e}{-}4$ & $7.34\mathrm{e}{-}4$ & $2.56\mathrm{e}{-}4$ \\
+\strat{RAD} & $1.12\mathrm{e}{-}2$ & $1.47\mathrm{e}{-}2$ & $6.20\mathrm{e}{-}3$ & $1.27\mathrm{e}{-}2$ & $8.74\mathrm{e}{-}3$ & $4.35\mathrm{e}{-}4$ & $1.62\mathrm{e}{-}4$ & $4.08\mathrm{e}{-}4$ & $8.11\mathrm{e}{-}4$ & $2.85\mathrm{e}{-}4$ \\
+\midrule
+\multicolumn{11}{@{}l}{\PWone: $\Nr=1024$, 5 seeds} \\
+\strat{grid-c} & $4.83\mathrm{e}{-}1$ & $2.13\mathrm{e}{-}2$ & $4.83\mathrm{e}{-}1$ & $6.70\mathrm{e}{-}1$ & $3.70\mathrm{e}{-}2$ & $4.35\mathrm{e}{-}1$ & $1.51\mathrm{e}{-}2$ & $4.35\mathrm{e}{-}1$ & $6.52\mathrm{e}{-}1$ & $5.43\mathrm{e}{-}2$ \\
+\strat{random} & $4.81\mathrm{e}{-}1$ & $2.22\mathrm{e}{-}2$ & $4.81\mathrm{e}{-}1$ & $6.62\mathrm{e}{-}1$ & $3.25\mathrm{e}{-}2$ & $4.42\mathrm{e}{-}1$ & $1.37\mathrm{e}{-}2$ & $4.42\mathrm{e}{-}1$ & $6.59\mathrm{e}{-}1$ & $2.43\mathrm{e}{-}2$ \\
+\strat{resample} & $4.86\mathrm{e}{-}1$ & $2.22\mathrm{e}{-}2$ & $4.86\mathrm{e}{-}1$ & $6.81\mathrm{e}{-}1$ & $3.77\mathrm{e}{-}2$ & $4.41\mathrm{e}{-}1$ & $1.90\mathrm{e}{-}2$ & $4.41\mathrm{e}{-}1$ & $6.58\mathrm{e}{-}1$ & $6.67\mathrm{e}{-}2$ \\
+\strat{Sobol} & $4.82\mathrm{e}{-}1$ & $2.22\mathrm{e}{-}2$ & $4.81\mathrm{e}{-}1$ & $6.60\mathrm{e}{-}1$ & $3.50\mathrm{e}{-}2$ & $4.43\mathrm{e}{-}1$ & $1.12\mathrm{e}{-}2$ & $4.42\mathrm{e}{-}1$ & $6.68\mathrm{e}{-}1$ & $4.63\mathrm{e}{-}2$ \\
+\strat{RAD} & $4.84\mathrm{e}{-}1$ & $2.22\mathrm{e}{-}2$ & $4.84\mathrm{e}{-}1$ & $6.69\mathrm{e}{-}1$ & $3.60\mathrm{e}{-}2$ & $4.49\mathrm{e}{-}1$ & $1.15\mathrm{e}{-}2$ & $4.49\mathrm{e}{-}1$ & $6.90\mathrm{e}{-}1$ & $3.78\mathrm{e}{-}2$ \\
+\midrule
+\multicolumn{11}{@{}l}{\PWtwo: $\Nr=512$, 5 seeds} \\
+\strat{grid-c} & $2.11\mathrm{e}{-}1$ & $6.77\mathrm{e}{-}2$ & $2.03\mathrm{e}{-}1$ & $2.67\mathrm{e}{-}1$ & $6.98\mathrm{e}{-}2$ & $4.92\mathrm{e}{-}2$ & $1.26\mathrm{e}{-}2$ & $4.80\mathrm{e}{-}2$ & $7.99\mathrm{e}{-}2$ & $1.77\mathrm{e}{-}2$ \\
+\strat{random} & $2.13\mathrm{e}{-}1$ & $6.54\mathrm{e}{-}2$ & $2.05\mathrm{e}{-}1$ & $2.66\mathrm{e}{-}1$ & $6.27\mathrm{e}{-}2$ & $4.89\mathrm{e}{-}2$ & $1.92\mathrm{e}{-}2$ & $4.64\mathrm{e}{-}2$ & $7.75\mathrm{e}{-}2$ & $2.67\mathrm{e}{-}2$ \\
+\strat{resample} & $2.35\mathrm{e}{-}1$ & $6.52\mathrm{e}{-}2$ & $2.29\mathrm{e}{-}1$ & $2.87\mathrm{e}{-}1$ & $6.04\mathrm{e}{-}2$ & $5.01\mathrm{e}{-}2$ & $8.69\mathrm{e}{-}3$ & $4.94\mathrm{e}{-}2$ & $7.92\mathrm{e}{-}2$ & $2.49\mathrm{e}{-}2$ \\
+\strat{Sobol} & $2.09\mathrm{e}{-}1$ & $5.69\mathrm{e}{-}2$ & $2.03\mathrm{e}{-}1$ & $2.59\mathrm{e}{-}1$ & $5.01\mathrm{e}{-}2$ & $4.85\mathrm{e}{-}2$ & $1.72\mathrm{e}{-}2$ & $4.61\mathrm{e}{-}2$ & $8.07\mathrm{e}{-}2$ & $2.70\mathrm{e}{-}2$ \\
+\strat{RAD} & $2.03\mathrm{e}{-}1$ & $4.44\mathrm{e}{-}2$ & $2.00\mathrm{e}{-}1$ & $2.66\mathrm{e}{-}1$ & $4.66\mathrm{e}{-}2$ & $4.79\mathrm{e}{-}2$ & $1.32\mathrm{e}{-}2$ & $4.65\mathrm{e}{-}2$ & $8.06\mathrm{e}{-}2$ & $2.19\mathrm{e}{-}2$ \\
+\midrule
+\multicolumn{11}{@{}l}{\PLthree: $\Nr=512$, 5 seeds} \\
+\strat{grid-c} & $1.18\mathrm{e}{-}1$ & $2.24\mathrm{e}{-}2$ & $1.16\mathrm{e}{-}1$ & $2.14\mathrm{e}{-}1$ & $1.75\mathrm{e}{-}2$ & $4.88\mathrm{e}{-}2$ & $1.21\mathrm{e}{-}2$ & $4.76\mathrm{e}{-}2$ & $1.00\mathrm{e}{-}1$ & $2.92\mathrm{e}{-}2$ \\
+\strat{random} & $3.00\mathrm{e}{-}1$ & $3.43\mathrm{e}{-}1$ & $2.05\mathrm{e}{-}1$ & $2.58\mathrm{e}{-}1$ & $7.01\mathrm{e}{-}2$ & $4.63\mathrm{e}{-}2$ & $8.77\mathrm{e}{-}3$ & $4.56\mathrm{e}{-}2$ & $8.33\mathrm{e}{-}2$ & $2.39\mathrm{e}{-}2$ \\
+\strat{resample} & $1.55\mathrm{e}{-}1$ & $2.02\mathrm{e}{-}2$ & $1.54\mathrm{e}{-}1$ & $2.41\mathrm{e}{-}1$ & $1.21\mathrm{e}{-}2$ & $4.28\mathrm{e}{-}2$ & $3.74\mathrm{e}{-}3$ & $4.27\mathrm{e}{-}2$ & $1.01\mathrm{e}{-}1$ & $7.26\mathrm{e}{-}2$ \\
+\strat{Sobol} & $1.31\mathrm{e}{-}1$ & $1.54\mathrm{e}{-}2$ & $1.30\mathrm{e}{-}1$ & $2.22\mathrm{e}{-}1$ & $1.14\mathrm{e}{-}2$ & $3.56\mathrm{e}{-}2$ & $3.66\mathrm{e}{-}3$ & $3.55\mathrm{e}{-}2$ & $7.73\mathrm{e}{-}2$ & $1.50\mathrm{e}{-}2$ \\
+\strat{RAD} & $1.33\mathrm{e}{-}1$ & $1.76\mathrm{e}{-}2$ & $1.32\mathrm{e}{-}1$ & $2.27\mathrm{e}{-}1$ & $1.51\mathrm{e}{-}2$ & $4.03\mathrm{e}{-}2$ & $6.23\mathrm{e}{-}3$ & $3.99\mathrm{e}{-}2$ & $7.01\mathrm{e}{-}2$ & $9.76\mathrm{e}{-}3$ \\
+\bottomrule
+\end{tabular}
+%% END GENERATED sC_details:tab:full
+\end{table}
+
+% src: research_benchmark/results/stats.json (sampler_vs_random, adam_vs_adam_lbfgs), recomputed from
+%      research_benchmark/results/benchmark_runs.csv by code/sC_details_tables.py; research_benchmark/results/tables.md (T2, T3);
+%      per-seed test of the arms: verify_research_benchmark/v_stats.out ("per-seed aggregated")
+\begin{table}[p]
+\centering
+\caption{Paired comparisons (10 seeds for \PH\ and \PLtwo, 5 for the other problems).
+(a)~Each strategy against \strat{random} at equal $\Nr$, paired by seed: geometric mean of
+the per-seed ratio of $\errL$ (below 1: better than \strat{random}) and, in brackets, the
+number of seeds in which the strategy is better and the two-sided $p$-value of the exact
+Wilcoxon signed-rank test (notation as in Table~\ref{sC_details:tab:full}). (b)~The
+two optimiser arms. ``Runs'' counts all pairs of a strategy and a seed; for the test the
+errors of the five strategies are first averaged geometrically within each seed. No
+$p$-value is corrected for multiple comparisons; with 5 seeds the smallest attainable
+value is 0.0625.}
+\label{sC_details:tab:paired}
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+(a)\\[2pt]
+%% BEGIN GENERATED sC_details:tab:paired
+\begin{tabular}{@{}l llll@{}}
+\toprule
+Problem & \strat{grid-c} & \strat{resample} & \strat{Sobol} & \strat{RAD} \\
+\midrule
+\multicolumn{5}{@{}l}{Arm \AdamLBFGS} \\
+\PH & 4.21 (0/10; 0.002) & 1.05 (6/10; 1.000) & 0.97 (6/10; 0.695) & 0.90 (5/10; 0.695) \\
+\PLtwo & 0.49 (10/10; 0.002) & 0.91 (6/10; 0.322) & 0.54 (9/10; 0.004) & 0.88 (8/10; 0.160) \\
+\PWone & 0.98 (4/5; 0.438) & 1.00 (3/5; 0.812) & 1.00 (3/5; 1.000) & 1.02 (1/5; 0.188) \\
+\PWtwo & 1.04 (3/5; 1.000) & 1.07 (2/5; 0.812) & 0.99 (2/5; 1.000) & 1.00 (3/5; 1.000) \\
+\PLthree & 1.04 (2/5; 0.812) & 0.93 (3/5; 0.438) & 0.78 (5/5; 0.0625) & 0.88 (3/5; 0.625) \\
+\midrule
+\multicolumn{5}{@{}l}{Arm \Adam} \\
+\PH & 0.86 (5/10; 0.846) & 1.33 (4/10; 0.275) & 0.71 (6/10; 0.432) & 0.57 (5/10; 0.432) \\
+\PLtwo & 0.79 (6/10; 0.322) & 6.36 (0/10; 0.002) & 0.61 (7/10; 0.084) & 1.00 (5/10; 1.000) \\
+\PWone & 1.00 (4/5; 0.625) & 1.01 (1/5; 0.125) & 1.00 (2/5; 0.812) & 1.01 (2/5; 0.312) \\
+\PWtwo & 0.99 (3/5; 0.625) & 1.11 (1/5; 0.188) & 0.99 (3/5; 0.625) & 0.97 (3/5; 0.812) \\
+\PLthree & 0.57 (4/5; 0.188) & 0.75 (2/5; 0.812) & 0.64 (3/5; 0.438) & 0.64 (2/5; 0.812) \\
+\bottomrule
+\end{tabular}
+%% END GENERATED sC_details:tab:paired
+
+\vspace{8pt}
+(b)\\[2pt]
+%% BEGIN GENERATED sC_details:tab:optim
+\begin{tabular}{@{}lr rrr cc l@{}}
+\toprule
+ & & \multicolumn{2}{c}{geometric mean of $\errL$} & & \multicolumn{2}{c}{\AdamLBFGS\ better in} & Wilcoxon $p$ \\
+\cmidrule(lr){3-4}\cmidrule(lr){6-7}
+Problem & Seeds & \Adam & \AdamLBFGS & Ratio & runs & seeds & (per seed) \\
+\midrule
+\PH & 10 & $2.12\mathrm{e}{-}2$ & $1.56\mathrm{e}{-}3$ & 0.074 & 50/50 & 10/10 & 0.002 \\
+\PLtwo & 10 & $7.78\mathrm{e}{-}3$ & $3.39\mathrm{e}{-}4$ & 0.044 & 50/50 & 10/10 & 0.002 \\
+\PWone & 5 & $4.83\mathrm{e}{-}1$ & $4.42\mathrm{e}{-}1$ & 0.915 & 25/25 & 5/5 & 0.0625 \\
+\PWtwo & 5 & $2.08\mathrm{e}{-}1$ & $4.73\mathrm{e}{-}2$ & 0.228 & 25/25 & 5/5 & 0.0625 \\
+\PLthree & 5 & $1.45\mathrm{e}{-}1$ & $4.20\mathrm{e}{-}2$ & 0.291 & 25/25 & 5/5 & 0.0625 \\
+\bottomrule
+\end{tabular}
+%% END GENERATED sC_details:tab:optim
+\end{table}
+
+% src: research_benchmark/results/classical.csv; research_benchmark/results/tables.md (T4); research_benchmark/pinnbench/classical.py
+\begin{table}[p]
+\centering
+\caption{Second-order finite-difference baselines on the held-out evaluation points of
+the networks. $n$: cells per space direction; ``values'': number of stored values of the
+discrete solution: all space--time nodes for \PH\ and \PWone, all nodes for \PLtwo\ and
+\PLthree, and for \PWtwo\ the nodal values at the 21 output times, $21(n+1)^2$ (the scheme
+itself has $n+1$ time levels and so $(n+1)^3$ space--time nodes); ``order'':
+$\log_2$ of the ratio of $\errL$ on two consecutive grids; ``time'': best of three
+solves. For \PLthree\ the evaluation points are interpolated for $n=20,40$ and are nodes
+for $n=80,160$.}
+\label{sC_details:tab:fdconv}
+\footnotesize
+\setlength{\tabcolsep}{3.4pt}
+%% BEGIN GENERATED sC_details:tab:fdconv
+\begin{tabular}{@{}rrrrrr@{\hspace{18pt}}rrrrrr@{}}
+\toprule
+$n$ & values & $\errL$ & $\errI$ & order & time (s) & $n$ & values & $\errL$ & $\errI$ & order & time (s) \\
+\midrule
+\multicolumn{6}{@{}l}{\PH: Crank--Nicolson, $\Delta t=\Delta x=1/n$} & \multicolumn{6}{@{}l}{\PLtwo: five-point Laplacian, $\Delta x=\pi/n$} \\
+25 & 676 & $8.16\mathrm{e}{-}3$ & $4.35\mathrm{e}{-}3$ &  & $5.46\mathrm{e}{-}4$ & 25 & 676 & $1.20\mathrm{e}{-}3$ & $9.75\mathrm{e}{-}4$ &  & $2.22\mathrm{e}{-}3$ \\
+50 & 2601 & $2.02\mathrm{e}{-}3$ & $1.08\mathrm{e}{-}3$ & 2.01 & $1.09\mathrm{e}{-}3$ & 50 & 2601 & $3.02\mathrm{e}{-}4$ & $2.50\mathrm{e}{-}4$ & 1.99 & $6.31\mathrm{e}{-}3$ \\
+100 & 10\,201 & $5.05\mathrm{e}{-}4$ & $2.71\mathrm{e}{-}4$ & 2.00 & $2.21\mathrm{e}{-}3$ & 100 & 10\,201 & $7.51\mathrm{e}{-}5$ & $6.22\mathrm{e}{-}5$ & 2.01 & $2.42\mathrm{e}{-}2$ \\
+200 & 40\,401 & $1.26\mathrm{e}{-}4$ & $6.71\mathrm{e}{-}5$ & 2.00 & $5.18\mathrm{e}{-}3$ & 200 & 40\,401 & $1.89\mathrm{e}{-}5$ & $1.51\mathrm{e}{-}5$ & 1.99 & $1.21\mathrm{e}{-}1$ \\
+400 & 160\,801 & $3.15\mathrm{e}{-}5$ & $1.68\mathrm{e}{-}5$ & 2.00 & $1.25\mathrm{e}{-}2$ & 400 & 160\,801 & $4.72\mathrm{e}{-}6$ & $3.78\mathrm{e}{-}6$ & 2.00 & $6.55\mathrm{e}{-}1$ \\
+800 & 641\,601 & $7.87\mathrm{e}{-}6$ & $4.19\mathrm{e}{-}6$ & 2.00 & $3.24\mathrm{e}{-}2$ &  &  &  &  &  &  \\
+\midrule
+\multicolumn{6}{@{}l}{\PWone: leapfrog, Courant number 0.5, $\Delta x=1/n$} & \multicolumn{6}{@{}l}{\PWtwo: leapfrog, Courant number 0.5, $\Delta x=2/n$} \\
+25 & 2626 & $5.14\mathrm{e}{-}2$ & $9.45\mathrm{e}{-}2$ &  & $4.45\mathrm{e}{-}4$ & 20 & 9261 & $5.12\mathrm{e}{-}3$ & $8.83\mathrm{e}{-}3$ &  & $3.55\mathrm{e}{-}4$ \\
+50 & 10\,251 & $1.28\mathrm{e}{-}2$ & $2.36\mathrm{e}{-}2$ & 2.01 & $1.04\mathrm{e}{-}3$ & 40 & 35\,301 & $1.28\mathrm{e}{-}3$ & $2.20\mathrm{e}{-}3$ & 2.00 & $1.24\mathrm{e}{-}3$ \\
+100 & 40\,501 & $3.19\mathrm{e}{-}3$ & $5.88\mathrm{e}{-}3$ & 2.00 & $1.87\mathrm{e}{-}3$ & 80 & 137\,781 & $3.19\mathrm{e}{-}4$ & $5.50\mathrm{e}{-}4$ & 2.00 & $4.49\mathrm{e}{-}3$ \\
+200 & 161\,001 & $7.96\mathrm{e}{-}4$ & $1.47\mathrm{e}{-}3$ & 2.00 & $3.87\mathrm{e}{-}3$ & 160 & 544\,341 & $7.98\mathrm{e}{-}5$ & $1.38\mathrm{e}{-}4$ & 2.00 & $2.65\mathrm{e}{-}2$ \\
+400 & 642\,001 & $1.99\mathrm{e}{-}4$ & $3.67\mathrm{e}{-}4$ & 2.00 & $8.69\mathrm{e}{-}3$ & 320 & 2\,163\,861 & $1.99\mathrm{e}{-}5$ & $3.44\mathrm{e}{-}5$ & 2.00 & $1.86\mathrm{e}{-}1$ \\
+800 & 2\,564\,001 & $4.98\mathrm{e}{-}5$ & $9.19\mathrm{e}{-}5$ & 2.00 & $2.29\mathrm{e}{-}2$ &  &  &  &  &  &  \\
+\midrule
+\multicolumn{6}{@{}l}{\PLthree: seven-point Laplacian, $\Delta x=\pi/n$} & \multicolumn{6}{@{}l}{} \\
+20 & 9261 & $3.90\mathrm{e}{-}2$ & $1.71\mathrm{e}{-}1$ &  & $2.90\mathrm{e}{-}4$ &  &  &  &  &  &  \\
+40 & 68\,921 & $9.97\mathrm{e}{-}3$ & $4.34\mathrm{e}{-}2$ & 1.97 & $1.61\mathrm{e}{-}3$ &  &  &  &  &  &  \\
+80 & 531\,441 & $1.54\mathrm{e}{-}3$ & $4.58\mathrm{e}{-}3$ & 2.70 & $1.00\mathrm{e}{-}2$ &  &  &  &  &  &  \\
+160 & 4\,173\,281 & $4.13\mathrm{e}{-}4$ & $1.25\mathrm{e}{-}3$ & 1.89 & $8.62\mathrm{e}{-}2$ &  &  &  &  &  &  \\
+\bottomrule
+\end{tabular}
+%% END GENERATED sC_details:tab:fdconv
+\end{table}
+
+% src: research_benchmark/results/timing_single.json (measurement A); verify_research_benchmark/v_runs.json, v_runs_extra.json (measurement B);
+%      research_benchmark/results/classical.csv; research_benchmark/results/benchmark_runs.csv; research_benchmark/results/tables.md (T5);
+%      verify_research_benchmark/v_summary.out (t_arm)
+\begin{table}[p]
+\centering
+\caption{Cost of one \AdamLBFGS\ run ($1500+1500$ iterations) against finite differences.
+Measurement~A: single-network reference driver, four CPU threads, load average 95 to
+167; milliseconds per iteration, loss-and-gradient evaluations per \LBFGS\ iteration
+(ev./it), and the run time estimated from them. Measurement~B: runs of the verification
+code \textsf{V-bench} at a load average of about 20 to 45 (to iteration 3000 or to the
+tolerance of \LBFGS); smallest and largest time, number of runs in square brackets.
+Measurement~C: training time of the \AdamLBFGS\ arm of the GPU stacks of the benchmark per
+network (range over the stacks of a problem). FD: solve time of the cheapest grid of
+Table~\ref{sC_details:tab:fdconv} that is at least as accurate as the best strategy of the
+benchmark (smallest geometric mean among the five strategies, Table~\ref{sC_details:tab:full});
+that strategy, its error and the grid are given in Table~\ref{s5_hard:tab:fd}. Time ratio: PINN time
+over finite-difference time ($9.7\mathrm{e}4$ means $\sci{9.7}{4}$). Absolute times
+indicate orders of magnitude only.}
+\label{sC_details:tab:cost}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+%% BEGIN GENERATED sC_details:tab:cost
+\begin{tabular}{@{}l rrrr r r r rrr@{}}
+\toprule
+ & \multicolumn{4}{c}{measurement A} & \multicolumn{1}{c}{B} & \multicolumn{1}{c}{C} & FD & \multicolumn{3}{c}{time ratio} \\
+\cmidrule(lr){2-5}\cmidrule(lr){6-6}\cmidrule(lr){7-7}\cmidrule(lr){8-8}\cmidrule(l){9-11}
+Problem & \multicolumn{1}{c}{ms/it} & \multicolumn{1}{c}{ms/it} & ev./it & run (s) & run (s) & run (s) & time (s) & \multicolumn{1}{c}{A} & \multicolumn{1}{c}{B} & \multicolumn{1}{c}{C} \\
+ & \multicolumn{1}{c}{\Adam} & \multicolumn{1}{c}{L-BFGS} & & & & & & & & \\
+\midrule
+\PH & 72 & 72 & 1.06 & 216 & 20--37 [21] & 12.4 & $2.2\mathrm{e}{-}3$ & $9.7\mathrm{e}{}4$ & $9.1\mathrm{e}{}3$--$1.7\mathrm{e}{}4$ & $5.6\mathrm{e}{}3$ \\
+\PLtwo & 129 & 139 & 1.06 & 402 & 46--83 [12] & 11.5--13.9 & $2.4\mathrm{e}{-}2$ & $1.7\mathrm{e}{}4$ & $1.9\mathrm{e}{}3$--$3.4\mathrm{e}{}3$ & $4.8\mathrm{e}{}2$--$5.7\mathrm{e}{}2$ \\
+\PWone & 94 & 108 & 1.065 & 302 & 60 [1] & 6.9 & $4.4\mathrm{e}{-}4$ & $6.8\mathrm{e}{}5$ & $1.3\mathrm{e}{}5$ & $1.5\mathrm{e}{}4$ \\
+\PWtwo & 86 & 96 & 1.045 & 273 & 36 [1] & 7.4 & $3.5\mathrm{e}{-}4$ & $7.7\mathrm{e}{}5$ & $1.0\mathrm{e}{}5$ & $2.1\mathrm{e}{}4$ \\
+\PLthree & 111 & 117 & 1.055 & 341 & 50 [1] & 11.7 & $1.6\mathrm{e}{-}3$ & $2.1\mathrm{e}{}5$ & $3.1\mathrm{e}{}4$ & $7.3\mathrm{e}{}3$ \\
+\bottomrule
+\end{tabular}
+%% END GENERATED sC_details:tab:cost
+\end{table}
+
+% src: research_highdim_remedies/results/tables.tex (ratio columns, generated by scripts/analyze.py from results/summary.json); research_highdim_remedies/results/summary.json (error columns); rows written by code/s6_highdim_remedies.py
+\begin{table}[p]
+\centering
+\caption{The two controls of Section~\ref{s6_highdim:sec:remedies}, run for Deep Ritz at $d=20$ with
+seeds 10--14 and 4000 iterations (pre-registered), with the plain network for reference: lift3u, the
+span of lift3c with the uncentred linear feature $x_i$ in place of $P_1(t_i)$, and rep3, the input
+$(\boldsymbol t,\boldsymbol t,\boldsymbol t)$ (Proposition~\ref{sA_proofs:prop:rep3}). Quantities as in
+Table~\ref{s6_highdim:tab:remedies}: $\errL$ in units of $10^{-2}$, mean (sample standard deviation),
+and the seed-paired ratio $\rho=\errL(\text{plain})/\errL(\text{arm})$, median [minimum, maximum] and
+the number of seeds with $\rho>1$. f.-m.: feature-matched.}
+\label{sC_details:tab:controls}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}llllll@{}}
+\toprule
+problem & method & arm & iterations & $\errL$, mean (s.d.) & $\rho$: median [min, max], wins\\
+\midrule
+%% BEGIN GENERATED sC_details:tab:controls
+\Pone & Deep Ritz & plain & 4000 & 4.75 (0.37) & -- \\
+\Pone & Deep Ritz & lift3u & 4000 & 9.18 (0.20) & 0.52 [0.47, 0.57] 0/5 \\
+\Pone & Deep Ritz & rep3 & 4000 & 5.42 (0.16) & 0.88 [0.81, 0.99] 0/5 \\
+\midrule
+\Ptwo\ (f.-m.) & Deep Ritz & plain & 4000 & 12.6 (0.037) & -- \\
+\Ptwo\ (f.-m.) & Deep Ritz & lift3u & 4000 & 1.87 (0.039) & 6.71 [6.59, 6.91] 5/5 \\
+\Ptwo\ (f.-m.) & Deep Ritz & rep3 & 4000 & 1.58 (0.035) & 8.10 [7.78, 8.15] 5/5 \\
+\midrule
+\Pridge & Deep Ritz & plain & 4000 & 3.74 (0.33) & -- \\
+\Pridge & Deep Ritz & lift3u & 4000 & 3.08 (0.34) & 1.26 [0.97, 1.40] 4/5 \\
+\Pridge & Deep Ritz & rep3 & 4000 & 1.50 (0.14) & 2.37 [2.06, 3.21] 5/5 \\
+\midrule
+\Pcospair & Deep Ritz & plain & 4000 & 20.6 (0.79) & -- \\
+\Pcospair & Deep Ritz & lift3u & 4000 & 12.4 (1.2) & 1.60 [1.51, 2.03] 5/5 \\
+\Pcospair & Deep Ritz & rep3 & 4000 & 7.77 (0.57) & 2.65 [2.50, 2.94] 5/5 \\
+%% END GENERATED sC_details:tab:controls
+\bottomrule
+\end{tabular}
+\end{table}

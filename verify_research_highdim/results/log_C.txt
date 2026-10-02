@@ -1,0 +1,15 @@
+[C] main poisson ritz d=10 s=7 w=1 it=4000: rel_l2=9.541e-02 h1=3.025e-01 bd=9.749e-02 cpu=21.2s (5.30 ms/it) wall=78s
+[C] main poisson pinn d=10 s=7 w=1000 it=4000: rel_l2=2.456e-02 h1=9.692e-02 bd=3.178e-02 cpu=106.5s (26.63 ms/it) wall=166s
+[C] main poisson ritz d=10 s=8 w=1 it=4000: rel_l2=9.594e-02 h1=3.073e-01 bd=9.869e-02 cpu=26.8s (6.70 ms/it) wall=58s
+[C] main poisson pinn d=10 s=8 w=1000 it=4000: rel_l2=2.086e-02 h1=8.450e-02 bd=2.736e-02 cpu=124.7s (31.18 ms/it) wall=238s
+[C] main poisson ritz d=10 s=9 w=1 it=4000: rel_l2=7.108e-02 h1=2.281e-01 bd=7.050e-02 cpu=24.6s (6.14 ms/it) wall=42s
+[C] main poisson pinn d=10 s=9 w=1000 it=4000: rel_l2=2.557e-02 h1=1.040e-01 bd=3.381e-02 cpu=113.8s (28.46 ms/it) wall=197s
+[C] main poisson ritz d=20 s=7 w=1 it=4000: rel_l2=1.271e-01 h1=4.569e-01 bd=1.337e-01 cpu=20.9s (5.21 ms/it) wall=23s
+[C] main poisson ritz d=20 s=8 w=1 it=4000: rel_l2=1.272e-01 h1=4.574e-01 bd=1.332e-01 cpu=20.7s (5.17 ms/it) wall=24s
+[C] main poisson pinn d=20 s=7 w=1000 it=4000: rel_l2=1.422e-01 h1=4.731e-01 bd=1.550e-01 cpu=168.7s (42.18 ms/it) wall=228s
+[C] main poisson ritz d=2 s=7 w=1 it=4000: rel_l2=4.693e-03 h1=2.691e-02 bd=3.493e-03 cpu=19.7s (4.93 ms/it) wall=24s
+[C] main poisson pinn d=2 s=7 w=1000 it=4000: rel_l2=1.245e-03 h1=6.955e-03 bd=2.638e-03 cpu=33.9s (8.46 ms/it) wall=41s
+[C] main poisson ritz d=2 s=8 w=1 it=4000: rel_l2=5.058e-03 h1=2.535e-02 bd=3.773e-03 cpu=17.9s (4.48 ms/it) wall=21s
+[C] main poisson pinn d=2 s=8 w=1000 it=4000: rel_l2=1.235e-03 h1=7.116e-03 bd=2.632e-03 cpu=32.2s (8.05 ms/it) wall=43s
+[C] main poisson ritz d=2 s=9 w=1 it=4000: rel_l2=6.619e-03 h1=2.619e-02 bd=5.251e-03 cpu=19.0s (4.76 ms/it) wall=24s
+[C] main poisson pinn d=2 s=9 w=1000 it=4000: rel_l2=1.261e-03 h1=6.654e-03 bd=2.597e-03 cpu=28.3s (7.07 ms/it) wall=32s

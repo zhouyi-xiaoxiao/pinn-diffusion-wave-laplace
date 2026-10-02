@@ -1,0 +1,75 @@
+{
+ "oneface_laplace3d": {
+  "rows": [
+   {
+    "seed": 0,
+    "rel_l2": 1.6155014653283926,
+    "linf": 0.7189723810754495,
+    "rel_linf": 0.8405928756831176,
+    "final_bc_loss": 0.0003401509311515838,
+    "final_pde_loss": 0.0004050641437061131,
+    "mean_abs_u_face_x0": 0.26663824896328153,
+    "mean_abs_u_face_y0": 0.16240302345249802,
+    "mean_abs_u_face_ypi": 0.26563505800440906,
+    "mean_abs_u_face_z0": 0.2304005038831383,
+    "mean_abs_u_face_zpi": 0.19562998085748404
+   },
+   {
+    "seed": 1,
+    "rel_l2": 12.507634738740053,
+    "linf": 2.995612917399547,
+    "rel_linf": 3.5023471595720843,
+    "final_bc_loss": 0.002197007881477475,
+    "final_pde_loss": 0.0005085821030661464,
+    "mean_abs_u_face_x0": 2.6221765464544298,
+    "mean_abs_u_face_y0": 1.224230741651263,
+    "mean_abs_u_face_ypi": 1.3834201065497473,
+    "mean_abs_u_face_z0": 1.3963768565817736,
+    "mean_abs_u_face_zpi": 1.2038850798970089
+   },
+   {
+    "seed": 2,
+    "rel_l2": 13.218950954808088,
+    "linf": 2.961485587503037,
+    "rel_linf": 3.462446892006614,
+    "final_bc_loss": 0.0008903354173526168,
+    "final_pde_loss": 0.0007929764105938375,
+    "mean_abs_u_face_x0": 2.649440594315529,
+    "mean_abs_u_face_y0": 1.2259717790968716,
+    "mean_abs_u_face_ypi": 1.5030110331997275,
+    "mean_abs_u_face_z0": 1.621141623519361,
+    "mean_abs_u_face_zpi": 1.3346418028976768
+   },
+   {
+    "seed": 3,
+    "rel_l2": 7.275484966453827,
+    "linf": 1.6695738239637803,
+    "rel_linf": 1.9519969039028997,
+    "final_bc_loss": 0.0002745978126768023,
+    "final_pde_loss": 0.0004409471875987947,
+    "mean_abs_u_face_x0": 1.445624297261238,
+    "mean_abs_u_face_y0": 0.7607805259339512,
+    "mean_abs_u_face_ypi": 0.8043027221225202,
+    "mean_abs_u_face_z0": 0.8971555408835411,
+    "mean_abs_u_face_zpi": 0.7286863941699266
+   },
+   {
+    "seed": 4,
+    "rel_l2": 1.6332502345924278,
+    "linf": 0.7169250779529122,
+    "rel_linf": 0.8381992532513429,
+    "final_bc_loss": 0.0006647707195952535,
+    "final_pde_loss": 0.0004492606676649302,
+    "mean_abs_u_face_x0": 0.25876794502604755,
+    "mean_abs_u_face_y0": 0.23643196645192802,
+    "mean_abs_u_face_ypi": 0.25926396464928986,
+    "mean_abs_u_face_z0": 0.19748907987494022,
+    "mean_abs_u_face_zpi": 0.2410198694607243
+   }
+  ],
+  "interior_seed_std_over_rms_exact": 4.488790680492799,
+  "batched_wall_s": 148.84449104099986,
+  "device": "mps"
+ },
+ "note": "Five seeded runs of a PINN on the Laplace equation in (0,pi)^3 with a Dirichlet datum on the face x = pi only (Section 7.2 of the article); configuration in scripts/run_oneface.py. Values of the stored run, unchanged; device mps (Apple-silicon GPU backend), five networks trained as one stack."
+}

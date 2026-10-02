@@ -1,0 +1,12 @@
+heat1d: max|FD residual of exact| = 9.96e-07 (|u|max 5.90e-01; FD truncation ~h^2*u'''' and roundoff ~1e-16/h^2=1e-8)
+wave1d: max|FD residual of exact| = 1.25e-04 (|u|max 1.43e+00; FD truncation ~h^2*u'''' and roundoff ~1e-16/h^2=1e-8)
+wave2d: max|FD residual of exact| = 2.00e-07 (|u|max 9.92e-01; FD truncation ~h^2*u'''' and roundoff ~1e-16/h^2=1e-8)
+laplace2d: max|FD residual of exact| = 4.44e-08 (|u|max 7.98e-01; FD truncation ~h^2*u'''' and roundoff ~1e-16/h^2=1e-8)
+laplace3d: max|FD residual of exact| = 2.69e-07 (|u|max 5.91e-01; FD truncation ~h^2*u'''' and roundoff ~1e-16/h^2=1e-8)
+heat1d IC err 0.0 BC 0.0 1.2246467991473532e-16
+wave1d IC err 0.0 u_t(0) 0.0 BC 3.6739403974420594e-16
+wave2d IC err 0.0 u_t(0) 0.0
+laplace2d u(0,y) 0.0 u(pi,y)-g 0.0 u_y(x,0) 0.0 u_y(x,pi) 0.0
+laplace3d eval grid (64000 pts): max|series(4000)-series(8000)| = 0.00e+00, ||u||_inf = 0.8553
+laplace3d face x=pi (z in [0.3, pi-0.3]): max|u - sin y cos z| = 0.00010662072392586541
+laplace3d face x=0: max|u| = 3.351493894354308e-15

@@ -1,0 +1,5 @@
+mps A: (random,0), (random,1) Adam 7.8183857694e-02 Adam->L-BFGS 1.0804851270e-02
+mps B: (random,0), (grid,5) Adam 7.8183857694e-02 Adam->L-BFGS 1.0804851270e-02
+mps C: (random,0), (random,1), (grid,5), (sobol,2), (sobol,3) Adam 8.4638859650e-02 Adam->L-BFGS 8.5855839475e-03
+mps D: (grid,5), (random,0) Adam 7.8183857694e-02 Adam->L-BFGS 1.0804851270e-02
+mps A again Adam 7.8183857694e-02 Adam->L-BFGS 1.0804851270e-02

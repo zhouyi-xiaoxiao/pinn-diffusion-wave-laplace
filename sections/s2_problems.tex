@@ -1,0 +1,200 @@
+% =====================================================================================
+% sections/s2_problems.tex -- Test problems and exact solutions.
+% All `% src:` paths are relative to the root of the repository.
+% The statements of Propositions s2_problems:prop:exact and :prop:unique, the further checks of
+% the exact solutions and the coincidences of evaluation and training points are in the
+% Supplementary Material (sections/S1_problems.tex).
+% =====================================================================================
+\section{Test problems and exact solutions}\label{s2_problems:sec}
+
+We use eight linear, constant-coefficient problems on boxes. Each has an exact solution in
+closed form or, in one case, as a series, so every error reported below is measured
+against the true solution and not against another numerical method. Five problems are
+low-dimensional (\PH, \PWone, \PWtwo, \PLtwo, \PLthree), one is a control variant of
+\PLthree\ with compatible data (\PLthreeS), and two are posed on the unit cube in any
+dimension $d\ge 2$ (\Pone, \Ptwo). Table~\ref{s2_problems:tab:problems} lists them with their
+origin and the held-out evaluation set; the networks are in
+Table~\ref{s3_methods:tab:setup}. In the evolution problems $t$ is the
+first coordinate and $\lap$ acts on the space variables only. The evaluation sets are dense
+grids, or random points drawn from a generator of their own, and are separate from the
+training points except for a few grid nodes on the boundary and, for \PLthree, the points of
+one collocation strategy (Supplementary Section~\ref{S1:sec}).
+
+% -------------------------------------------------------------------------------------
+% Table of problems.
+% src (equations, data, exact solutions, evaluation sets of Heat, Wave1, Wave2, Lap2, Lap3):
+%      research_benchmark/pinnbench/problems.py
+% src (Lap3s): code/s5_hard_laplace3d_smooth.py (same network and evaluation grid as Lap3)
+% src (LapD, PoiD, 50 000 test points): research_highdim/scripts/hd_core.py
+%      (exact, source, fixed_sets)
+% src (origins): refs.bib annotations of strauss2008 (Sec. 6.2: exercise for Lap2; setting for the cube),
+%      wangyu2022 and eyu2018 (eyu2018: Sec. 3.2 for LapD, Sec. 3.3 for the solution of PoiD;
+%      arXiv:1710.00211 read on 2026-10-01)
+% -------------------------------------------------------------------------------------
+\begin{table}[tp]
+\centering
+\caption{The eight test problems. Evaluation set: the held-out points on
+which all errors are computed; grids are uniform and include the boundary unless they are
+cell-centred. In \Pone\ and \Ptwo\ the Dirichlet datum is the restriction of $\uex$ to $\dOm$.
+The networks are listed in Table~\ref{s3_methods:tab:setup}.}
+\label{s2_problems:tab:problems}
+\footnotesize
+\setlength{\tabcolsep}{2.6pt}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}l
+  >{\raggedright\arraybackslash}p{2.0cm}
+  >{\raggedright\arraybackslash}p{3.35cm}
+  >{\raggedright\arraybackslash}p{3.4cm}
+  >{\raggedright\arraybackslash}p{3.3cm}
+  >{\raggedright\arraybackslash}p{1.9cm}@{}}
+\toprule
+ & Equation, domain & Data & Exact solution $\uex$ & Origin & Evaluation set\\
+\midrule
+\PH & $u_t=u_{xx}$; $x\in(0,1)$, $t\in(0,1]$
+    & $u(0,x)=\sin\pi x$; $u(t,0)=u(t,1)=0$
+    & $\ee^{-\pi^2t}\sin\pi x$
+    & standard single mode
+    & $201\times201$ grid in $(t,x)$\\
+\PWone & $u_{tt}=4u_{xx}$; $x\in(0,1)$, $t\in(0,1]$
+    & $u(0,x)=\sin\pi x$ ${}+\tfrac12\sin4\pi x$; $u_t(0,x)=0$; $u(t,0)=u(t,1)=0$
+    & $\sin\pi x\cos2\pi t$ ${}+\tfrac12\sin4\pi x\cos8\pi t$
+    & \citet{wangyu2022}, Sec.~7.3
+    & $201\times201$ grid in $(t,x)$\\
+\PWtwo & $u_{tt}=\lap u$; $\Om=(-1,1)^2$, $t\in(0,1]$
+    & $u(0,\cdot)=\sin\pi x\sin\pi y$; $u_t(0,\cdot)=0$; $u=0$ on $\dOm$
+    & $\sin\pi x\,\sin\pi y\,\cos(\sqrt2\,\pi t)$
+    & standard standing mode
+    & $21\times81\times81$ grid in $(t,x,y)$\\
+\PLtwo & $\lap u=0$; $\Om=(0,\pi)^2$
+    & $u(0,y)=0$; $u(\pi,y)=\tfrac12(1+\cos2y)$; $u_y(x,0)=u_y(x,\pi)=0$
+    & $\displaystyle\frac{x}{2\pi}+\frac{\cos2y\,\sinh2x}{2\sinh2\pi}$
+    & \citet{strauss2008}, Sec.~6.2, Ex.~3
+    & $201\times201$ grid\\
+\PLthree & $\lap u=0$; $\Om=(0,\pi)^3$
+    & $u(\pi,y,z)=\sin y\cos z$; $u=0$ on the other five faces
+    & series~\eqref{s2_problems:eq:lap3d-exact}
+    & the setting of \citet{strauss2008}, Sec.~6.2
+    & $40^3$ cell centres\\
+\PLthreeS & $\lap u=0$; $\Om=(0,\pi)^3$
+    & $u(\pi,y,z)=\sin y\sin z$; $u=0$ on the other five faces
+    & $\displaystyle\sin y\,\sin z\,\frac{\sinh(\sqrt2\,x)}{\sinh(\sqrt2\,\pi)}$
+    & control variant of \PLthree
+    & $40^3$ cell centres\\
+\Pone & $\lap u=0$; $\Om=(0,1)^d$
+    & $u=\uex$ on $\dOm$
+    & $\sum_{k=1}^{\lfloor d/2\rfloor}x_{2k-1}x_{2k}$
+    & \citet{eyu2018}, Sec.~3.2 ($d=10$)
+    & $50\,000$ uniform random points\\
+\Ptwo & $-\lap u=\pi^2\uex$; $\Om=(0,1)^d$
+    & $u=\uex$ on $\dOm$
+    & $d^{-1/2}\sum_{i=1}^{d}\cos\pi x_i$
+    & solution of \citet{eyu2018}, Sec.~3.3 (a Neumann problem, $d=5,10$), rescaled; posed here as a Dirichlet problem
+    & $50\,000$ uniform random points\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Heat equation.}
+% src: data/closed_forms.json (heat1d.exp_minus_pi2 = 5.1723e-05, heat1d.exp_plus_pi2 = 19333.69)
+The solution of \PH\ decays to $\ee^{-\pi^2}=\sci{5.17}{-5}$ of its initial size at $t=1$. Since
+$\norm{\uex(t,\cdot)}_{L^2(0,1)}=\ee^{-\pi^2 t}/\sqrt2$, a given $L^2$ error on the time
+slice $t$ is a relative error $\sqrt2\,\ee^{\pi^2 t}$ times as large on that slice, a factor
+$\ee^{\pi^2}\approx\sci{1.93}{4}$ larger at $t=1$ than at $t=0$. A small space--time
+relative error $\errL$ therefore says little about late times, and we also report the
+relative error $\errT(t)$ on single time slices (both are defined
+in~\eqref{s3_methods:eq:errors}; results in Section~\ref{s4_lowdim:sec:timeslice}).
+
+\paragraph{Wave equations.}
+Problem \PWone\ is the benchmark of \citet[Sec.~7.3]{wangyu2022}:
+\begin{equation}\label{s2_problems:eq:wave1d}
+u_{tt}=4u_{xx},\quad u(t,0)=u(t,1)=0,\quad u(0,x)=\sin\pi x+\tfrac12\sin4\pi x,\quad
+u_t(0,x)=0 .
+\end{equation}
+It superposes two standing modes with amplitudes $1$ and $\tfrac12$ and frequencies in the
+ratio $1:4$: on $0\le t\le 1$ the first completes one period and the second four.
+Problem \PWtwo\ is the two-dimensional wave equation
+\begin{equation}\label{s2_problems:eq:wave2d}
+u_{tt}=\lap u\ \text{in }(-1,1)^2,\quad u=0\ \text{on }\dOm,\quad
+u(0,x,y)=\sin\pi x\,\sin\pi y,\quad u_t(0,x,y)=0 .
+\end{equation}
+% src: data/closed_forms.json (wave2d.omega = 4.4429, wave2d.exact_factor_at_t_1_2_3[0] = -0.26626)
+Its solution is a single standing mode of period $\sqrt2$, so $0\le t\le 1$ covers
+$1/\sqrt2\approx 0.71$ of one period; the solution changes sign at $t=1/(2\sqrt2)\approx 0.35$
+and its amplitude factor at $t=1$ is $\cos(\sqrt2\,\pi)=-0.266$. A function that only decays
+in time is therefore far from the solution.
+
+\paragraph{Laplace problems.}
+Problem \PLtwo\ (Exercise~3 of Section~6.2 of \citet{strauss2008}) mixes Dirichlet data on two
+sides with homogeneous Neumann data on the other two. The data are compatible at the four
+corners, because both Dirichlet data have zero $y$-derivative at $y=0$ and $y=\pi$, and the
+solution is smooth up to the boundary. Problem \PLthree,
+\begin{equation}\label{s2_problems:eq:lap3d}
+\lap u=0\quad\text{in }\Om=(0,\pi)^3;\qquad u(\pi,y,z)=\sin y\,\cos z,\qquad
+u=0\ \text{on the other five faces,}
+\end{equation}
+is solved by separation of variables:
+\begin{equation}\label{s2_problems:eq:lap3d-exact}
+\uex(x,y,z)=\sin y\sum_{n\ \mathrm{even}} b_n\,\sin(nz)\,\frac{\sinh(k_n x)}{\sinh(k_n\pi)},
+\qquad k_n=\sqrt{1+n^2},\quad b_n=\frac{4n}{\pi(n^2-1)},
+\end{equation}
+where the sum runs over $n=2,4,6,\dots$ and the $b_n$ are the sine coefficients of $\cos z$
+on $(0,\pi)$. Because $\cos z$ does not vanish at $z=0$ and $z=\pi$, the data jump by
+$\sin y$ across the edges $\{x=\pi,\ z=0\}$ and $\{x=\pi,\ z=\pi\}$. Two consequences matter
+numerically. A network is continuous on the closed cube, so it cannot match these boundary
+data to better than $\tfrac12$ in the maximum norm, whatever its size; and $\uex$ has
+infinite Dirichlet energy (Proposition~\ref{s2_problems:prop:exact}(b)), so
+$\uex\notin H^1(\Om)$ and a relative $H^1$ error is not defined. Errors for \PLthree\ are
+therefore measured at the centres of a $40^3$ grid of cells, which lie at least $\pi/80$
+from every face.
+% src: data/s2_problems_evalsets.json (laplace3d.min_distance_over_pi = 0.0125)
+Problem \PLthreeS\ keeps everything except the datum on $x=\pi$, which becomes the compatible
+single mode $\sin y\,\sin z$; its solution is one separable mode instead of a slowly
+converging series. It therefore changes two things at once, the compatibility of the data
+and the modal content of the solution, and Section~\ref{s5_hard:sec} compares the two
+problems with this in mind.
+
+\paragraph{Problems in $d$ dimensions.}
+On $\Om=(0,1)^d$ with Dirichlet data taken from the exact solution we consider
+\begin{align}
+\Pone:&\quad -\lap u=0\ \text{in }\Om,\quad u=\uex\ \text{on }\dOm;
+&\uex(\x)&=\sum_{k=1}^{\lfloor d/2\rfloor}x_{2k-1}x_{2k},\label{s2_problems:eq:p1}\\
+\Ptwo:&\quad -\lap u=\pi^2\uex\ \text{in }\Om,\quad u=\uex\ \text{on }\dOm;
+&\uex(\x)&=d^{-1/2}\sum_{i=1}^{d}\cos\pi x_i .\label{s2_problems:eq:p2}
+\end{align}
+At $d=10$, \Pone\ is the test problem of \citet[Sec.~3.2]{eyu2018}; for odd $d$ the last
+coordinate does not enter.
+% src: refs.bib (eyu2018, annote: Sec. 3.3 of arXiv:1710.00211, "-Lap u + pi^2 u = 2 pi^2 sum_k cos(pi x_k)", zero normal derivative, exact solution sum_k cos(pi x_k), relative L2 error 1.3 % for d = 5 and 1.9 % for d = 10)
+The solution of \Ptwo\ is, up to the factor $d^{-1/2}$, that of the Neumann example of
+\citet[Sec.~3.3]{eyu2018}, who solve $-\lap u+\pi^2u=2\pi^2\sum_k\cos\pi x_k$ with zero
+normal derivative for $d=5$ and $10$ by the Ritz method without a boundary penalty; here
+the same function is the solution of a Dirichlet problem for the Poisson equation, so
+that both methods can be applied to it with a penalty. With $m=\lfloor d/2\rfloor$
+the values of the solution of \Pone\ have mean $m/4$ and standard deviation $\sqrt{7m}/12$, so they concentrate around
+the mean as $d$ grows and a small relative $L^2$ error becomes cheap:
+% src: data/closed_forms.json (floors: P1_const 0.6614 (d=2), 0.2686 (d=20); P1_affine 0.25 (d=2), 0.1015 (d=20); P2_affine 0.12027)
+by Proposition~\ref{s2_problems:prop:floors} the best constant has $\errL=0.661$ at $d=2$ but
+$0.269$ at $d=20$, and the best affine function $0.250$ and $0.102$. \Ptwo\ is normalised
+against this effect: it has zero mean and $\norm{\uex}_{L^2(\Om)}^2=\tfrac12$ for every $d$, so
+the constant floor is $1$ and the affine floor $0.1203$ in every dimension. Its normal
+derivative, a multiple of $\sin\pi x_i$ on the faces $x_i\in\{0,1\}$, vanishes on every face, which makes it the favourable
+case for the penalised Deep Ritz energy (Proposition~\ref{s3_methods:prop:robin}); \Pone,
+whose normal derivative does not vanish, is the representative one.
+
+\paragraph{Existence, uniqueness and reference levels.}
+By a classical solution we mean one that is twice continuously differentiable on the closed
+domain (the closed space--time cylinder for the evolution problems).
+Proposition~\ref{s2_problems:prop:exact} in the Supplementary Material shows that each $\uex$
+of Table~\ref{s2_problems:tab:problems} is a classical solution, except for \PLthree, whose
+series solution is smooth up to the five faces with zero data and attains the datum on the
+sixth face in mean square; Proposition~\ref{s2_problems:prop:unique} shows that each problem
+has no other solution in that class. Continuous dependence on the data, the remaining
+requirement for well-posedness, is classical for linear problems of these
+types~\citep{evans2010} and is not re-proved here. The formulas were also checked
+symbolically and numerically (Supplementary Section~\ref{S1:sec}). The last statement gives
+the levels that a trained network must beat before its error means anything:
+
+\begin{proposition}[Trivial-predictor floors]\label{s2_problems:prop:floors}
+\StmtFloors
+\end{proposition}
+
+\noindent All proofs are in Supplementary Section~\ref{sA_proofs:sec}.

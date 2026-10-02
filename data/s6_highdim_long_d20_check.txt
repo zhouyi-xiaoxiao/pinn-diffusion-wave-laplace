@@ -1,0 +1,2 @@
+bit-for-bit check of hd_core.train (P1, Deep Ritz, d=2, seed 0, 4000 iterations)
+stored 0.022203806787729263  rerun 0.022203806787729263  identical: True

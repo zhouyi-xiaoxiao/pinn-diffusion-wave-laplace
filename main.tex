@@ -1,0 +1,160 @@
+% =====================================================================================
+% main.tex -- "Physics-informed neural networks and the Deep Ritz method for diffusion, wave
+% and Laplace problems: a reproducible benchmark and its failure modes" (main text).
+% The Supplementary Material is supplement.tex; the two documents refer to each other with
+% xr-hyper (numbers with the prefix S are those of the supplement).
+%
+% Build (from this folder; PATH must contain the TeX Live binaries):
+%   pdflatex supplement && pdflatex main && bibtex main && bibtex supplement
+%   pdflatex supplement && pdflatex main && pdflatex supplement && pdflatex main
+%   pdflatex supplement && pdflatex main
+% (build_pdfs.sh runs this sequence, with three final passes, checks the logs and copies main.pdf to
+% paper.pdf, the file to which the links of the supplement point.)
+% Layout: macros.tex (notation), statements.tex (exact texts of the propositions),
+%         sections/s*.tex (main text, one file per section), sections/S*.tex (supplement),
+%         figures/, refs.bib.
+% Every quantitative statement carries a comment  % src: <path>, relative to the root of the
+% accompanying repository (reproduce.md there gives the command that regenerates each file):
+%   data/, code/                    outputs and scripts of the article's own tables and figures
+%   research_benchmark/, research_highdim/            the benchmark and the dimension study
+%   research_highdim_bound/, research_highdim_remedies/  the stability constant with the error bound
+%                                   (Section 6.7) and the two remedies (Section 6.8), each with the scripts
+%                                   and outputs of its re-checks in check/
+%   verify_research_benchmark/, verify_research_highdim/   the verification codes (Section 3.9)
+%   notes/VERIFICATION.md, data/checks/   how the results were checked; records of the checks
+% Floats: the option [section] of placeins keeps every figure and table inside its section, and
+%         flafter keeps a float from being set above the place where it is defined.
+% =====================================================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{flafter}
+\usepackage[section]{placeins}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{microtype}
+\usepackage{xr-hyper}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\externaldocument[][nocite]{supplement}[supplement.pdf]
+
+\graphicspath{{figures/}}
+\captionsetup{font=small,labelfont=bf}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,keepspaces=true,
+        showstringspaces=false,frame=single,framerule=0.3pt,xleftmargin=1em,
+        xrightmargin=1em,language=Python,breaklines=true}
+\setlist{nosep}
+\renewcommand{\bibfont}{\small}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.08}
+\renewcommand{\floatpagefraction}{0.85}
+\setlength{\bibsep}{2pt plus 1pt}
+
+\input{macros}
+\input{statements}
+
+\hypersetup{
+  pdftitle={Physics-informed neural networks and the Deep Ritz method for diffusion, wave and Laplace problems: a reproducible benchmark and its failure modes},
+  pdfauthor={Xiaoxiao Zhouyi},
+  pdfkeywords={physics-informed neural networks, Deep Ritz method, collocation sampling, L-BFGS, finite-difference baselines, high-dimensional Poisson equation, a posteriori error bound, biharmonic Steklov eigenvalue, reproducibility}
+}
+
+\title{Physics-informed neural networks and the Deep Ritz method for diffusion, wave and
+Laplace problems: a reproducible benchmark and its failure modes}
+
+\author{Xiaoxiao Zhouyi\\[0.4em]
+\small School of Engineering Mathematics and Technology, University of Bristol, UK.\\
+\small \href{mailto:zhouyixiaoxiao@gmail.com}{\texttt{zhouyixiaoxiao@gmail.com}}}
+
+\date{}
+
+\begin{document}
+\maketitle
+
+% ------------------------------------------------------------------------ abstract ---
+% Every number of the abstract is stated again, with its source, in the body; the
+% src comments below repeat the sources.  code/check_headline_numbers.py checks them.
+\begin{abstract}
+\noindent
+% src: research_benchmark/results/tables.md (T2); research_benchmark/results/stats.json; research_benchmark/results/tables.md (T3, T6); data/s4_lowdim_gridcontrol.json
+We benchmark physics-informed neural networks (PINNs) and the Deep Ritz method on eight linear
+problems (dimension $d\le20$) with exact solutions proved unique in a stated class, using seeded paired runs and low-dimensional classical baselines. An \LBFGS\
+phase after \Adam\ lowers the error in all 175 pairs; the largest collocation
+penalty after it (cell-centred grid, heat problem) comes from missing points near the
+initial line.
+% src: research_benchmark/results/benchmark_runs.csv (wave1d: 50 runs, 0.414 to 0.512); data/s5_hard_wave1d_long.json; data/s5_hard_cost.json (summary: ratio_smallest_of_all_measurements 475.6; fd_error_over_pinn_error_range 0.11 to 0.47)
+A small unit-weight PINN fails on a two-mode wave problem; finite differences are over
+400 times faster at equal or better accuracy.
+% src: research_highdim/results/summary.csv; research_highdim/results/extensions.json (equaltime, d = 10)
+The PINN is more accurate per iteration up to $d=10$, Deep Ritz at equal CPU time at $d=10$.
+% src: sections/s6_highdim.tex (Theorem s6_highdim:thm:kappa, Corollary s6_highdim:cor:bound); data/s6_highdim_bound_numbers.json (n_networks_bound_valid, eta_d10_d20_all_networks, eta_by_d_all_networks: d = 2 max 24.82); research_highdim_bound/results/decisions.json (H2: 21 of 57)
+On the unit cube we prove that the harmonic-extension norm from the boundary has exact order
+$d^{-1/4}$; with it, as already with Payne's constant, the two population PINN loss terms bound
+the $L^2$ error of any $C^2$ network. The bound held on all 133 networks, exceeding the error
+1.9 to 3.4 times at $d\ge10$, up to 25 at $d=2$, missing a pre-registered
+target ($\le3$ for $d\ge5$) on 21 of 57 networks.
+% src: research_highdim_remedies/results/summary.json (P2/d20 plain, presolve, lift3c, rep3); research_highdim_remedies/results/summary_exploratory.json (P2/d20 lift1); research_highdim_remedies/results/decision.json (general_lift3c); research_highdim_remedies/results/decision_p5.json; research_highdim_remedies/results/checks.json (C5_floors poisson/d20: test_affine, exact_lift3 3.9e-3); research_highdim_remedies/results/summary_p5.json (P5/d20 lift3c, presolve)
+At $d=20$ Legendre input features (containing the Poisson solution to 0.4 per cent), centred
+inputs (exploratory) and, for Deep Ritz, a featureless reparametrisation each remove a plateau
+left by a fixed affine part. The features passed a pre-registered generality test on four
+problems but, like the affine part, hurt on a fifth problem, added afterwards (not blind).
+Minimal examples show two pitfalls: a residual zeroed by misused automatic differentiation, and
+too few boundary conditions.
+\end{abstract}
+
+\noindent\textbf{Keywords:} physics-informed neural networks; Deep Ritz method; collocation
+sampling; L-BFGS; finite-difference baselines; high-dimensional Poisson equation; a posteriori
+error bound; biharmonic Steklov eigenvalue; reproducibility.
+
+% ------------------------------------------------------------------------ sections ---
+\input{sections/s1_intro}
+\input{sections/s2_problems}
+\input{sections/s3_methods}
+\input{sections/s4_lowdim}
+\input{sections/s5_hard}
+\input{sections/s6_highdim}
+\input{sections/s7_pitfalls}
+\input{sections/s8_discussion}
+
+% ---------------------------------------------------------------------- end matter ---
+\phantomsection\pdfbookmark[1]{Data and code availability}{bm:code}
+\section*{Data and code availability}
+All code, raw results, figure scripts and the \LaTeX{} sources of this article and of its
+Supplementary Material are available at\\
+\url{https://github.com/zhouyi-xiaoxiao/pinn-diffusion-wave-laplace}. Every figure is
+produced by a script from the stored per-run results in that repository, and every table
+of results is generated from them by a script or, for the tables assembled in the text,
+checked against them by one; the file \texttt{reproduce.md} gives the script and the exact
+command for each, and \texttt{notes/VERIFICATION.md} describes how the results were
+checked. The script \texttt{code/\allowbreak check\_headline\_numbers.py} checks the numbers
+of the abstract against the stored results. All runs are seeded. The analyses of
+Sections~\ref{s6_highdim:sec:bound} and~\ref{s6_highdim:sec:remedies} are in the folders
+\texttt{research\_\allowbreak highdim\_\allowbreak bound} and
+\texttt{research\_\allowbreak highdim\_\allowbreak remedies}, each with its pre-registration
+documents, scripts, stored results and the scripts and outputs of its re-checks.
+% src: research_highdim_bound/results/inventory.json (88 rows with sha256); verify_research_highdim/results/v_determinism.txt (seven runs bit for bit)
+Trained networks are not included. This applies also to the 88 networks on which the bound of
+Section~\ref{s6_highdim:sec:bound} was evaluated: their SHA-256 hashes, recorded before the
+evaluation, and the outputs of the evaluation are included, and the training scripts retrain the
+networks (on the machine used, seven runs of the dimension study were repeated bit for bit), so
+the evaluation can be repeated only on retrained networks.
+
+\phantomsection\pdfbookmark[1]{Acknowledgements}{bm:ack}
+\section*{Acknowledgements}
+This article develops a project report written in 2024 during an exchange year at the Hong Kong University of Science and Technology.
+
+\phantomsection\pdfbookmark[1]{References}{bm:refs}
+\bibliographystyle{plainnat}
+\bibliography{refs}
+
+\end{document}

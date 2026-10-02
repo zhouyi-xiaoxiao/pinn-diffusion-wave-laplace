@@ -1,0 +1,2 @@
+[long20] laplace  ritz d=20 seed=0 w=100: rel_l2=9.1170e-03 centred=3.3823e-02 h1=6.3061e-02 val=9.1135e-03 wall=34s
+[long20] laplace  pinn d=20 seed=0 w=1000: rel_l2=7.4922e-03 centred=2.7795e-02 h1=5.0113e-02 val=7.5154e-03 wall=209s

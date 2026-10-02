@@ -1,0 +1,61 @@
+{
+ "source": "Working records of the two studies (low-dimensional benchmark, study in d dimensions), kept while the runs were made. Summary: notes/VERIFICATION.md, sections 2.5, 2.6 and 3.4.",
+ "benchmark": {
+  "software_at_run_time": {
+   "torch": "2.14.1",
+   "numpy": "2.5.3",
+   "scipy": "1.18.1",
+   "matplotlib": "3.11.2"
+  },
+  "compute_minutes": {
+   "description": "Approximate training and solving time; cannot be re-measured",
+   "pilots": 6,
+   "validation_of_stacked_driver_cpu": 12,
+   "first_heat_block_superseded": 6,
+   "heat_runs_outside_the_benchmark_design_not_used_in_the_article_cpu": 12.4,
+   "main_block_seeds_0_to_4": 20.5,
+   "heat_10_seeds": 13,
+   "single_network_timing": 5,
+   "lap2_seeds_5_to_9": 7,
+   "one_face_laplace_runs_section_7_about": 4,
+   "budget_sweep_about": 9,
+   "finite_differences_under": 1,
+   "total_about": 95
+  },
+  "validation_predates_single_pass_loss": {
+   "value": true,
+   "statement": "The validation was done before the loss was re-assembled into a single forward pass"
+  },
+  "planned_budget_not_run": {
+   "n_r": [
+    1024,
+    4096
+   ],
+   "iterations": 5000,
+   "reason": "more than two hours on the loaded machine"
+  }
+ },
+ "highdim": {
+  "torch_threads": {
+   "planned": 4,
+   "used": 1,
+   "ms_per_iteration_at_d10_forward_pinn": {
+    "one_thread": 8.9,
+    "four_threads": 18.7
+   }
+  },
+  "parallel_workers": 3,
+  "sweep_runs_before_changes": {
+   "description": "The first 13 of the 16 runs of the weight sweep predate the switch to one thread and to the forward Laplacian: four threads, no CPU timer; the five PINN runs among them used the nested Laplacian",
+   "n_runs": 13,
+   "n_pinn_nested": 5,
+   "threads": 4
+  },
+  "compute": {
+   "runs": 88,
+   "summed_wall_s": 5051,
+   "recorded_cpu_s": 2539,
+   "longest_run_wall_s": 255
+  }
+ }
+}

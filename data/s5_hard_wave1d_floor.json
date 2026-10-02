@@ -1,0 +1,18 @@
+{
+ "slow_mode_only_rel_l2_continuous": 0.4472135954999579,
+ "slow_mode_only_rel_l2_on_eval_grid": 0.4472135954999578,
+ "slow_mode_only_linf_on_eval_grid": 0.5000000000000001,
+ "benchmark_runs": {
+  "adam": {
+   "n": 25,
+   "min": 0.46054665622736024,
+   "max": 0.5115505254830902
+  },
+  "adam_lbfgs": {
+   "n": 25,
+   "min": 0.41402876402730837,
+   "max": 0.4637096608840303
+  }
+ },
+ "note": "This script does not project the trained networks onto the two modes; this is a reference level only. The projections are in data/s5_hard_wave1d_long.json."
+}

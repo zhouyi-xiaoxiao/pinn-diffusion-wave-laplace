@@ -1,0 +1,127 @@
+heat1d_s0-10.json {'n_r': 256, 'n_adam': 3000, 'branch_at': 1500} {'batch_size': 50, 't_adam_total': 139.3, 't_adam_to_branch': 74.4, 't_lbfgs_total': 545.1, 'lbfgs_batched_fevals': 10918, 'device': 'mps', 'wall_total_s': 789.7}
+laplace2d_s0-5.json {'n_r': 256, 'n_adam': 3000, 'branch_at': 1500} {'batch_size': 25, 't_adam_total': 125.0, 't_adam_to_branch': 54.0, 't_lbfgs_total': 233.6, 'lbfgs_batched_fevals': 3772, 'device': 'mps', 'wall_total_s': 373.5}
+laplace2d_s5-10.json {'n_r': 256, 'n_adam': 3000, 'branch_at': 1500} {'batch_size': 25, 't_adam_total': 140.9, 't_adam_to_branch': 59.5, 't_lbfgs_total': 287.9, 'lbfgs_batched_fevals': 3884, 'device': 'mps', 'wall_total_s': 599.4}
+laplace3d_s0-5.json {'n_r': 512, 'n_adam': 3000, 'branch_at': 1500} {'batch_size': 25, 't_adam_total': 176.9, 't_adam_to_branch': 107.4, 't_lbfgs_total': 186.1, 'lbfgs_batched_fevals': 3219, 'device': 'mps', 'wall_total_s': 369.3}
+wave1d_s0-5.json {'n_r': 1024, 'n_adam': 3000, 'branch_at': 1500} {'batch_size': 25, 't_adam_total': 146.7, 't_adam_to_branch': 74.3, 't_lbfgs_total': 97.9, 'lbfgs_batched_fevals': 2234, 'device': 'mps', 'wall_total_s': 250.4}
+wave2d_s0-5.json {'n_r': 512, 'n_adam': 3000, 'branch_at': 1500} {'batch_size': 25, 't_adam_total': 116.8, 't_adam_to_branch': 63.0, 't_lbfgs_total': 121.4, 'lbfgs_batched_fevals': 2755, 'device': 'mps', 'wall_total_s': 241.0}
+total rows 350
+csv rows 350
+max abs diff csv vs raw json: 0
+== heat1d
+  adam       grid      n=10 relL2 2.982e-02 +- 2.977e-02 geo 2.128e-02 min 1.036e-02 max 8.600e-02 | Linf 1.476e-02 +- 3.468e-03
+  adam       random    n=10 relL2 4.333e-02 +- 6.433e-02 geo 2.473e-02 min 1.139e-02 max 2.191e-01 | Linf 1.790e-02 +- 9.667e-03
+  adam       resample  n=10 relL2 3.703e-02 +- 1.897e-02 geo 3.291e-02 min 1.780e-02 max 7.139e-02 | Linf 1.969e-02 +- 7.120e-03
+  adam       sobol     n=10 relL2 2.405e-02 +- 1.997e-02 geo 1.766e-02 min 4.050e-03 max 6.081e-02 | Linf 1.115e-02 +- 3.407e-03
+  adam       rad       n=10 relL2 1.485e-02 +- 5.227e-03 geo 1.397e-02 min 7.361e-03 max 2.224e-02 | Linf 1.594e-02 +- 8.718e-03
+  adam_lbfgs grid      n=10 relL2 6.155e-03 +- 4.013e-03 geo 5.010e-03 min 1.931e-03 max 1.359e-02 | Linf 6.327e-03 +- 4.017e-03
+  adam_lbfgs random    n=10 relL2 1.248e-03 +- 3.861e-04 geo 1.190e-03 min 6.137e-04 max 1.770e-03 | Linf 1.694e-03 +- 7.512e-04
+  adam_lbfgs resample  n=10 relL2 1.455e-03 +- 1.005e-03 geo 1.252e-03 min 5.735e-04 max 4.127e-03 | Linf 1.878e-03 +- 1.050e-03
+  adam_lbfgs sobol     n=10 relL2 1.219e-03 +- 4.053e-04 geo 1.152e-03 min 5.547e-04 max 1.979e-03 | Linf 1.340e-03 +- 6.204e-04
+  adam_lbfgs rad       n=10 relL2 1.164e-03 +- 5.191e-04 geo 1.073e-03 min 6.749e-04 max 2.065e-03 | Linf 1.060e-03 +- 3.972e-04
+  LBFGS vs Adam: geo 2.119e-02 -> 1.560e-03 ratio 0.074 better 50/50 wilcoxon p=1.78e-15; range adam 4.050e-03-2.191e-01, lbfgs 5.547e-04-1.359e-02
+    per-seed aggregated: 10/10 seeds, wilcoxon p=0.0020
+  vs random adam       grid      ratio 0.86 better 5/10 p=0.8457  per-seed ratios [0.87, 0.38, 0.39, 2.72, 1.22, 3.97, 0.83, 0.15, 1.02, 1.02]
+  vs random adam       resample  ratio 1.33 better 4/10 p=0.2754  per-seed ratios [1.79, 0.6, 0.27, 4.65, 4.77, 1.77, 0.94, 0.64, 1.8, 1.42]
+  vs random adam       sobol     ratio 0.71 better 6/10 p=0.4316  per-seed ratios [2.62, 0.1, 0.28, 1.4, 1.68, 0.49, 0.46, 0.21, 4.55, 0.94]
+  vs random adam       rad       ratio 0.57 better 5/10 p=0.4316  per-seed ratios [1.17, 0.18, 0.06, 1.36, 1.48, 1.03, 0.45, 0.22, 0.88, 1.47]
+  sobol/grid adam: ratio 0.83 better 6/10 p=0.5566
+  vs random adam_lbfgs grid      ratio 4.21 better 0/10 p=0.0020  per-seed ratios [3.49, 14.61, 2.31, 1.09, 6.11, 4.9, 11.04, 4.05, 3.53, 2.87]
+  vs random adam_lbfgs resample  ratio 1.05 better 6/10 p=1.0000  per-seed ratios [0.58, 0.73, 1.28, 0.79, 0.75, 0.86, 0.58, 3.82, 1.86, 1.46]
+  vs random adam_lbfgs sobol     ratio 0.97 better 6/10 p=0.6953  per-seed ratios [0.78, 1.18, 0.89, 1.12, 0.76, 0.89, 0.71, 1.45, 0.9, 1.25]
+  vs random adam_lbfgs rad       ratio 0.90 better 5/10 p=0.6953  per-seed ratios [1.16, 0.93, 0.6, 1.17, 0.51, 0.91, 0.68, 1.06, 1.13, 1.23]
+  sobol/grid adam_lbfgs: ratio 0.23 better 9/10 p=0.0039
+== wave1d
+  adam       grid      n=5 relL2 4.829e-01 +- 2.133e-02 geo 4.826e-01 min 4.605e-01 max 5.063e-01 | Linf 6.702e-01 +- 3.701e-02
+  adam       random    n=5 relL2 4.814e-01 +- 2.223e-02 geo 4.810e-01 min 4.611e-01 max 5.063e-01 | Linf 6.616e-01 +- 3.245e-02
+  adam       resample  n=5 relL2 4.862e-01 +- 2.216e-02 geo 4.858e-01 min 4.659e-01 max 5.107e-01 | Linf 6.810e-01 +- 3.766e-02
+  adam       sobol     n=5 relL2 4.816e-01 +- 2.216e-02 geo 4.812e-01 min 4.612e-01 max 5.059e-01 | Linf 6.603e-01 +- 3.499e-02
+  adam       rad       n=5 relL2 4.840e-01 +- 2.223e-02 geo 4.836e-01 min 4.654e-01 max 5.116e-01 | Linf 6.695e-01 +- 3.595e-02
+  adam_lbfgs grid      n=5 relL2 4.354e-01 +- 1.509e-02 geo 4.352e-01 min 4.140e-01 max 4.502e-01 | Linf 6.520e-01 +- 5.432e-02
+  adam_lbfgs random    n=5 relL2 4.422e-01 +- 1.366e-02 geo 4.420e-01 min 4.228e-01 max 4.574e-01 | Linf 6.593e-01 +- 2.426e-02
+  adam_lbfgs resample  n=5 relL2 4.409e-01 +- 1.897e-02 geo 4.406e-01 min 4.209e-01 max 4.637e-01 | Linf 6.585e-01 +- 6.666e-02
+  adam_lbfgs sobol     n=5 relL2 4.426e-01 +- 1.125e-02 geo 4.425e-01 min 4.247e-01 max 4.530e-01 | Linf 6.676e-01 +- 4.627e-02
+  adam_lbfgs rad       n=5 relL2 4.494e-01 +- 1.152e-02 geo 4.493e-01 min 4.335e-01 max 4.595e-01 | Linf 6.896e-01 +- 3.777e-02
+  LBFGS vs Adam: geo 4.828e-01 -> 4.419e-01 ratio 0.915 better 25/25 wilcoxon p=5.96e-08; range adam 4.605e-01-5.116e-01, lbfgs 4.140e-01-4.637e-01
+    per-seed aggregated: 5/5 seeds, wilcoxon p=0.0625
+  vs random adam       grid      ratio 1.00 better 4/5 p=0.6250  per-seed ratios [1.02, 1.0, 1.0, 1.0, 1.0]
+  vs random adam       resample  ratio 1.01 better 1/5 p=0.1250  per-seed ratios [1.02, 1.01, 1.01, 1.0, 1.01]
+  vs random adam       sobol     ratio 1.00 better 2/5 p=0.8125  per-seed ratios [1.01, 1.0, 1.0, 0.99, 1.0]
+  vs random adam       rad       ratio 1.01 better 2/5 p=0.3125  per-seed ratios [1.01, 1.0, 1.01, 1.0, 1.01]
+  sobol/grid adam: ratio 1.00 better 3/5 p=0.4375
+  vs random adam_lbfgs grid      ratio 0.98 better 4/5 p=0.4375  per-seed ratios [0.97, 0.98, 0.98, 1.03, 0.96]
+  vs random adam_lbfgs resample  ratio 1.00 better 3/5 p=0.8125  per-seed ratios [0.96, 1.0, 1.0, 1.07, 0.96]
+  vs random adam_lbfgs sobol     ratio 1.00 better 3/5 p=1.0000  per-seed ratios [1.0, 1.0, 0.99, 1.04, 0.98]
+  vs random adam_lbfgs rad       ratio 1.02 better 1/5 p=0.1875  per-seed ratios [0.99, 1.03, 1.0, 1.04, 1.02]
+  sobol/grid adam_lbfgs: ratio 1.02 better 0/5 p=0.0625
+== wave2d
+  adam       grid      n=5 relL2 2.109e-01 +- 6.775e-02 geo 2.027e-01 min 1.495e-01 max 3.076e-01 | Linf 2.673e-01 +- 6.979e-02
+  adam       random    n=5 relL2 2.132e-01 +- 6.542e-02 geo 2.054e-01 min 1.500e-01 max 2.944e-01 | Linf 2.661e-01 +- 6.271e-02
+  adam       resample  n=5 relL2 2.349e-01 +- 6.516e-02 geo 2.286e-01 min 1.822e-01 max 3.433e-01 | Linf 2.868e-01 +- 6.045e-02
+  adam       sobol     n=5 relL2 2.095e-01 +- 5.691e-02 geo 2.034e-01 min 1.483e-01 max 2.828e-01 | Linf 2.593e-01 +- 5.005e-02
+  adam       rad       n=5 relL2 2.035e-01 +- 4.435e-02 geo 1.998e-01 min 1.671e-01 max 2.682e-01 | Linf 2.665e-01 +- 4.664e-02
+  adam_lbfgs grid      n=5 relL2 4.921e-02 +- 1.259e-02 geo 4.805e-02 min 3.610e-02 max 7.020e-02 | Linf 7.992e-02 +- 1.766e-02
+  adam_lbfgs random    n=5 relL2 4.888e-02 +- 1.915e-02 geo 4.640e-02 min 3.333e-02 max 8.155e-02 | Linf 7.754e-02 +- 2.675e-02
+  adam_lbfgs resample  n=5 relL2 5.006e-02 +- 8.694e-03 geo 4.942e-02 min 3.689e-02 max 6.105e-02 | Linf 7.924e-02 +- 2.487e-02
+  adam_lbfgs sobol     n=5 relL2 4.853e-02 +- 1.717e-02 geo 4.610e-02 min 2.706e-02 max 7.475e-02 | Linf 8.072e-02 +- 2.701e-02
+  adam_lbfgs rad       n=5 relL2 4.785e-02 +- 1.320e-02 geo 4.652e-02 min 3.428e-02 max 6.901e-02 | Linf 8.055e-02 +- 2.185e-02
+  LBFGS vs Adam: geo 2.077e-01 -> 4.728e-02 ratio 0.228 better 25/25 wilcoxon p=5.96e-08; range adam 1.483e-01-3.433e-01, lbfgs 2.706e-02-8.155e-02
+    per-seed aggregated: 5/5 seeds, wilcoxon p=0.0625
+  vs random adam       grid      ratio 0.99 better 3/5 p=0.6250  per-seed ratios [0.94, 0.93, 1.04, 1.02, 1.0]
+  vs random adam       resample  ratio 1.11 better 1/5 p=0.1875  per-seed ratios [0.91, 1.09, 1.17, 1.22, 1.21]
+  vs random adam       sobol     ratio 0.99 better 3/5 p=0.6250  per-seed ratios [0.94, 1.01, 0.96, 1.06, 0.99]
+  vs random adam       rad       ratio 0.97 better 3/5 p=0.8125  per-seed ratios [0.85, 0.88, 0.91, 1.05, 1.21]
+  sobol/grid adam: ratio 1.00 better 3/5 p=1.0000
+  vs random adam_lbfgs grid      ratio 1.04 better 3/5 p=1.0000  per-seed ratios [0.86, 1.04, 1.43, 0.96, 0.97]
+  vs random adam_lbfgs resample  ratio 1.07 better 2/5 p=0.8125  per-seed ratios [0.65, 1.12, 1.49, 1.27, 0.99]
+  vs random adam_lbfgs sobol     ratio 0.99 better 2/5 p=1.0000  per-seed ratios [0.92, 1.04, 1.32, 1.06, 0.73]
+  vs random adam_lbfgs rad       ratio 1.00 better 3/5 p=1.0000  per-seed ratios [0.85, 0.99, 1.24, 1.06, 0.92]
+  sobol/grid adam_lbfgs: ratio 0.96 better 3/5 p=0.8125
+== laplace2d
+  adam       grid      n=10 relL2 6.004e-03 +- 4.562e-03 geo 4.910e-03 min 2.132e-03 max 1.588e-02 | Linf 1.053e-02 +- 4.387e-03
+  adam       random    n=10 relL2 8.663e-03 +- 9.877e-03 geo 6.225e-03 min 3.162e-03 max 3.509e-02 | Linf 1.108e-02 +- 6.193e-03
+  adam       resample  n=10 relL2 5.089e-02 +- 3.381e-02 geo 3.959e-02 min 1.063e-02 max 1.073e-01 | Linf 3.227e-02 +- 1.869e-02
+  adam       sobol     n=10 relL2 4.081e-03 +- 1.622e-03 geo 3.798e-03 min 2.360e-03 max 7.075e-03 | Linf 9.045e-03 +- 3.066e-03
+  adam       rad       n=10 relL2 1.122e-02 +- 1.470e-02 geo 6.204e-03 min 1.784e-03 max 4.071e-02 | Linf 1.268e-02 +- 8.744e-03
+  adam_lbfgs grid      n=10 relL2 2.407e-04 +- 8.275e-05 geo 2.284e-04 min 1.442e-04 max 4.028e-04 | Linf 7.368e-04 +- 2.662e-04
+  adam_lbfgs random    n=10 relL2 4.872e-04 +- 1.651e-04 geo 4.626e-04 min 2.607e-04 max 7.893e-04 | Linf 1.019e-03 +- 3.979e-04
+  adam_lbfgs resample  n=10 relL2 4.404e-04 +- 1.575e-04 geo 4.194e-04 min 2.778e-04 max 8.137e-04 | Linf 9.875e-04 +- 3.866e-04
+  adam_lbfgs sobol     n=10 relL2 2.554e-04 +- 7.189e-05 geo 2.479e-04 min 1.951e-04 max 4.255e-04 | Linf 7.340e-04 +- 2.563e-04
+  adam_lbfgs rad       n=10 relL2 4.348e-04 +- 1.620e-04 geo 4.078e-04 min 2.155e-04 max 7.355e-04 | Linf 8.112e-04 +- 2.850e-04
+  LBFGS vs Adam: geo 7.780e-03 -> 3.390e-04 ratio 0.044 better 50/50 wilcoxon p=1.78e-15; range adam 1.784e-03-1.073e-01, lbfgs 1.442e-04-8.137e-04
+    per-seed aggregated: 10/10 seeds, wilcoxon p=0.0020
+  vs random adam       grid      ratio 0.79 better 6/10 p=0.3223  per-seed ratios [1.04, 1.31, 0.35, 0.76, 0.54, 1.04, 0.29, 0.88, 5.02, 0.36]
+  vs random adam       resample  ratio 6.36 better 0/10 p=0.0020  per-seed ratios [7.4, 4.15, 2.5, 20.26, 13.88, 8.85, 6.35, 2.61, 22.14, 1.54]
+  vs random adam       sobol     ratio 0.61 better 7/10 p=0.0840  per-seed ratios [1.51, 1.34, 0.42, 0.81, 0.5, 1.1, 0.28, 0.58, 0.8, 0.15]
+  vs random adam       rad       ratio 1.00 better 5/10 p=1.0000  per-seed ratios [0.9, 1.31, 0.29, 7.0, 0.78, 1.72, 0.27, 0.52, 1.87, 1.16]
+  sobol/grid adam: ratio 0.77 better 5/10 p=0.5566
+  vs random adam_lbfgs grid      ratio 0.49 better 10/10 p=0.0020  per-seed ratios [0.82, 0.41, 0.82, 0.99, 0.41, 0.38, 0.39, 0.37, 0.38, 0.37]
+  vs random adam_lbfgs resample  ratio 0.91 better 6/10 p=0.3223  per-seed ratios [1.12, 1.03, 0.81, 1.65, 0.71, 0.73, 0.74, 0.84, 1.21, 0.62]
+  vs random adam_lbfgs sobol     ratio 0.54 better 9/10 p=0.0039  per-seed ratios [0.62, 0.29, 0.86, 1.07, 0.5, 0.63, 0.51, 0.46, 0.41, 0.37]
+  vs random adam_lbfgs rad       ratio 0.88 better 8/10 p=0.1602  per-seed ratios [1.17, 0.69, 0.88, 2.82, 0.9, 0.84, 0.57, 0.69, 0.58, 0.81]
+  sobol/grid adam_lbfgs: ratio 1.09 better 3/10 p=0.3223
+== laplace3d
+  adam       grid      n=5 relL2 1.184e-01 +- 2.240e-02 geo 1.165e-01 min 8.266e-02 max 1.389e-01 | Linf 2.138e-01 +- 1.751e-02
+  adam       random    n=5 relL2 3.002e-01 +- 3.433e-01 geo 2.046e-01 min 1.015e-01 max 9.077e-01 | Linf 2.576e-01 +- 7.011e-02
+  adam       resample  n=5 relL2 1.554e-01 +- 2.018e-02 geo 1.544e-01 min 1.394e-01 max 1.905e-01 | Linf 2.410e-01 +- 1.212e-02
+  adam       sobol     n=5 relL2 1.309e-01 +- 1.544e-02 geo 1.302e-01 min 1.093e-01 max 1.492e-01 | Linf 2.224e-01 +- 1.142e-02
+  adam       rad       n=5 relL2 1.328e-01 +- 1.755e-02 geo 1.319e-01 min 1.154e-01 max 1.584e-01 | Linf 2.271e-01 +- 1.505e-02
+  adam_lbfgs grid      n=5 relL2 4.882e-02 +- 1.206e-02 geo 4.761e-02 min 3.618e-02 max 6.322e-02 | Linf 1.000e-01 +- 2.915e-02
+  adam_lbfgs random    n=5 relL2 4.633e-02 +- 8.766e-03 geo 4.564e-02 min 3.566e-02 max 5.553e-02 | Linf 8.326e-02 +- 2.394e-02
+  adam_lbfgs resample  n=5 relL2 4.280e-02 +- 3.739e-03 geo 4.267e-02 min 4.003e-02 max 4.817e-02 | Linf 1.010e-01 +- 7.258e-02
+  adam_lbfgs sobol     n=5 relL2 3.562e-02 +- 3.660e-03 geo 3.547e-02 min 3.021e-02 max 3.989e-02 | Linf 7.734e-02 +- 1.500e-02
+  adam_lbfgs rad       n=5 relL2 4.032e-02 +- 6.232e-03 geo 3.995e-02 min 3.288e-02 max 5.003e-02 | Linf 7.010e-02 +- 9.760e-03
+  LBFGS vs Adam: geo 1.446e-01 -> 4.204e-02 ratio 0.291 better 25/25 wilcoxon p=5.96e-08; range adam 8.266e-02-9.077e-01, lbfgs 3.021e-02-6.322e-02
+    per-seed aggregated: 5/5 seeds, wilcoxon p=0.0625
+  vs random adam       grid      ratio 0.57 better 4/5 p=0.1875  per-seed ratios [0.96, 1.05, 0.48, 0.81, 0.15]
+  vs random adam       resample  ratio 0.75 better 2/5 p=0.8125  per-seed ratios [1.11, 1.21, 0.63, 1.37, 0.21]
+  vs random adam       sobol     ratio 0.64 better 3/5 p=0.4375  per-seed ratios [1.0, 0.98, 0.47, 1.38, 0.16]
+  vs random adam       rad       ratio 0.64 better 2/5 p=0.8125  per-seed ratios [1.07, 1.01, 0.52, 1.14, 0.17]
+  sobol/grid adam: ratio 1.12 better 2/5 p=0.4375
+  vs random adam_lbfgs grid      ratio 1.04 better 2/5 p=0.8125  per-seed ratios [1.61, 1.06, 0.9, 0.65, 1.23]
+  vs random adam_lbfgs resample  ratio 0.93 better 3/5 p=0.4375  per-seed ratios [1.02, 1.12, 0.89, 0.82, 0.85]
+  vs random adam_lbfgs sobol     ratio 0.78 better 5/5 p=0.0625  per-seed ratios [0.97, 0.97, 0.66, 0.54, 0.84]
+  vs random adam_lbfgs rad       ratio 0.88 better 3/5 p=0.6250  per-seed ratios [0.97, 1.15, 0.61, 0.71, 1.06]
+  sobol/grid adam_lbfgs: ratio 0.74 better 5/5 p=0.0625
+LBFGS better overall: 175 / 175
+wave2d lbfgs it 2500 median test rel_l2 0.07240016286579085 n 25
+wave2d lbfgs it 3000 median test rel_l2 0.04578519768815369 n 25

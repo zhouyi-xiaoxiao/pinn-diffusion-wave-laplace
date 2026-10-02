@@ -1,0 +1,89 @@
+{
+ "P5": {
+  "presolve": {
+   "verdict": "HURTS",
+   "detail": {
+    "ritz": {
+     "at4000": {
+      "median": 0.7336594390314605,
+      "wins": 1,
+      "n": 5
+     },
+     "eqcpu": {
+      "median": 0.7336594390314605,
+      "wins": 1,
+      "n": 5
+     }
+    },
+    "pinn": {
+     "at4000": {
+      "median": 0.8325965801454602,
+      "wins": 1,
+      "n": 5
+     },
+     "eqcpu": {
+      "median": 0.8325965801454602,
+      "wins": 1,
+      "n": 5
+     }
+    }
+   }
+  },
+  "lift3c": {
+   "verdict": "HURTS",
+   "detail": {
+    "ritz": {
+     "at4000": {
+      "median": 0.585448047433478,
+      "wins": 0,
+      "n": 5
+     },
+     "eqcpu": {
+      "median": 0.31617617610675275,
+      "wins": 0,
+      "n": 5
+     }
+    },
+    "pinn": {
+     "at4000": {
+      "median": 0.884485600974895,
+      "wins": 1,
+      "n": 5
+     },
+     "eqcpu": {
+      "median": 0.7215932203424873,
+      "wins": 0,
+      "n": 5
+     }
+    }
+   }
+  }
+ },
+ "extended_verdict_P1_P5": {
+  "presolve": {
+   "verdicts": {
+    "P1": "HELPS",
+    "P3": "HURTS",
+    "P4": "NEUTRAL/MIXED",
+    "P5": "HURTS"
+   },
+   "general_on_P1_P5": false
+  },
+  "lift3c": {
+   "verdicts": {
+    "P1": "HELPS",
+    "P3": "HELPS",
+    "P4": "HELPS",
+    "P5": "HURTS"
+   },
+   "general_on_P1_P5": false
+  }
+ },
+ "lift_beyond_centring": {
+  "P1": "adds to centring",
+  "P2": "adds to centring",
+  "P3": "worse than centring",
+  "P4": "adds to centring",
+  "P5": "worse than centring"
+ }
+}

@@ -1,0 +1,77 @@
+% s6_highdim:tab:remedies
+\Pone & Deep Ritz & plain & 4000 & 4.75 (0.37) & -- \\
+\Pone & Deep Ritz & presolve & 4000 & 1.93 (0.55) & 2.67 [1.67, 3.40] 5/5 \\
+\Pone & Deep Ritz & lift3c & 4000 & 2.04 (0.17) & 2.33 [2.08, 2.66] 5/5 \\
+\Pone & Deep Ritz & lift3c & eq.\ CPU (3250) & 2.55 (0.22) & 1.85 [1.67, 2.13] 5/5 \\
+\Pone & PINN & plain & 4000 & 4.80 (0.38) & -- \\
+\Pone & PINN & presolve & 4000 & 1.82 (0.54) & 2.85 [1.72, 3.84] 5/5 \\
+\Pone & PINN & lift3c & 4000 & 1.65 (0.10) & 2.86 [2.63, 3.36] 5/5 \\
+\Pone & PINN & lift3c & eq.\ CPU (3650) & 1.87 (0.13) & 2.54 [2.34, 3.01] 5/5 \\
+\midrule
+\Ptwo\ (f.-m.) & Deep Ritz & plain & 4000 & 12.6 (0.037) & -- \\
+\Ptwo\ (f.-m.) & Deep Ritz & presolve & 4000 & 12.7 (0.0079) & 1.00 [1.00, 1.00] 2/5 \\
+\Ptwo\ (f.-m.) & Deep Ritz & lift3c & 4000 & 1.92 (0.025) & 6.59 [6.49, 6.69] 5/5 \\
+\Ptwo\ (f.-m.) & Deep Ritz & lift3c & eq.\ CPU (3350) & 2.03 (0.016) & 6.22 [6.15, 6.28] 5/5 \\
+\Ptwo\ (f.-m.) & PINN & plain & 4000 & 14.5 (0.28) & -- \\
+\Ptwo\ (f.-m.) & PINN & presolve & 4000 & 15.4 (0.50) & 0.94 [0.91, 0.98] 0/5 \\
+\Ptwo\ (f.-m.) & PINN & lift3c & 4000 & 1.07 (0.19) & 14.60 [10.35, 15.05] 5/5 \\
+\Ptwo\ (f.-m.) & PINN & lift3c & eq.\ CPU (3550) & 1.18 (0.21) & 13.33 [9.53, 13.99] 5/5 \\
+\midrule
+\Pridge & Deep Ritz & plain & 4000 & 3.74 (0.33) & -- \\
+\Pridge & Deep Ritz & presolve & 4000 & 10.2 (11) & 0.66 [0.14, 0.87] 0/5 \\
+\Pridge & Deep Ritz & presolve & eq.\ CPU (3700) & 10.7 (11) & 0.59 [0.14, 0.80] 0/5 \\
+\Pridge & Deep Ritz & lift3c & 4000 & 1.57 (0.082) & 2.27 [2.12, 2.75] 5/5 \\
+\Pridge & Deep Ritz & lift3c & eq.\ CPU (3200) & 1.89 (0.096) & 1.91 [1.73, 2.26] 5/5 \\
+\Pridge & PINN & plain & 4000 & 2.47 (0.16) & -- \\
+\Pridge & PINN & presolve & 4000 & 3.18 (0.63) & 0.79 [0.63, 0.98] 0/5 \\
+\Pridge & PINN & lift3c & 4000 & 1.47 (0.096) & 1.77 [1.45, 1.83] 5/5 \\
+\Pridge & PINN & lift3c & eq.\ CPU (3750) & 1.54 (0.10) & 1.66 [1.39, 1.74] 5/5 \\
+\midrule
+\Pcospair & Deep Ritz & plain & 4000 & 20.6 (0.79) & -- \\
+\Pcospair & Deep Ritz & presolve & 4000 & 20.6 (0.79) & 1.00 [1.00, 1.00] 0/5 \\
+\Pcospair & Deep Ritz & lift3c & 4000 & 7.36 (0.30) & 2.83 [2.51, 2.94] 5/5 \\
+\Pcospair & Deep Ritz & lift3c & eq.\ CPU (3350) & 8.13 (0.36) & 2.56 [2.25, 2.67] 5/5 \\
+\Pcospair & PINN & plain & 4000 & 24.6 (0.78) & -- \\
+\Pcospair & PINN & presolve & 4000 & 24.6 (0.78) & 1.00 [1.00, 1.00] 0/5 \\
+\Pcospair & PINN & lift3c & 4000 & 6.11 (0.30) & 4.02 [3.83, 4.23] 5/5 \\
+\Pcospair & PINN & lift3c & eq.\ CPU (3750) & 6.37 (0.31) & 3.85 [3.67, 4.06] 5/5 \\
+% s6_highdim:tab:altridge
+Deep Ritz & plain & 4000 & 2.27 (0.11) & -- \\
+Deep Ritz & presolve & 4000 & 4.84 (3.2) & 0.73 [0.22, 1.10] 1/5 \\
+Deep Ritz & lift3c & 4000 & 3.81 (0.36) & 0.59 [0.57, 0.64] 0/5 \\
+Deep Ritz & lift3c & eq.\ CPU (3200) & 7.11 (0.57) & 0.32 [0.30, 0.35] 0/5 \\
+Deep Ritz & lift3u & 4000 & 2.77 (0.36) & 0.82 [0.66, 1.01] 1/5 \\
+Deep Ritz & rep3 & 4000 & 2.59 (0.55) & 0.93 [0.62, 1.19] 1/5 \\
+Deep Ritz & lift1 & 4000 & 2.86 (0.64) & 0.84 [0.57, 1.01] 1/5 \\
+PINN & plain & 4000 & 1.30 (0.067) & -- \\
+PINN & presolve & 4000 & 1.61 (0.32) & 0.83 [0.69, 1.01] 1/5 \\
+PINN & lift3c & 4000 & 1.45 (0.083) & 0.88 [0.80, 1.01] 1/5 \\
+PINN & lift3c & eq.\ CPU (3700) & 1.76 (0.16) & 0.72 [0.68, 0.87] 0/5 \\
+PINN & lift1 & 4000 & 1.01 (0.048) & 1.29 [1.21, 1.36] 5/5 \\
+% s6_highdim:tab:lift1
+\Pone & Deep Ritz & 2.43 [1.92, 2.99] 5/5 & 0.92 [0.83, 1.17] 2/5 \\
+\Pone & PINN & 1.61 [1.24, 2.01] 5/5 & 1.78 [1.46, 2.27] 5/5 \\
+\Ptwo & Deep Ritz & 4.22 [3.62, 4.79] 5/5 & 1.57 [1.39, 1.80] 5/5 \\
+\Ptwo & PINN & 7.51 [4.74, 8.15] 5/5 & 1.95 [1.85, 2.19] 5/5 \\
+\Pridge & Deep Ritz & 0.98 [0.88, 1.09] 1/5 & 2.38 [2.15, 3.12] 5/5 \\
+\Pridge & PINN & 0.77 [0.74, 0.90] 0/5 & 2.22 [1.89, 2.39] 5/5 \\
+\Pcospair & Deep Ritz & 2.23 [1.72, 2.36] 5/5 & 1.30 [1.25, 1.46] 5/5 \\
+\Pcospair & PINN & 2.39 [1.99, 2.52] 5/5 & 1.70 [1.63, 1.92] 5/5 \\
+\Paltridge & Deep Ritz & 0.69 [0.56, 1.09] 1/5 & 0.84 [0.57, 1.01] 1/5 \\
+\Paltridge & PINN & 0.68 [0.65, 0.74] 0/5 & 1.29 [1.21, 1.36] 5/5 \\
+% sC_details:tab:controls
+\Pone & Deep Ritz & plain & 4000 & 4.75 (0.37) & -- \\
+\Pone & Deep Ritz & lift3u & 4000 & 9.18 (0.20) & 0.52 [0.47, 0.57] 0/5 \\
+\Pone & Deep Ritz & rep3 & 4000 & 5.42 (0.16) & 0.88 [0.81, 0.99] 0/5 \\
+\midrule
+\Ptwo\ (f.-m.) & Deep Ritz & plain & 4000 & 12.6 (0.037) & -- \\
+\Ptwo\ (f.-m.) & Deep Ritz & lift3u & 4000 & 1.87 (0.039) & 6.71 [6.59, 6.91] 5/5 \\
+\Ptwo\ (f.-m.) & Deep Ritz & rep3 & 4000 & 1.58 (0.035) & 8.10 [7.78, 8.15] 5/5 \\
+\midrule
+\Pridge & Deep Ritz & plain & 4000 & 3.74 (0.33) & -- \\
+\Pridge & Deep Ritz & lift3u & 4000 & 3.08 (0.34) & 1.26 [0.97, 1.40] 4/5 \\
+\Pridge & Deep Ritz & rep3 & 4000 & 1.50 (0.14) & 2.37 [2.06, 3.21] 5/5 \\
+\midrule
+\Pcospair & Deep Ritz & plain & 4000 & 20.6 (0.79) & -- \\
+\Pcospair & Deep Ritz & lift3u & 4000 & 12.4 (1.2) & 1.60 [1.51, 2.03] 5/5 \\
+\Pcospair & Deep Ritz & rep3 & 4000 & 7.77 (0.57) & 2.65 [2.50, 2.94] 5/5 \\

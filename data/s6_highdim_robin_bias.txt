@@ -1,0 +1,54 @@
+series   d= 2 beta=     1: rel = 2.88328e-01   (K/2: 2.88328e-01; MC rel. s.e. 0.0e+00; beta*rel = 0.2883)
+series   d= 3 beta=     1: rel = 2.53386e-01   (K/2: 2.53386e-01; MC rel. s.e. 0.0e+00; beta*rel = 0.2534)
+series   d= 5 beta=     1: rel = 1.64043e-01   (K/2: 1.64043e-01; MC rel. s.e. 4.1e-05; beta*rel = 0.1640)
+series   d=10 beta=     1: rel = 7.83747e-02   (K/2: 7.83747e-02; MC rel. s.e. 5.9e-05; beta*rel = 0.0784)
+series   d=20 beta=     1: rel = 3.66462e-02   (K/2: 3.66462e-02; MC rel. s.e. 7.1e-05; beta*rel = 0.0366)
+series   d= 2 beta=    10: rel = 5.00182e-02   (K/2: 5.00182e-02; MC rel. s.e. 0.0e+00; beta*rel = 0.5002)
+series   d= 3 beta=    10: rel = 4.24431e-02   (K/2: 4.24431e-02; MC rel. s.e. 0.0e+00; beta*rel = 0.4244)
+series   d= 5 beta=    10: rel = 2.64470e-02   (K/2: 2.64470e-02; MC rel. s.e. 1.0e-04; beta*rel = 0.2645)
+series   d=10 beta=    10: rel = 1.23181e-02   (K/2: 1.23181e-02; MC rel. s.e. 1.3e-04; beta*rel = 0.1232)
+series   d=20 beta=    10: rel = 5.79897e-03   (K/2: 5.79897e-03; MC rel. s.e. 1.5e-04; beta*rel = 0.0580)
+series   d= 2 beta=   100: rel = 5.48327e-03   (K/2: 5.48327e-03; MC rel. s.e. 0.0e+00; beta*rel = 0.5483)
+series   d= 3 beta=   100: rel = 4.69788e-03   (K/2: 4.69788e-03; MC rel. s.e. 0.0e+00; beta*rel = 0.4698)
+series   d= 5 beta=   100: rel = 2.99090e-03   (K/2: 2.99090e-03; MC rel. s.e. 1.2e-04; beta*rel = 0.2991)
+series   d=10 beta=   100: rel = 1.46352e-03   (K/2: 1.46352e-03; MC rel. s.e. 1.5e-04; beta*rel = 0.1464)
+series   d=20 beta=   100: rel = 7.36896e-04   (K/2: 7.36896e-04; MC rel. s.e. 1.7e-04; beta*rel = 0.0737)
+series   d= 2 beta=  1000: rel = 5.54218e-04   (K/2: 5.54218e-04; MC rel. s.e. 0.0e+00; beta*rel = 0.5542)
+series   d= 3 beta=  1000: rel = 4.76025e-04   (K/2: 4.76025e-04; MC rel. s.e. 0.0e+00; beta*rel = 0.4760)
+series   d= 5 beta=  1000: rel = 3.04725e-04   (K/2: 3.04725e-04; MC rel. s.e. 1.2e-04; beta*rel = 0.3047)
+series   d=10 beta=  1000: rel = 1.51373e-04   (K/2: 1.51373e-04; MC rel. s.e. 1.5e-04; beta*rel = 0.1514)
+series   d=20 beta=  1000: rel = 7.81696e-05   (K/2: 7.81696e-05; MC rel. s.e. 1.7e-04; beta*rel = 0.0782)
+galerkin d= 2 p= 8 n=    45: beta=1: 2.8833e-01  beta=10: 4.9988e-02  beta=100: 5.4770e-03  beta=1000: 5.5658e-04
+galerkin d= 2 p=12 n=    91: beta=1: 2.8833e-01  beta=10: 5.0017e-02  beta=100: 5.4831e-03  beta=1000: 5.5546e-04
+galerkin d= 2 p=16 n=   153: beta=1: 2.8833e-01  beta=10: 5.0018e-02  beta=100: 5.4833e-03  beta=1000: 5.5470e-04
+galerkin d= 3 p= 8 n=   165: beta=1: 2.5338e-01  beta=10: 4.2369e-02  beta=100: 4.6098e-03  beta=1000: 4.5410e-04
+galerkin d= 3 p=12 n=   455: beta=1: 2.5339e-01  beta=10: 4.2440e-02  beta=100: 4.6913e-03  beta=1000: 4.7520e-04
+galerkin d= 3 p=16 n=   969: beta=1: 2.5339e-01  beta=10: 4.2443e-02  beta=100: 4.6970e-03  beta=1000: 4.7611e-04
+galerkin d= 4 p=10 n=  1001: beta=1: 1.8116e-01  beta=10: 2.9634e-02  beta=100: 3.2699e-03  beta=1000: 3.1673e-04
+galerkin d= 4 p=14 n=  3060: beta=1: 1.8116e-01  beta=10: 2.9655e-02  beta=100: 3.3126e-03  beta=1000: 3.3488e-04
+galerkin d= 5 p= 6 n=   462: beta=1: 1.6398e-01  beta=10: 2.5438e-02  beta=100: 2.4423e-03  beta=1000: 2.3184e-04
+galerkin d= 5 p= 8 n=  1287: beta=1: 1.6403e-01  beta=10: 2.6236e-02  beta=100: 2.6860e-03  beta=1000: 2.2395e-04
+galerkin d= 5 p=10 n=  3003: beta=1: 1.6403e-01  beta=10: 2.6406e-02  beta=100: 2.8985e-03  beta=1000: 2.6345e-04
+galerkin d= 5 p=12 n=  6188: beta=1: 1.6403e-01  beta=10: 2.6437e-02  beta=100: 2.9618e-03  beta=1000: 2.9084e-04
+galerkin d=10 p= 4 n=  1001: beta=1: 7.8037e-02  beta=10: 1.1535e-02  beta=100: 1.2602e-03  beta=1000: 1.2737e-04
+galerkin d=10 p= 6 n=  8008: beta=1: 7.8265e-02  beta=10: 1.1571e-02  beta=100: 1.2360e-03  beta=1000: 1.2450e-04
+galerkin d=20 p= 2 n=   231: beta=1: 3.6098e-02  beta=10: 4.1626e-03  beta=100: 4.2287e-04  beta=1000: 4.2354e-05
+galerkin d=20 p= 4 n= 10626: beta=1: 3.6979e-02  beta=10: 5.4310e-03  beta=100: 5.8779e-04  beta=1000: 5.9303e-05
+check d=4 beta=1: double sum 1.81165e-01  Monte Carlo 1.81162e-01  Galerkin p=14 1.81165e-01
+check d=4 beta=10: double sum 2.96567e-02  Monte Carlo 2.96591e-02  Galerkin p=14 2.96554e-02
+check d=4 beta=100: double sum 3.31780e-03  Monte Carlo 3.31826e-03  Galerkin p=14 3.31259e-03
+check d=4 beta=1000: double sum 3.37119e-04  Monte Carlo 3.37123e-04  Galerkin p=14 3.34879e-04
+series / finite differences, d = 2: beta=1: 0.99998, beta=10: 0.99997, beta=100: 0.99994, beta=1000: 0.99992
+series / Galerkin (largest p): 2/1: 1.000, 2/10: 1.000, 2/100: 1.000, 2/1000: 0.999, 3/1: 1.000, 3/10: 1.000, 3/100: 1.000, 3/1000: 1.000, 5/1: 1.000, 5/10: 1.000, 5/100: 1.010, 5/1000: 1.048, 10/1: 1.001, 10/10: 1.065, 10/100: 1.184, 10/1000: 1.216, 20/1: 0.991, 20/10: 1.068, 20/100: 1.254, 20/1000: 1.318
+beta=100, 4000 its, d= 2: bias 5.483e-03  PINN 6.078e-03  Ritz 1.882e-02  bias/Ritz 0.29  bias/gap 0.43
+beta=100, 4000 its, d= 3: bias 4.698e-03  PINN 6.723e-03  Ritz 1.421e-02  bias/Ritz 0.33  bias/gap 0.63
+beta=100, 4000 its, d= 5: bias 2.991e-03  PINN 7.602e-03  Ritz 1.113e-02  bias/Ritz 0.27  bias/gap 0.85
+beta=100, 4000 its, d=10: bias 1.464e-03  PINN 1.260e-02  Ritz 1.896e-02  bias/Ritz 0.08  bias/gap 0.23
+beta=100, 4000 its, d=20: bias 7.369e-04  PINN 4.663e-02  Ritz 4.613e-02  bias/Ritz 0.02  bias/gap -1.47
+beta=100, 16000 its, d=10: bias 1.464e-03  PINN 5.882e-03  Ritz 7.279e-03  gap 1.396e-03  bias/Ritz 0.20  bias/gap 1.05  Ritz distance to u_beta in [5.82e-03, 8.74e-03]
+beta=100, 16000 its, d=20: bias 7.369e-04  PINN 7.571e-03  Ritz 8.697e-03  gap 1.126e-03  bias/Ritz 0.08  bias/gap 0.65  Ritz distance to u_beta in [7.96e-03, 9.43e-03]
+beta=100, equal compute, d=10: bias/Ritz 0.16
+d=5 sweep, beta=1: bias 1.640e-01  trained (validation) 1.600e-01  ratio 0.98
+d=5 sweep, beta=10: bias 2.645e-02  trained (validation) 2.330e-02  ratio 0.88
+d=5 sweep, beta=100: bias 2.991e-03  trained (validation) 1.029e-02  ratio 3.44
+d=5 sweep, beta=1000: bias 3.047e-04  trained (validation) 1.098e-02  ratio 36.04

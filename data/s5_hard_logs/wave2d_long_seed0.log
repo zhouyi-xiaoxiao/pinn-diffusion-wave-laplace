@@ -1,0 +1,11 @@
+  adam it=1000 loss=1.734e-01 rel_l2=8.608e-01 t=8.7s
+  adam it=2000 loss=5.706e-02 rel_l2=3.523e-01 t=20.4s
+  adam it=3000 loss=3.695e-02 rel_l2=2.495e-01 t=34.4s
+  adam it=4000 loss=2.408e-02 rel_l2=1.938e-01 t=48.3s
+  adam it=5000 loss=1.691e-02 rel_l2=1.647e-01 t=65.1s
+  adam it=6000 loss=1.274e-02 rel_l2=1.469e-01 t=81.5s
+  adam it=7000 loss=1.018e-02 rel_l2=1.348e-01 t=108.2s
+  adam it=8000 loss=8.507e-03 rel_l2=1.257e-01 t=138.5s
+  adam it=9000 loss=7.387e-03 rel_l2=1.185e-01 t=166.2s
+  adam it=10000 loss=6.387e-03 rel_l2=1.120e-01 t=186.1s
+seed 0: Adam(10000) rel_l2 1.1528e-01 | Adam->L-BFGS rel_l2 9.3078e-03 linf 2.3616e-02 lbfgs_iters 8024 stop converged_tolerance

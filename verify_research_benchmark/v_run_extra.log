@@ -1,0 +1,13 @@
+verify_research_benchmark/vpinn.py:173: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at <pytorch build>/torch/csrc/autograd/generated/python_variable_methods.cpp:821.)
+  out = {"adam": {"rel_l2": ra[0], "linf": ra[1], "loss": float(L), "time": t_adam}, "adam_at_branch": {"rel_l2": mid[0], "linf": mid[1]}}
+heat1d|grid|3|256|fixed adam 1.181e-02 | adam_lbfgs 2.018e-03 (iters 1230)
+heat1d|random|3|256|fixed adam 1.429e-02 | adam_lbfgs 1.934e-03 (iters 1500)
+heat1d|nodegrid|3|256|fixed adam 9.062e-02 | adam_lbfgs 1.840e-03 (iters 1486)
+heat1d|grid|4|256|fixed adam 6.640e-02 | adam_lbfgs 8.772e-03 (iters 1301)
+heat1d|random|4|256|fixed adam 1.109e-02 | adam_lbfgs 1.302e-03 (iters 1500)
+heat1d|nodegrid|4|256|fixed adam 1.257e-02 | adam_lbfgs 1.657e-03 (iters 1500)
+heat1d|grid|5|256|fixed adam 3.744e-02 | adam_lbfgs 7.600e-03 (iters 1500)
+heat1d|random|5|256|fixed adam 2.050e-02 | adam_lbfgs 1.613e-03 (iters 1500)
+heat1d|nodegrid|5|256|fixed adam 1.543e-02 | adam_lbfgs 8.440e-04 (iters 1468)
+EXTRA DONE

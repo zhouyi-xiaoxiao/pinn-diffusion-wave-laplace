@@ -1,0 +1,27 @@
+{
+ "note": "Re-run of the demonstration of Section 7.2 with the code of V-bench (v_oneface.py), seeds 0 to 2; one network at a time on the CPU. rel_l2: relative L2 distance from the solution of Lap3 on its 40^3 cell-centred grid; mean_abs_u_face_x0: mean of |u| on 400 points of the face x = 0; wall: seconds on the loaded shared machine.",
+ "oneface|0": {
+  "rel_l2": 1.5889335965517057,
+  "linf": 0.7232271394334512,
+  "bc_loss": 0.0003995024017058313,
+  "pde_loss": 0.000408056570449844,
+  "mean_abs_u_face_x0": 0.25837236642837524,
+  "wall": 88.68768095970154
+ },
+ "oneface|1": {
+  "rel_l2": 12.844112281026943,
+  "linf": 3.073916016078136,
+  "bc_loss": 0.0005824545514769852,
+  "pde_loss": 0.0005347791011445224,
+  "mean_abs_u_face_x0": 2.670340061187744,
+  "wall": 82.17576384544373
+ },
+ "oneface|2": {
+  "rel_l2": 13.361931143349315,
+  "linf": 2.9891545404449316,
+  "bc_loss": 0.0008671417599543929,
+  "pde_loss": 0.00079758046194911,
+  "mean_abs_u_face_x0": 2.680051326751709,
+  "wall": 84.50285220146179
+ }
+}

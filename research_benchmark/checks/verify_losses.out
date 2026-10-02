@@ -1,0 +1,14 @@
+research_benchmark/scripts/verify_losses.py:23: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at <pytorch build>/torch/csrc/autograd/generated/python_variable_methods.cpp:821.)
+  diffs = [abs(float(lres) - float(ref_pde)) / float(ref_pde)]
+heat1d: single-pass vs term-by-term, max relative difference over 4 terms = 0.00e+00
+heat1d: stacked (S=3) vs single total loss, max relative difference = 0.00e+00
+wave1d: single-pass vs term-by-term, max relative difference over 5 terms = 0.00e+00
+wave1d: stacked (S=3) vs single total loss, max relative difference = 0.00e+00
+wave2d: single-pass vs term-by-term, max relative difference over 7 terms = 0.00e+00
+wave2d: stacked (S=3) vs single total loss, max relative difference = 0.00e+00
+laplace2d: single-pass vs term-by-term, max relative difference over 5 terms = 0.00e+00
+laplace2d: stacked (S=3) vs single total loss, max relative difference = 0.00e+00
+laplace3d: single-pass vs term-by-term, max relative difference over 7 terms = 0.00e+00
+laplace3d: stacked (S=3) vs single total loss, max relative difference = 0.00e+00
+WORST 0.0

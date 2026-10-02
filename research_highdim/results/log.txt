@@ -1,0 +1,42 @@
+[sweep] laplace  ritz d= 5 seed=100 w=1: rel_l2=1.598e-01 h1=3.788e-01 bd=1.899e-01 val=1.600e-01 3.6 ms/it  wall=20s
+[sweep] laplace  ritz d= 5 seed=100 w=10: rel_l2=2.331e-02 h1=8.412e-02 bd=3.102e-02 val=2.330e-02 3.2 ms/it  wall=13s
+[sweep] laplace  ritz d= 5 seed=100 w=100: rel_l2=1.024e-02 h1=4.862e-02 bd=1.112e-02 val=1.029e-02 3.3 ms/it  wall=13s
+[sweep] laplace  ritz d= 5 seed=100 w=1000: rel_l2=1.094e-02 h1=4.809e-02 bd=1.069e-02 val=1.098e-02 3.1 ms/it  wall=13s
+[sweep] laplace  pinn d= 5 seed=100 w=1: rel_l2=1.015e-02 h1=4.039e-02 bd=1.419e-02 val=1.030e-02 18.4 ms/it  wall=74s
+[sweep] laplace  pinn d= 5 seed=100 w=10: rel_l2=9.145e-03 h1=3.707e-02 bd=1.285e-02 val=9.170e-03 22.5 ms/it  wall=90s
+[sweep] laplace  pinn d= 5 seed=100 w=100: rel_l2=8.021e-03 h1=3.363e-02 bd=1.123e-02 val=7.916e-03 23.0 ms/it  wall=92s
+[sweep] laplace  pinn d= 5 seed=100 w=1000: rel_l2=7.179e-03 h1=3.125e-02 bd=9.379e-03 val=7.159e-03 27.3 ms/it  wall=109s
+[sweep] poisson  ritz d= 5 seed=100 w=1: rel_l2=1.613e-02 h1=6.776e-02 bd=1.424e-02 val=1.599e-02 4.2 ms/it  wall=17s
+[sweep] poisson  ritz d= 5 seed=100 w=10: rel_l2=1.616e-02 h1=7.247e-02 bd=1.363e-02 val=1.610e-02 8.6 ms/it  wall=35s
+[sweep] poisson  ritz d= 5 seed=100 w=100: rel_l2=1.677e-02 h1=7.663e-02 bd=1.462e-02 val=1.679e-02 11.7 ms/it  wall=47s
+[sweep] poisson  ritz d= 5 seed=100 w=1000: rel_l2=1.674e-02 h1=7.703e-02 bd=1.493e-02 val=1.678e-02 11.0 ms/it  wall=44s
+[sweep] poisson  pinn d= 5 seed=100 w=1: rel_l2=4.089e-02 h1=1.164e-01 bd=5.313e-02 val=4.081e-02 44.6 ms/it  wall=179s
+[sweep] poisson  pinn d= 5 seed=100 w=10: rel_l2=1.351e-02 h1=4.849e-02 bd=1.919e-02 val=1.310e-02 9.9 ms/it  wall=120s
+[sweep] poisson  pinn d= 5 seed=100 w=100: rel_l2=1.139e-02 h1=4.187e-02 bd=1.660e-02 val=1.118e-02 13.0 ms/it  wall=53s
+[sweep] poisson  pinn d= 5 seed=100 w=1000: rel_l2=9.865e-03 h1=4.431e-02 bd=1.421e-02 val=9.759e-03 12.1 ms/it  wall=49s
+{
+ "laplace/ritz": [
+  100.0,
+  0.010285903699696064
+ ],
+ "laplace/pinn": [
+  1000.0,
+  0.007158537395298481
+ ],
+ "poisson/ritz": [
+  1.0,
+  0.01598874107003212
+ ],
+ "poisson/pinn": [
+  1000.0,
+  0.009759081527590752
+ ]
+}
+chosen weights: {('laplace', 'ritz'): (100.0, 0.010285903699696064), ('laplace', 'pinn'): (1000.0, 0.007158537395298481), ('poisson', 'ritz'): (1.0, 0.01598874107003212), ('poisson', 'pinn'): (1000.0, 0.009759081527590752)}
+chosen weights: {('laplace', 'ritz'): (100.0, 0.010285903699696064), ('laplace', 'pinn'): (1000.0, 0.007158537395298481), ('poisson', 'ritz'): (1.0, 0.01598874107003212), ('poisson', 'pinn'): (1000.0, 0.009759081527590752)}
+[main] laplace  ritz d= 2 seed=0 w=100: rel_l2=2.220e-02 h1=6.789e-02 bd=1.226e-02 val=2.219e-02 5.6 ms/it  wall=86s
+[main] laplace  pinn d= 2 seed=0 w=1000: rel_l2=7.213e-03 h1=2.623e-02 bd=5.685e-03 val=7.209e-03 8.1 ms/it  wall=33s
+[main] laplace  ritz d= 3 seed=0 w=100: rel_l2=1.302e-02 h1=5.252e-02 bd=1.231e-02 val=1.317e-02 10.5 ms/it  wall=43s
+[main] laplace  pinn d= 3 seed=0 w=1000: rel_l2=4.570e-03 h1=1.656e-02 bd=5.984e-03 val=4.535e-03 32.3 ms/it  wall=130s
+[main] laplace  ritz d= 5 seed=0 w=100: rel_l2=1.039e-02 h1=4.726e-02 bd=1.196e-02 val=1.043e-02 10.1 ms/it  wall=41s
+[main] laplace  pinn d= 5 seed=0 w=1000: rel_l2=8.038e-03 h1=3.480e-02 bd=1.042e-02 val=8.073e-03 16.1 ms/it  wall=65s

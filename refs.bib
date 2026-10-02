@@ -1,0 +1,830 @@
+% refs.bib -- bibliography of the article and its Supplementary Material.
+% The entries were checked on 2026-10-01 or 2026-10-02 against Crossref (DOI), DataCite (arXiv DOI)
+% or the publisher's proceedings page, with two exceptions: payne1968bounds has no DOI, and its
+% bibliographic data are taken from the papers that cite it; the ISBN of strauss2008 was checked
+% against Open Library.  The `annote` field of the form
+% "CITED FOR: ..." records what the entry is cited for; it is not printed by plainnat.
+
+@article{raissi2019,
+  author  = {Raissi, Maziar and Perdikaris, Paris and Karniadakis, George Em},
+  title   = {Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations},
+  journal = {Journal of Computational Physics},
+  volume  = {378},
+  pages   = {686--707},
+  year    = {2019},
+  doi     = {10.1016/j.jcp.2018.10.045},
+  annote  = {CITED FOR: the PINN method (residual + data loss); full-batch L-BFGS training (the paper optimises with L-BFGS and mentions stochastic gradient variants for larger data sets; it does not use or evaluate an Adam-then-L-BFGS schedule); its reference code maps the inputs to [-1, 1] before the first layer (Section 6.8).}
+}
+
+@article{lagaris1998,
+  author  = {Lagaris, Isaac E. and Likas, Aristidis and Fotiadis, Dimitrios I.},
+  title   = {Artificial neural networks for solving ordinary and partial differential equations},
+  journal = {IEEE Transactions on Neural Networks},
+  volume  = {9},
+  number  = {5},
+  pages   = {987--1000},
+  year    = {1998},
+  doi     = {10.1109/72.712178},
+  annote  = {CITED FOR: early neural-network PDE solvers; trial functions that satisfy boundary conditions exactly (hard constraints).}
+}
+
+@article{eyu2018,
+  author  = {E, Weinan and Yu, Bing},
+  title   = {The {Deep} {Ritz} Method: A Deep Learning-Based Numerical Algorithm for Solving Variational Problems},
+  journal = {Communications in Mathematics and Statistics},
+  volume  = {6},
+  number  = {1},
+  pages   = {1--12},
+  year    = {2018},
+  doi     = {10.1007/s40304-018-0127-z},
+  annote  = {CITED FOR: the Deep Ritz method; the boundary-penalty energy; the 10-D Laplace test problem with exact solution sum x_{2k-1}x_{2k} (their Sec. 3.2: 671 parameters, beta = 10^3, 50 000 iterations, about 0.4 per cent relative L2 error; checked against the arXiv:1710.00211 PDF text). Also the origin of the exact solution of problem PoiD: their Sec. 3.3, "An example with the Neumann boundary condition", -Lap u + pi^2 u = 2 pi^2 sum_k cos(pi x_k) on [0,1]^d with zero normal derivative, exact solution sum_k cos(pi x_k), no boundary penalty, relative L2 error 1.3 per cent for d = 5 and 1.9 per cent for d = 10 (read on 2026-10-01).}
+}
+
+@article{sirignano2018,
+  author  = {Sirignano, Justin and Spiliopoulos, Konstantinos},
+  title   = {{DGM}: A deep learning algorithm for solving partial differential equations},
+  journal = {Journal of Computational Physics},
+  volume  = {375},
+  pages   = {1339--1364},
+  year    = {2018},
+  doi     = {10.1016/j.jcp.2018.08.029},
+  annote  = {CITED FOR: residual-minimising network solver with fresh random points at every step, aimed at high dimension.}
+}
+
+@article{han2018,
+  author  = {Han, Jiequn and Jentzen, Arnulf and E, Weinan},
+  title   = {Solving high-dimensional partial differential equations using deep learning},
+  journal = {Proceedings of the National Academy of Sciences},
+  volume  = {115},
+  number  = {34},
+  pages   = {8505--8510},
+  year    = {2018},
+  doi     = {10.1073/pnas.1718942115},
+  annote  = {CITED FOR: motivation of neural solvers for high-dimensional PDEs (deep BSDE method).}
+}
+
+@article{karniadakis2021,
+  author  = {Karniadakis, George Em and Kevrekidis, Ioannis G. and Lu, Lu and Perdikaris, Paris and Wang, Sifan and Yang, Liu},
+  title   = {Physics-informed machine learning},
+  journal = {Nature Reviews Physics},
+  volume  = {3},
+  number  = {6},
+  pages   = {422--440},
+  year    = {2021},
+  doi     = {10.1038/s42254-021-00314-5},
+  annote  = {CITED FOR: review of physics-informed learning.}
+}
+
+@article{cuomo2022,
+  author  = {Cuomo, Salvatore and Di Cola, Vincenzo Schiano and Giampaolo, Fabio and Rozza, Gianluigi and Raissi, Maziar and Piccialli, Francesco},
+  title   = {Scientific Machine Learning Through Physics-Informed Neural Networks: Where we are and What's Next},
+  journal = {Journal of Scientific Computing},
+  volume  = {92},
+  number  = {3},
+  pages   = {88},
+  year    = {2022},
+  doi     = {10.1007/s10915-022-01939-z},
+  annote  = {CITED FOR: survey of PINN variants and applications.}
+}
+
+@article{lu2021,
+  author  = {Lu, Lu and Meng, Xuhui and Mao, Zhiping and Karniadakis, George Em},
+  title   = {{DeepXDE}: A Deep Learning Library for Solving Differential Equations},
+  journal = {SIAM Review},
+  volume  = {63},
+  number  = {1},
+  pages   = {208--228},
+  year    = {2021},
+  doi     = {10.1137/19M1274067},
+  annote  = {CITED FOR: PINN software practice; residual-based adaptive refinement of collocation points.}
+}
+
+@article{wu2023,
+  author  = {Wu, Chenxi and Zhu, Min and Tan, Qinyang and Kartha, Yadhu and Lu, Lu},
+  title   = {A comprehensive study of non-adaptive and residual-based adaptive sampling for physics-informed neural networks},
+  journal = {Computer Methods in Applied Mechanics and Engineering},
+  volume  = {403},
+  pages   = {115671},
+  year    = {2023},
+  doi     = {10.1016/j.cma.2022.115671},
+  annote  = {CITED FOR: taxonomy of collocation sampling (grid, random, LHS, low-discrepancy, Random-R resampling, RAD/RAR-D). Their findings, checked against the full text: low-discrepancy sequences generally better than Random and LHS, both better than Grid; Random-R resampling lowers error relative to fixed random points. Protocol of their adaptive runs, read in arXiv:2207.10289 on 2026-10-01 (Sec. 3.3, Burgers): 15,000 steps of Adam and 1,000 steps of L-BFGS, then the residual points are resampled every 2,000 iterations (1,000 Adam and 1,000 L-BFGS).}
+}
+
+@article{nabian2021,
+  author  = {Nabian, Mohammad Amin and Gladstone, Rini Jasmine and Meidani, Hadi},
+  title   = {Efficient training of physics-informed neural networks via importance sampling},
+  journal = {Computer-Aided Civil and Infrastructure Engineering},
+  volume  = {36},
+  number  = {8},
+  pages   = {962--977},
+  year    = {2021},
+  doi     = {10.1111/mice.12685},
+  annote  = {CITED FOR: residual-proportional importance sampling of collocation points.}
+}
+
+@article{wangteng2021,
+  author  = {Wang, Sifan and Teng, Yujun and Perdikaris, Paris},
+  title   = {Understanding and Mitigating Gradient Flow Pathologies in Physics-Informed Neural Networks},
+  journal = {SIAM Journal on Scientific Computing},
+  volume  = {43},
+  number  = {5},
+  pages   = {A3055--A3081},
+  year    = {2021},
+  doi     = {10.1137/20M1318043},
+  annote  = {CITED FOR: imbalance between loss terms in PINNs and adaptive loss weighting as a remedy (not used here).}
+}
+
+@article{wangyu2022,
+  author  = {Wang, Sifan and Yu, Xinling and Perdikaris, Paris},
+  title   = {When and why {PINNs} fail to train: A neural tangent kernel perspective},
+  journal = {Journal of Computational Physics},
+  volume  = {449},
+  pages   = {110768},
+  year    = {2022},
+  doi     = {10.1016/j.jcp.2021.110768},
+  annote  = {CITED FOR: the two-mode 1-D wave benchmark Wave1 (their Sec. 7.3); they report a relative L2 error of 4.518e-01 for the unweighted PINN (5 layers x 500 units, 80 000 iterations) and 1.728e-03 with NTK-based weights. Not like-for-like with our 3 x 64 network and 3000 iterations.}
+}
+
+@article{wangsankaran2024,
+  author  = {Wang, Sifan and Sankaran, Shyam and Perdikaris, Paris},
+  title   = {Respecting causality for training physics-informed neural networks},
+  journal = {Computer Methods in Applied Mechanics and Engineering},
+  volume  = {421},
+  pages   = {116813},
+  year    = {2024},
+  doi     = {10.1016/j.cma.2024.116813},
+  annote  = {CITED FOR: causal (time-ordered) loss weighting as a remedy for time-dependent PINN failures (not used here).}
+}
+
+@inproceedings{krishnapriyan2021,
+  author    = {Krishnapriyan, Aditi S. and Gholami, Amir and Zhe, Shandian and Kirby, Robert M. and Mahoney, Michael W.},
+  title     = {Characterizing possible failure modes in physics-informed neural networks},
+  booktitle = {Advances in Neural Information Processing Systems},
+  volume    = {34},
+  pages     = {26548--26560},
+  year      = {2021},
+  url       = {https://proceedings.neurips.cc/paper/2021/hash/df438e5206f31600e6ae4af72f2725f1-Abstract.html},
+  annote    = {CITED FOR: PINNs succeed on easy parameter regimes of simple linear PDEs and fail as coefficients grow; the difficulty is in optimisation.}
+}
+
+@article{grossmann2024,
+  author  = {Grossmann, Tamara G. and Komorowska, Urszula Julia and Latz, Jonas and Sch{\"o}nlieb, Carola-Bibiane},
+  title   = {Can physics-informed neural networks beat the finite element method?},
+  journal = {IMA Journal of Applied Mathematics},
+  volume  = {89},
+  number  = {1},
+  pages   = {143--174},
+  year    = {2024},
+  doi     = {10.1093/imamat/hxae011},
+  annote  = {CITED FOR: systematic PINN-versus-FEM comparison; PINNs did not outperform FEM in time or accuracy in their study.}
+}
+
+@article{mcgreivy2024,
+  author  = {McGreivy, Nick and Hakim, Ammar},
+  title   = {Weak baselines and reporting biases lead to overoptimism in machine learning for fluid-related partial differential equations},
+  journal = {Nature Machine Intelligence},
+  volume  = {6},
+  number  = {10},
+  pages   = {1256--1269},
+  year    = {2024},
+  doi     = {10.1038/s42256-024-00897-5},
+  annote  = {CITED FOR: the need for strong classical baselines and complete reporting when evaluating ML PDE solvers.}
+}
+
+@inproceedings{hao2023pinnacle,
+  author        = {Hao, Zhongkai and Yao, Jiachen and Su, Chang and Su, Hang and Wang, Ziao and Lu, Fanzhi and Xia, Zeyu and Zhang, Yichi and Liu, Songming and Lu, Lu and Zhu, Jun},
+  title         = {{PINNacle}: A Comprehensive Benchmark of Physics-Informed Neural Networks for Solving {PDEs}},
+  booktitle     = {Advances in Neural Information Processing Systems},
+  volume        = {37},
+  pages         = {76721--76774},
+  year          = {2024},
+  doi           = {10.52202/079017-2442},
+  eprint        = {2306.08827},
+  archiveprefix = {arXiv},
+  annote        = {CITED FOR: existence of much larger PINN benchmarks (many PDEs and variants); our study is small by comparison. Published version (NeurIPS 2024, volume 37); title, authors, pages and DOI checked against Crossref on 2026-10-01; first posted as arXiv:2306.08827 in 2023 (hence the key).}
+}
+
+@inproceedings{daw2023,
+  author    = {Daw, Arka and Bu, Jie and Wang, Sifan and Perdikaris, Paris and Karpatne, Anuj},
+  title     = {Mitigating Propagation Failures in Physics-informed Neural Networks using Retain-Resample-Release ({R3}) Sampling},
+  booktitle = {Proceedings of the 40th International Conference on Machine Learning},
+  series    = {Proceedings of Machine Learning Research},
+  volume    = {202},
+  pages     = {7264--7302},
+  year      = {2023},
+  url       = {https://proceedings.mlr.press/v202/daw23a.html},
+  annote    = {CITED FOR: the hypothesis that training a PINN relies on the propagation of the solution from the initial and boundary points to the interior, and that poor sampling causes propagation failures (abstract, read on the PMLR page on 2026-10-01). Only what the abstract states is attributed to the paper.}
+}
+
+@inproceedings{rathore2024,
+  author    = {Rathore, Pratik and Lei, Weimu and Frangella, Zachary and Lu, Lu and Udell, Madeleine},
+  title     = {Challenges in Training {PINNs}: A Loss Landscape Perspective},
+  booktitle = {Proceedings of the 41st International Conference on Machine Learning},
+  series    = {Proceedings of Machine Learning Research},
+  volume    = {235},
+  pages     = {42159--42191},
+  year      = {2024},
+  url       = {https://proceedings.mlr.press/v235/rathore24a.html},
+  annote    = {CITED FOR: ill-conditioning of the PINN loss and the benefit of combining Adam with L-BFGS (and further second-order steps). Read in arXiv:2402.01868v2 on 2026-10-01. Sec. 2.2: unweighted loss; tanh MLPs with three hidden layers of width 50, 100, 200 or 400; 10000 residual points; Adam learning rate tuned on a grid; L-BFGS with learning rate 1.0, memory size 100 and strong Wolfe line search; switch from Adam to L-BFGS after 1000, 11000 or 31000 iterations; 41000 iterations in total; 5 random seeds; relative L2 error against analytical solutions. Appendix A.3: wave problem u_tt = 4 u_xx with initial datum sin(pi x) + 0.5 sin(beta pi x), beta = 5. Table 1 (lowest loss over widths after tuning), wave: L2RE 3.49e-1 (Adam), 3.35e-1 (L-BFGS), 5.52e-2 (Adam+L-BFGS); convection: 5.96e-2 (Adam), 4.19e-3 (Adam+L-BFGS), "14.2x smaller". Table 2: 1.27e-2 on the wave problem after a further Newton-CG phase. Sec. 7.1: L-BFGS stops making progress before the iteration limit, without reaching a critical point.}
+}
+
+@article{shin2020,
+  author  = {Shin, Yeonjong and Darbon, J{\'e}r{\^o}me and Karniadakis, George Em},
+  title   = {On the Convergence of Physics Informed Neural Networks for Linear Second-Order Elliptic and Parabolic Type {PDEs}},
+  journal = {Communications in Computational Physics},
+  volume  = {28},
+  number  = {5},
+  pages   = {2042--2074},
+  year    = {2020},
+  doi     = {10.4208/cicp.OA-2020-0193},
+  annote  = {CITED FOR: convergence theory of PINN minimisers for linear elliptic and parabolic problems as the number of collocation points grows.}
+}
+
+@inproceedings{muller2022,
+  author    = {M{\"u}ller, Johannes and Zeinhofer, Marius},
+  title     = {Error Estimates for the {Deep} {Ritz} Method with Boundary Penalty},
+  booktitle = {Proceedings of Mathematical and Scientific Machine Learning},
+  series    = {Proceedings of Machine Learning Research},
+  volume    = {190},
+  pages     = {215--230},
+  year      = {2022},
+  url       = {https://proceedings.mlr.press/v190/muller22a.html},
+  annote    = {CITED FOR: prior error analysis of the boundary-penalty Deep Ritz formulation (the penalty changes the problem being solved; error depends on the penalty weight).}
+}
+
+@article{babuska1973,
+  author  = {Babu{\v s}ka, Ivo},
+  title   = {The finite element method with penalty},
+  journal = {Mathematics of Computation},
+  volume  = {27},
+  number  = {122},
+  pages   = {221--228},
+  year    = {1973},
+  doi     = {10.1090/S0025-5718-1973-0351118-5},
+  annote  = {CITED FOR: classical analysis of imposing Dirichlet conditions by a boundary penalty (the penalised problem is a Robin problem).}
+}
+
+@article{sheng2021,
+  author  = {Sheng, Hailong and Yang, Chao},
+  title   = {{PFNN}: A penalty-free neural network method for solving a class of second-order boundary-value problems on complex geometries},
+  journal = {Journal of Computational Physics},
+  volume  = {428},
+  pages   = {110085},
+  year    = {2021},
+  doi     = {10.1016/j.jcp.2020.110085},
+  annote  = {CITED FOR: the penalty-free construction u = g_net + length-factor x f_net with a Ritz energy; cited in Section 8.4 among the trial functions that satisfy the boundary conditions exactly.}
+}
+
+@article{li2024forward,
+  author  = {Li, Ruichen and Ye, Haotian and Jiang, Du and Wen, Xuelan and Wang, Chuwei and Li, Zhe and Li, Xiang and He, Di and Chen, Ji and Ren, Weiluo and Wang, Liwei},
+  title   = {A computational framework for neural network-based variational {Monte} {Carlo} with {Forward} {Laplacian}},
+  journal = {Nature Machine Intelligence},
+  volume  = {6},
+  number  = {2},
+  pages   = {209--219},
+  year    = {2024},
+  doi     = {10.1038/s42256-024-00794-x},
+  annote  = {CITED FOR: computing the Laplacian of a network in one forward propagation of (value, gradient, Laplacian) instead of nested reverse-mode differentiation. Author list checked against Crossref.}
+}
+
+@article{hu2024,
+  author  = {Hu, Zheyuan and Shukla, Khemraj and Karniadakis, George Em and Kawaguchi, Kenji},
+  title   = {Tackling the curse of dimensionality with physics-informed neural networks},
+  journal = {Neural Networks},
+  volume  = {176},
+  pages   = {106369},
+  year    = {2024},
+  doi     = {10.1016/j.neunet.2024.106369},
+  annote  = {CITED FOR: the cost of the PINN residual grows with dimension; stochastic dimension sampling as a remedy (not used here).}
+}
+
+@inproceedings{rahaman2019,
+  author    = {Rahaman, Nasim and Baratin, Aristide and Arpit, Devansh and Draxler, Felix and Lin, Min and Hamprecht, Fred A. and Bengio, Yoshua and Courville, Aaron},
+  title     = {On the Spectral Bias of Neural Networks},
+  booktitle = {Proceedings of the 36th International Conference on Machine Learning},
+  series    = {Proceedings of Machine Learning Research},
+  volume    = {97},
+  pages     = {5301--5310},
+  year      = {2019},
+  url       = {https://proceedings.mlr.press/v97/rahaman19a.html},
+  annote    = {CITED FOR: networks fit low-frequency (here: affine) components first; context for the affine plateau, not a proof of it.}
+}
+
+@inproceedings{kingma2015,
+  author    = {Kingma, Diederik P. and Ba, Jimmy},
+  title     = {Adam: A Method for Stochastic Optimization},
+  booktitle = {3rd International Conference on Learning Representations (ICLR)},
+  year      = {2015},
+  eprint    = {1412.6980},
+  archiveprefix = {arXiv},
+  url       = {https://arxiv.org/abs/1412.6980},
+  annote    = {CITED FOR: the Adam optimiser.}
+}
+
+@inproceedings{loshchilov2019,
+  author    = {Loshchilov, Ilya and Hutter, Frank},
+  title     = {Decoupled Weight Decay Regularization},
+  booktitle = {7th International Conference on Learning Representations (ICLR)},
+  year      = {2019},
+  eprint    = {1711.05101},
+  archiveprefix = {arXiv},
+  url       = {https://arxiv.org/abs/1711.05101},
+  annote    = {CITED FOR: AdamW, the optimiser of the demonstration of Section 7.2.}
+}
+
+@article{liu1989,
+  author  = {Liu, Dong C. and Nocedal, Jorge},
+  title   = {On the limited memory {BFGS} method for large scale optimization},
+  journal = {Mathematical Programming},
+  volume  = {45},
+  number  = {1--3},
+  pages   = {503--528},
+  year    = {1989},
+  doi     = {10.1007/BF01589116},
+  annote  = {CITED FOR: the L-BFGS optimiser.}
+}
+
+@inproceedings{paszke2019,
+  author    = {Paszke, Adam and Gross, Sam and Massa, Francisco and Lerer, Adam and Bradbury, James and Chanan, Gregory and Killeen, Trevor and Lin, Zeming and Gimelshein, Natalia and Antiga, Luca and Desmaison, Alban and K{\"o}pf, Andreas and Yang, Edward and DeVito, Zach and Raison, Martin and Tejani, Alykhan and Chilamkurthy, Sasank and Steiner, Benoit and Fang, Lu and Bai, Junjie and Chintala, Soumith},
+  title     = {{PyTorch}: An Imperative Style, High-Performance Deep Learning Library},
+  booktitle = {Advances in Neural Information Processing Systems},
+  volume    = {32},
+  pages     = {8024--8035},
+  year      = {2019},
+  eprint    = {1912.01703},
+  archiveprefix = {arXiv},
+  url       = {https://arxiv.org/abs/1912.01703},
+  annote    = {CITED FOR: PyTorch and its automatic differentiation, used for all experiments.}
+}
+
+@article{virtanen2020,
+  author  = {Virtanen, Pauli and Gommers, Ralf and Oliphant, Travis E. and Haberland, Matt and Reddy, Tyler and Cournapeau, David and others},
+  title   = {{SciPy} 1.0: fundamental algorithms for scientific computing in {Python}},
+  journal = {Nature Methods},
+  volume  = {17},
+  number  = {3},
+  pages   = {261--272},
+  year    = {2020},
+  doi     = {10.1038/s41592-019-0686-2},
+  annote  = {CITED FOR: SciPy (Sobol' sequences, sparse solvers, statistical tests).}
+}
+
+@article{sobol1967,
+  author  = {Sobol', I. M.},
+  title   = {On the distribution of points in a cube and the approximate evaluation of integrals},
+  journal = {USSR Computational Mathematics and Mathematical Physics},
+  volume  = {7},
+  number  = {4},
+  pages   = {86--112},
+  year    = {1967},
+  doi     = {10.1016/0041-5553(67)90144-9},
+  annote  = {CITED FOR: Sobol' low-discrepancy sequences.}
+}
+
+@article{owen1998,
+  author  = {Owen, Art B.},
+  title   = {Scrambling {Sobol'} and {Niederreiter--Xing} Points},
+  journal = {Journal of Complexity},
+  volume  = {14},
+  number  = {4},
+  pages   = {466--489},
+  year    = {1998},
+  doi     = {10.1006/jcom.1998.0487},
+  annote  = {CITED FOR: scrambling of Sobol' points (randomised quasi-Monte Carlo).}
+}
+
+@article{wilcoxon1945,
+  author  = {Wilcoxon, Frank},
+  title   = {Individual Comparisons by Ranking Methods},
+  journal = {Biometrics Bulletin},
+  volume  = {1},
+  number  = {6},
+  pages   = {80--83},
+  year    = {1945},
+  doi     = {10.2307/3001968},
+  annote  = {CITED FOR: the signed-rank test used for paired comparisons across seeds.}
+}
+
+@article{crank1947,
+  author  = {Crank, J. and Nicolson, P.},
+  title   = {A practical method for numerical evaluation of solutions of partial differential equations of the heat-conduction type},
+  journal = {Proceedings of the Cambridge Philosophical Society},
+  volume  = {43},
+  number  = {1},
+  pages   = {50--67},
+  year    = {1947},
+  doi     = {10.1017/S0305004100023197},
+  annote  = {CITED FOR: the Crank--Nicolson scheme used as the heat-equation baseline. The journal is given under its name in 1947; since 1975 it is the Mathematical Proceedings of the Cambridge Philosophical Society, the name under which the DOI is registered.}
+}
+
+@book{leveque2007,
+  author    = {LeVeque, Randall J.},
+  title     = {Finite Difference Methods for Ordinary and Partial Differential Equations: Steady-State and Time-Dependent Problems},
+  publisher = {Society for Industrial and Applied Mathematics},
+  address   = {Philadelphia},
+  year      = {2007},
+  doi       = {10.1137/1.9780898717839},
+  annote    = {CITED FOR: second-order finite-difference schemes (5-/7-point Laplacian, leapfrog, Crank--Nicolson) and their convergence.}
+}
+
+@book{gilbarg2001,
+  author    = {Gilbarg, David and Trudinger, Neil S.},
+  title     = {Elliptic Partial Differential Equations of Second Order},
+  series    = {Classics in Mathematics},
+  publisher = {Springer},
+  address   = {Berlin},
+  year      = {2001},
+  note      = {Reprint of the 1998 edition},
+  doi       = {10.1007/978-3-642-61798-0},
+  annote    = {CITED FOR: Perron's method; solvability of the Dirichlet problem for continuous boundary values in domains satisfying an exterior sphere condition (Sec. 2.8), used in Remark S9 to show that traces of harmonic functions that are C^2 up to the boundary are dense in L^2 of the boundary of the cube. Title, authors, series, publisher and year checked against Crossref (DOI) on 2026-10-02.}
+}
+
+@book{evans2010,
+  author    = {Evans, Lawrence C.},
+  title     = {Partial Differential Equations},
+  edition   = {Second},
+  series    = {Graduate Studies in Mathematics},
+  volume    = {19},
+  publisher = {American Mathematical Society},
+  address   = {Providence, RI},
+  year      = {2010},
+  doi       = {10.1090/gsm/019},
+  annote    = {CITED FOR: energy methods for uniqueness (heat, wave, Laplace), Sobolev spaces, traces, Lax--Milgram.}
+}
+
+@book{strauss2008,
+  author    = {Strauss, Walter A.},
+  title     = {Partial Differential Equations: An Introduction},
+  edition   = {Second},
+  publisher = {John Wiley \& Sons},
+  address   = {Hoboken, NJ},
+  year      = {2008},
+  isbn      = {978-0-470-05456-7},
+  annote    = {CITED FOR: source of the 2-D mixed Laplace problem Lap2 (exercise in Sec. 6.2) and of the separation-of-variables setting for the cube (Sec. 6.2). ISBN checked against Open Library; the ISBN identifies the book (no DOI exists for it).}
+}
+
+@article{wangwang2021,
+  author  = {Wang, Sifan and Wang, Hanwen and Perdikaris, Paris},
+  title   = {On the eigenvector bias of {Fourier} feature networks: From regression to solving multi-scale {PDEs} with physics-informed neural networks},
+  journal = {Computer Methods in Applied Mechanics and Engineering},
+  volume  = {384},
+  pages   = {113938},
+  year    = {2021},
+  doi     = {10.1016/j.cma.2021.113938},
+  annote  = {CITED FOR: Fourier-feature input embeddings as a remedy for multi-scale PINN problems (not used here); spectral bias of physics-informed networks; related to the input features of Section 6.8.}
+}
+
+@article{nitsche1971,
+  author  = {Nitsche, J.},
+  title   = {{\"U}ber ein {V}ariationsprinzip zur {L}{\"o}sung von {D}irichlet-{P}roblemen bei {V}erwendung von {T}eilr{\"a}umen, die keinen {R}andbedingungen unterworfen sind},
+  journal = {Abhandlungen aus dem Mathematischen Seminar der Universit{\"a}t Hamburg},
+  volume  = {36},
+  number  = {1},
+  pages   = {9--15},
+  year    = {1971},
+  doi     = {10.1007/BF02995904},
+  annote  = {CITED FOR: the consistent (Nitsche) variational treatment of Dirichlet conditions without constraining the trial space, as an alternative to the inconsistent boundary penalty (not used here).}
+}
+
+@article{chen2020comparison,
+  author  = {Chen, Jingrun and Du, Rui and Wu, Keke},
+  title   = {A Comparison Study of Deep {Galerkin} Method and Deep {Ritz} Method for Elliptic Problems with Different Boundary Conditions},
+  journal = {Communications in Mathematical Research},
+  volume  = {36},
+  number  = {3},
+  pages   = {354--376},
+  year    = {2020},
+  doi     = {10.4208/cmr.2020-0051},
+  eprint  = {2005.04554},
+  archiveprefix = {arXiv},
+  annote  = {CITED FOR: an earlier head-to-head comparison of a residual least-squares solver (deep Galerkin method, the same loss as a PINN) with the Deep Ritz method on elliptic problems with penalised boundary conditions; its abstract reports that Deep Ritz can outperform the deep Galerkin method with a clear dependence on the dimension even for smooth solutions, that the converse also occurs, and that imposing the boundary condition exactly, where possible, gives a better solution and easier training. Metadata checked against Crossref and the abstract against arXiv:2005.04554 on 2026-10-01.}
+}
+
+@article{liao2021nitsche,
+  author  = {Liao, Yulei and Ming, Pingbing},
+  title   = {Deep {Nitsche} Method: Deep {Ritz} Method with Essential Boundary Conditions},
+  journal = {Communications in Computational Physics},
+  volume  = {29},
+  number  = {5},
+  pages   = {1365--1384},
+  year    = {2021},
+  doi     = {10.4208/cicp.OA-2020-0219},
+  annote  = {CITED FOR: the neural-network version of Nitsche's consistent treatment of essential boundary conditions for the Deep Ritz method (not used here). Metadata checked against Crossref on 2026-10-01.}
+}
+
+% ---- references of Sections 6.7 and 6.8 (each DOI checked on api.crossref.org, each arXiv number on arxiv.org, 2026-10-01)
+
+@article{ainsworth2021galerkin,
+  author  = {Ainsworth, Mark and Dong, Justin},
+  title   = {Galerkin neural networks: a framework for approximating variational equations with error control},
+  journal = {SIAM Journal on Scientific Computing},
+  volume  = {43},
+  number  = {4},
+  pages   = {A2474--A2501},
+  year    = {2021},
+  doi     = {10.1137/20M1366587},
+  annote  = {CITED FOR: Galerkin neural networks, a known Galerkin part plus neural corrections (the idea behind the presolve arm of Section 6.8).}
+}
+
+@article{aldirany2024multilevel,
+  author  = {Aldirany, Ziad and Cottereau, R{\'e}gis and Laforest, Marc and Prudhomme, Serge},
+  title   = {Multi-level neural networks for accurate solutions of boundary-value problems},
+  journal = {Computer Methods in Applied Mechanics and Engineering},
+  volume  = {419},
+  pages   = {116666},
+  year    = {2024},
+  doi     = {10.1016/j.cma.2023.116666},
+  note    = {arXiv:2308.11503},
+  annote  = {CITED FOR: multi-level networks that correct a coarse solution (related to the presolve arm of Section 6.8).}
+}
+
+@article{antunes2013convex,
+  author  = {Antunes, Pedro Ricardo Sim{\~a}o and Gazzola, Filippo},
+  title   = {Convex shape optimization for the least biharmonic {Steklov} eigenvalue},
+  journal = {ESAIM: Control, Optimisation and Calculus of Variations},
+  volume  = {19},
+  number  = {2},
+  pages   = {385--403},
+  year    = {2013},
+  doi     = {10.1051/cocv/2012014},
+  annote  = {CITED FOR: computed least biharmonic Steklov eigenvalue of regular polygons of area pi; the square (n = 4) has 1.96179, which is 3.4772 for the unit square after rescaling by sqrt(pi) (Section 6.7).}
+}
+
+@article{bramble1970rayleigh,
+  author  = {Bramble, James H. and Schatz, Alfred H.},
+  title   = {{Rayleigh--Ritz--Galerkin} methods for {Dirichlet's} problem using subspaces without boundary conditions},
+  journal = {Communications on Pure and Applied Mathematics},
+  volume  = {23},
+  number  = {4},
+  pages   = {653--675},
+  year    = {1970},
+  doi     = {10.1002/cpa.3160230408},
+  annote  = {CITED FOR: the regularity estimate behind (B2) of Shin, Zhang and Karniadakis (2023) (Section 6.7).}
+}
+
+@article{bucur2009first,
+  author  = {Bucur, Dorin and Ferrero, Alberto and Gazzola, Filippo},
+  title   = {On the first eigenvalue of a fourth order {S}teklov problem},
+  journal = {Calculus of Variations and Partial Differential Equations},
+  volume  = {35},
+  number  = {1},
+  pages   = {103--131},
+  year    = {2009},
+  doi     = {10.1007/s00526-008-0199-9},
+  annote  = {CITED FOR: the first biharmonic Steklov eigenvalue and the duality with harmonic functions for domains with a uniform outer ball condition (Section 6.7, Supplementary Section S7.5).}
+}
+
+@article{bucur2011first,
+  author  = {Bucur, Dorin and Gazzola, Filippo},
+  title   = {The first biharmonic {S}teklov eigenvalue: positivity preserving and shape optimization},
+  journal = {Milan Journal of Mathematics},
+  volume  = {79},
+  number  = {1},
+  pages   = {247--258},
+  year    = {2011},
+  doi     = {10.1007/s00032-011-0143-x},
+  annote  = {CITED FOR: survey of the first biharmonic Steklov eigenvalue: variational form (2.2); Fichera's principle of duality (Section 3); Payne's bound delta_1 >= 2/(minimal width) for convex domains (Lemma 5.3) (Section 6.7, Supplementary Section S7.5).}
+}
+
+@article{chang2022horderdnn,
+  author  = {Chang, Zhipeng and Li, Ke and Zou, Xiufen and Xiang, Xueshuang},
+  title   = {High order deep neural network for solving high frequency partial differential equations},
+  journal = {Communications in Computational Physics},
+  volume  = {31},
+  number  = {2},
+  pages   = {370--397},
+  year    = {2022},
+  doi     = {10.4208/cicp.OA-2021-0092},
+  annote  = {CITED FOR: polynomial (Lagrange-basis, tensor-product) input layers trained with a PINN loss, for high-frequency solutions (Section 6.8).}
+}
+
+@inproceedings{cho2023spinn,
+  author    = {Cho, Junwoo and Nam, Seungtae and Yang, Hyunmo and Yun, Seok-Bae and Hong, Youngjoon and Park, Eunbyung},
+  title     = {Separable physics-informed neural networks},
+  booktitle = {Advances in Neural Information Processing Systems 36 (NeurIPS 2023)},
+  year      = {2023},
+  note      = {arXiv:2306.15969},
+  url     = {https://arxiv.org/abs/2306.15969},
+  annote  = {CITED FOR: separable, per-axis networks for high-dimensional collocation (Section 6.8).}
+}
+
+@misc{ernst2025certification,
+  author       = {Ernst, Lewin and Rekatsinas, Nikolaos and Urban, Karsten},
+  title        = {A posteriori certification of {PDE} approximations with particular application to neural networks},
+  year         = {2025},
+  eprint       = {2502.20336},
+  archivePrefix= {arXiv},
+  note         = {Version 6, August 2026},
+  url     = {https://arxiv.org/abs/2502.20336},
+  annote  = {CITED FOR: a posteriori certification of network approximations in the energy norm, constants not explicit in d (Section 6.7).}
+}
+
+@article{fazliani2025safenet,
+  author  = {Fazliani, Shaghayegh and Frangella, Zachary and Udell, Madeleine},
+  title   = {Enhancing physics-informed neural networks through feature engineering},
+  journal = {Transactions on Machine Learning Research},
+  year    = {2025},
+  url     = {https://arxiv.org/abs/2502.07209},
+  annote  = {CITED FOR: feature-engineered PINN inputs (Section 6.8).}
+}
+
+@article{ferrero2005fourth,
+  author  = {Ferrero, Alberto and Gazzola, Filippo and Weth, Tobias},
+  title   = {On a fourth order {S}teklov eigenvalue problem},
+  journal = {Analysis},
+  volume  = {25},
+  number  = {4},
+  pages   = {315--332},
+  year    = {2005},
+  doi     = {10.1524/anly.2005.25.4.315},
+  annote  = {CITED FOR: the fourth-order Steklov problem; upper bound 1.96256 for the first eigenvalue of the square of area pi (Section 6.7).}
+}
+
+@misc{fuhrer2025aposteriori,
+  author       = {F{\"u}hrer, Thomas and Rojas, Sergio},
+  title        = {A posteriori analysis of neural network approximations},
+  year         = {2025},
+  eprint       = {2507.06017},
+  archivePrefix= {arXiv},
+  url     = {https://arxiv.org/abs/2507.06017},
+  annote  = {CITED FOR: a posteriori analysis of network approximations with the boundary misfit measured in H^{1/2}, mesh-dependent constants (Section 6.7).}
+}
+
+@inproceedings{ghosh2022three,
+  author    = {Ghosh, Nikhil and Mei, Song and Yu, Bin},
+  title     = {The three stages of learning dynamics in high-dimensional kernel methods},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2022},
+  url     = {https://arxiv.org/abs/2111.07167},
+  annote  = {CITED FOR: low-degree components are learned first in high-dimensional kernel regression (Section 6.8).}
+}
+
+@article{king1974penalty,
+  author  = {King, J. Thomas},
+  title   = {New error bounds for the penalty method and extrapolation},
+  journal = {Numerische Mathematik},
+  volume  = {23},
+  number  = {2},
+  pages   = {153--165},
+  year    = {1974},
+  doi     = {10.1007/BF01459948},
+  annote  = {CITED FOR: error bounds and extrapolation for the penalty finite-element method (Section 6.7).}
+}
+
+@article{kuttler1972remarks,
+  author  = {Kuttler, J. R.},
+  title   = {Remarks on a {S}tekloff eigenvalue problem},
+  journal = {SIAM Journal on Numerical Analysis},
+  volume  = {9},
+  number  = {1},
+  pages   = {1--5},
+  year    = {1972},
+  doi     = {10.1137/0709001},
+  annote  = {CITED FOR: numerical bounds for the Stekloff eigenvalue of the square (Section 6.7).}
+}
+
+@article{mishra2023generalization,
+  author  = {Mishra, Siddhartha and Molinaro, Roberto},
+  title   = {Estimates on the generalization error of physics-informed neural networks for approximating {PDEs}},
+  journal = {IMA Journal of Numerical Analysis},
+  volume  = {43},
+  number  = {1},
+  pages   = {1--43},
+  year    = {2023},
+  doi     = {10.1093/imanum/drab093},
+  note    = {arXiv:2006.16144; ETH Z{\"u}rich SAM research report 2020-45},
+  annote  = {CITED FOR: generalisation-error estimates of PINNs in which the boundary training error enters through its square root with network-dependent constants (Section 6.7).}
+}
+
+@article{mostajeran2025scaledcpikan,
+  author  = {Mostajeran, Farinaz and Faroughi, Salah A.},
+  title   = {Scaled-{cPIKAN}s: Spatial variable and residual scaling in {C}hebyshev-based physics-informed {K}olmogorov-{A}rnold networks},
+  journal = {Journal of Computational Physics},
+  volume  = {537},
+  pages   = {114116},
+  year    = {2025},
+  doi     = {10.1016/j.jcp.2025.114116},
+  note    = {arXiv:2501.02762},
+  annote  = {CITED FOR: Chebyshev-based physics-informed Kolmogorov-Arnold networks (Section 6.8). Bibliographic data checked on api.crossref.org, 2026-10-02 (title revised from the arXiv v1 title).}
+}
+
+@misc{mukherjee2026certification,
+  author       = {Mukherjee, Amartya and Fitzsimmons, Maxwell and Del Rey Fern{\'a}ndez, David C. and Liu, Jun},
+  title        = {Rigorous Error Certification for Neural {PDE} Solvers: From Empirical Residuals to Solution Guarantees},
+  year         = {2026},
+  eprint       = {2603.19165},
+  archivePrefix= {arXiv},
+  note         = {Version 2, 1 September 2026},
+  url     = {https://arxiv.org/abs/2603.19165},
+  annote  = {CITED FOR: error certification of neural PDE solvers; the maximum-principle bound in uniform norms, explicit on the cube (Prop. 7) (Section 6.7).}
+}
+
+@article{payne1968bounds,
+  author  = {Payne, L. E.},
+  title   = {Bounds for the maximum stress in the {S}aint {V}enant torsion problem},
+  journal = {Indian Journal of Mechanics and Mathematics},
+  note    = {Special issue presented to Professor Bibhutibhusan Sen on his seventieth birthday, part I},
+  pages   = {51--59},
+  year    = {1968/69},
+  annote  = {CITED FOR: Payne's bound delta_1 >= 2/(minimal width) for convex domains, as stated, with this reference, in Lemma 5.3 of bucur2011first (Section 6.7, Remark S9). Bibliographic data as given by Bucur and Gazzola and by later papers on the torsion function; the statement is used in the form given by Bucur and Gazzola.}
+}
+
+@article{payne1970some,
+  author  = {Payne, L. E.},
+  title   = {Some isoperimetric inequalities for harmonic functions},
+  journal = {SIAM Journal on Mathematical Analysis},
+  volume  = {1},
+  number  = {3},
+  pages   = {354--359},
+  year    = {1970},
+  doi     = {10.1137/0501032},
+  annote  = {CITED FOR: lower bounds of the first biharmonic Steklov eigenvalue through the mean curvature, for smooth boundaries (Supplementary Section S7.5).}
+}
+
+@article{philippin2010extending,
+  author  = {Philippin, G. A. and Safoui, A.},
+  title   = {On extending some maximum principles to convex domains with nonsmooth boundaries},
+  journal = {Mathematical Methods in the Applied Sciences},
+  volume  = {33},
+  number  = {15},
+  pages   = {1850--1855},
+  year    = {2010},
+  doi     = {10.1002/mma.1295},
+  annote  = {CITED FOR: removal of the regularity assumptions in Payne's bound for convex domains (Section 6.7).}
+}
+
+@article{raulot2015sharp,
+  author  = {Raulot, Simon and Savo, Alessandro},
+  title   = {Sharp bounds for the first eigenvalue of a fourth-order {S}teklov problem},
+  journal = {The Journal of Geometric Analysis},
+  volume  = {25},
+  number  = {3},
+  pages   = {1602--1619},
+  year    = {2015},
+  doi     = {10.1007/s12220-014-9486-1},
+  note    = {arXiv:1206.7102},
+  annote  = {CITED FOR: bounds of the first fourth-order Steklov eigenvalue through curvature bounds and the inner radius, for smooth boundaries (Supplementary Section S7.5).}
+}
+
+@article{shin2023error,
+  author  = {Shin, Yeonjong and Zhang, Zhongqiang and Karniadakis, George Em},
+  title   = {Error estimates of residual minimization using neural networks for linear {PDEs}},
+  journal = {Journal of Machine Learning for Modeling and Computing},
+  volume  = {4},
+  number  = {4},
+  pages   = {73--101},
+  year    = {2023},
+  doi     = {10.1615/JMachLearnModelComput.2023050411},
+  note    = {arXiv:2010.08019},
+  annote  = {CITED FOR: App. B, eq. (B2): ||u||_{L2} <= C(||Au||_{L2} + ||u||_{L2(boundary)}) for residual minimisation on smooth domains, C not explicit; the closest form found to the computable bound of Section 6.7 (Section 6.7).}
+}
+
+@article{shukla2024kan,
+  author  = {Shukla, Khemraj and Toscano, Juan Diego and Wang, Zhicheng and Zou, Zongren and Karniadakis, George Em},
+  title   = {A comprehensive and {FAIR} comparison between {MLP} and {KAN} representations for differential equations and operator networks},
+  journal = {Computer Methods in Applied Mechanics and Engineering},
+  volume  = {431},
+  pages   = {117290},
+  year    = {2024},
+  note    = {arXiv:2406.02917},
+  doi     = {10.1016/j.cma.2024.117290},
+  annote  = {CITED FOR: Chebyshev-basis Kolmogorov-Arnold networks for differential equations (Section 6.8).}
+}
+
+@article{sukumar2022exact,
+  author  = {Sukumar, N. and Srivastava, Ankit},
+  title   = {Exact imposition of boundary conditions with distance functions in physics-informed deep neural networks},
+  journal = {Computer Methods in Applied Mechanics and Engineering},
+  volume  = {389},
+  pages   = {114333},
+  year    = {2022},
+  doi     = {10.1016/j.cma.2021.114333},
+  note    = {arXiv:2104.08426},
+  annote  = {CITED FOR: exact imposition of Dirichlet conditions with distance functions (not tested here; Section 6.7).}
+}
+
+@article{zeinhofer2025unified,
+  author  = {Zeinhofer, Marius and Masri, Rami and Mardal, Kent-Andr{\'e}},
+  title   = {A unified framework for the error analysis of physics-informed neural networks},
+  journal = {IMA Journal of Numerical Analysis},
+  volume  = {45},
+  number  = {5},
+  pages   = {2988--3025},
+  year    = {2025},
+  doi     = {10.1093/imanum/drae081},
+  note    = {arXiv:2311.00529},
+  annote  = {CITED FOR: error analysis of PINNs on C^{1,1} domains with non-explicit constants (Section 6.7).}
+}
+
+@article{zhang2025khorderdnn,
+  author  = {Zhang, Yaqin and Li, Ke and Chang, Zhipeng and Liu, Xuejiao and Huang, Yunqing and Xiang, Xueshuang},
+  title   = {A {K}olmogorov high order deep neural network for high frequency partial differential equations in high dimensions},
+  journal = {Communications in Computational Physics},
+  volume  = {38},
+  number  = {1},
+  pages   = {181--222},
+  year    = {2025},
+  doi     = {10.4208/cicp.OA-2024-0095},
+  note    = {arXiv:2502.01938},
+  annote  = {CITED FOR: coordinate-wise polynomial input layer (K-HOrderDNN, d(p+1) basis functions, against the (p+1)^d tensor-product basis of HOrderDNN); designed for high-frequency solutions; PDE tests up to d = 10, function fitting up to d = 50 (abstract of arXiv:2502.01938) (Section 6.8).}
+}

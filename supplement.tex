@@ -1,0 +1,97 @@
+% =====================================================================================
+% supplement.tex -- Supplementary Material of "Physics-informed neural networks and the Deep
+% Ritz method for diffusion, wave and Laplace problems: a reproducible benchmark and its failure
+% modes".  Same macros, statements and bibliography as main.tex; sections, equations, figures,
+% tables, listings and theorem-like environments carry the prefix S.  References to the main
+% article are resolved with xr-hyper from main.aux (build sequence: see main.tex).
+% Every quantitative statement carries a comment  % src: <path>, relative to the root of the
+% accompanying repository.
+% =====================================================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{flafter}
+\usepackage[section]{placeins}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{microtype}
+\usepackage{xr-hyper}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\externaldocument[][nocite]{main}[paper.pdf]
+
+\graphicspath{{figures/}}
+\captionsetup{font=small,labelfont=bf}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,keepspaces=true,
+        showstringspaces=false,frame=single,framerule=0.3pt,xleftmargin=1em,
+        xrightmargin=1em,language=Python,breaklines=true}
+\setlist{nosep}
+\renewcommand{\bibfont}{\small}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.08}
+\renewcommand{\floatpagefraction}{0.85}
+\setlength{\bibsep}{2pt plus 1pt}
+
+\input{macros}
+\input{statements}
+
+% ---- numbering with the prefix S ----------------------------------------------------
+\renewcommand{\thesection}{S\arabic{section}}
+\renewcommand{\theequation}{S\arabic{equation}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thetheorem}{S\arabic{theorem}}
+\AtBeginDocument{\renewcommand{\thelstlisting}{S\arabic{lstlisting}}}
+
+\hypersetup{
+  pdftitle={Supplementary Material: Physics-informed neural networks and the Deep Ritz method for diffusion, wave and Laplace problems},
+  pdfauthor={Xiaoxiao Zhouyi}
+}
+
+\title{Supplementary Material for\\[0.3em]
+\large Physics-informed neural networks and the Deep Ritz method for diffusion, wave and
+Laplace problems: a reproducible benchmark and its failure modes}
+
+\author{Xiaoxiao Zhouyi\\[0.4em]
+\small School of Engineering Mathematics and Technology, University of Bristol, UK.\\
+\small \href{mailto:zhouyixiaoxiao@gmail.com}{\texttt{zhouyixiaoxiao@gmail.com}}}
+
+\date{}
+
+\begin{document}
+\maketitle
+
+\noindent This document supplements the article named above. Its sections, equations, figures,
+tables and numbered statements carry the prefix S; numbers without the prefix refer to the main
+article. Sections~\ref{S1:sec}--\ref{S6:sec} follow Sections~\ref{s2_problems:sec}--\ref{s7_pitfalls:sec}
+of the article, Section~\ref{sA_proofs:sec} contains the proofs, and Section~\ref{sC_details:sec}
+the settings of every experiment, the validation of the drivers, full tables and the account of
+the verification. Code, data and the commands that regenerate every figure and table are at
+\url{https://github.com/zhouyi-xiaoxiao/pinn-diffusion-wave-laplace}.
+
+\tableofcontents
+
+\input{sections/S1_problems}
+\input{sections/S2_methods}
+\input{sections/S3_lowdim}
+\input{sections/S4_hard}
+\input{sections/S5_highdim}
+\input{sections/S6_pitfalls}
+\input{sections/S7_proofs}
+\input{sections/S8_details}
+
+\phantomsection\pdfbookmark[1]{References}{bm:refs}
+\bibliographystyle{plainnat}
+\bibliography{refs}
+
+\end{document}

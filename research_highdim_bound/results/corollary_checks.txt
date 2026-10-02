@@ -1,0 +1,18 @@
+(a) d=2: max ||w||^2/||w||_bd^2 over 200 harmonic test functions 0.25000 <= U_d 0.29194: True
+(a) d=3: max ||w||^2/||w||_bd^2 over 200 harmonic test functions 0.16667 <= U_d 0.21985: True
+(a) d=5: max ||w||^2/||w||_bd^2 over 200 harmonic test functions 0.10000 <= U_d 0.15856: True
+(a) d=10: max ||w||^2/||w||_bd^2 over 200 harmonic test functions 0.05000 <= U_d 0.10609: True
+(a) d=20: max ||w||^2/||w||_bd^2 over 200 harmonic test functions 0.01844 <= U_d 0.07303: True
+(a) d=50: max ||w||^2/||w||_bd^2 over 200 harmonic test functions 0.00780 <= U_d 0.04547: True
+(c) phi=cos(2t+0.3)        eta for d=1..100: 1.896, 2.016, 2.117, 2.282, 2.577, 2.953, 3.584, 4.176
+(c) phi=1+t^2              eta for d=1..100: 1.306, 1.397, 1.475, 1.603, 1.831, 2.123, 2.613, 3.072
+(c) phi=exp(t)             eta for d=1..100: 1.247, 1.340, 1.417, 1.544, 1.770, 2.060, 2.545, 3.000
+(c) phi=sin(pi t)+0.1      eta for d=1..100: 1.011, 1.020, 1.029, 1.042, 1.067, 1.099, 1.152, 1.201
+(c) phi=sin(5 pi t)+0.02   eta for d=1..100: 24.892, 24.889, 24.890, 24.892, 24.896, 24.903, 24.914, 24.926
+(c) phi=t(1-t)             eta for d=1..100: 1.110, 1.063, 1.046, 1.033, 1.023, 1.018, 1.015, 1.014
+(c') d=3 cos(2t+0.3): formula vs MC  err 0.16861/0.16874  lap 2.02337/2.02491  bd 0.61572/0.61490
+(c') d=3 1+t^2: formula vs MC  err 2.55035/2.54980  lap 11.02079/11.02001  bd 7.22957/7.22967
+(c') d=3 exp(t): formula vs MC  err 5.70966/5.70832  lap 17.12897/17.12495  bd 16.02595/16.01449
+(c) bound >= error in all 48 cases: True; eta range 1.011-24.926
+(MP) q = (d/4 - |x-c|^2)/(2d): Lap q = -1, q(corner) = 0, q(centre) = 1/8; sampled min/max: d=1: 0.000/0.1250, d=2: 0.000/0.1250, d=3: 0.002/0.1250, d=5: 0.008/0.1247, d=10: 0.025/0.1215, d=20: 0.046/0.1153
+(MP) max|e| <= max_bd|e| + max|Lap e|/8 in all 24 cases: True; equality case {'e': 'x(1-x)/2, d=1', 'max_err': 0.125, 'rhs': 0.125}

@@ -1,0 +1,121 @@
+{
+ "n": 88,
+ "eta_rel_diff_range": [
+  -0.007806364540691724,
+  0.006080600000991421
+ ],
+ "eta_z_absmax": 2.3380224431916115,
+ "err_rel_diff_range": [
+  -0.0038778966552852623,
+  0.006349054342529303
+ ],
+ "H1_min_z": 219.8276391124045,
+ "H1_min_eta": 1.7367282234890142,
+ "H1_violations": [],
+ "H2": {
+  "n_tested": 57,
+  "n_fail": 21,
+  "eta_max": 5.4610995721965425,
+  "fail_share_range": [
+   0.21804992249649335,
+   0.5737156619990839
+  ],
+  "pass_share_range": [
+   0.5717288034623338,
+   0.9862866439270118
+  ],
+  "fails": [
+   "sweep_poisson_ritz_d5_s100_w1000_it4000.pt",
+   "sweep_poisson_ritz_d5_s100_w100_it4000.pt",
+   "main_poisson_ritz_d5_s1_w1_it4000.pt",
+   "main_poisson_ritz_d5_s0_w1_it4000.pt",
+   "sweep_poisson_ritz_d5_s100_w10_it4000.pt",
+   "main_poisson_ritz_d5_s2_w1_it4000.pt",
+   "sweep_poisson_ritz_d5_s100_w1_it4000.pt",
+   "sweep_poisson_pinn_d5_s100_w1000_it4000.pt",
+   "main_poisson_pinn_d5_s0_w1000_it4000.pt",
+   "main_poisson_pinn_d5_s2_w1000_it4000.pt",
+   "main_poisson_pinn_d5_s1_w1000_it4000.pt",
+   "equaltime_poisson_ritz_d10_s2_w1_it9000.pt",
+   "sweep_laplace_ritz_d5_s100_w100_it4000.pt",
+   "equaltime_poisson_ritz_d10_s1_w1_it9000.pt",
+   "equaltime_poisson_ritz_d10_s0_w1_it9000.pt",
+   "main_laplace_ritz_d5_s2_w100_it4000.pt",
+   "main_laplace_ritz_d5_s0_w100_it4000.pt",
+   "main_laplace_ritz_d5_s1_w100_it4000.pt",
+   "sweep_laplace_ritz_d5_s100_w1000_it4000.pt",
+   "main_laplace_pinn_d5_s1_w1000_it4000.pt",
+   "sweep_laplace_pinn_d5_s100_w1000_it4000.pt"
+  ],
+  "fails_equal_smallest_share_set": false
+ },
+ "H3": {
+  "laplace/pinn": {
+   "means": [
+    0.190847159887638,
+    0.3904140478796034,
+    0.5707527719564338,
+    0.8375080167727424,
+    0.9794453185166877
+   ],
+   "non_decreasing": true
+  },
+  "laplace/ritz": {
+   "means": [
+    0.1963389817622044,
+    0.2818209972024231,
+    0.45224846259622636,
+    0.7077399239972936,
+    0.867927493578314
+   ],
+   "non_decreasing": true
+  },
+  "poisson/pinn": {
+   "means": [
+    0.28628540180647494,
+    0.449975867384063,
+    0.4650779747304825,
+    0.7362629953197334,
+    0.9395620640708707
+   ],
+   "non_decreasing": true
+  },
+  "poisson/ritz": {
+   "means": [
+    0.05595140018014836,
+    0.1443135295507085,
+    0.22719777321903903,
+    0.6732517569257133,
+    0.8383343673881555
+   ],
+   "non_decreasing": true
+  }
+ },
+ "eta_by_d": {
+  "2": [
+   3.863520957233819,
+   24.738770059000313
+  ],
+  "3": [
+   3.6354100740854163,
+   8.329839906942563
+  ],
+  "5": [
+   1.7367282234890142,
+   5.4610995721965425
+  ],
+  "10": [
+   2.118770509197211,
+   3.422982582858652
+  ],
+  "20": [
+   1.921307777529651,
+   2.1898618274310455
+  ]
+ },
+ "bias_rel_diff_range": [
+  -1.3744561044859438e-13,
+  3.930691950881915e-05
+ ],
+ "bias_cells": 49
+}

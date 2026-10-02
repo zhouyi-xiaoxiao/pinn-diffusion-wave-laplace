@@ -1,0 +1,22 @@
+{
+ "frozen_at_local": "2026-10-01T18:00:07+01:00",
+ "note": "Frozen before any confirmatory checkpoint was evaluated (only results/eval_pilot.jsonl, the 13 pilot-E networks, existed).",
+ "sha256": {
+  "PREREG_T2.md": "1a0701517b8ea9739f6daac1a3ae2b86c8bfdd8c3059053e5043a300c3925c3a",
+  "PREREG.md": "95b10ea75987e9ee34ff2fe891a2c33e1d249b1365cf6517d13ec52387a692d6",
+  "scripts/s4_eval_bound.py": "c95c4b1e3bd5f6a2a56d5b0f8f36011f146ef2088d83b3b94b840aa94f64c7e4",
+  "src/t2common.py": "d72f5dd0767a763e69a328c28d9417c258d792e73b69f6a760891fb4c559f585",
+  "results/inventory.json": "6ee405b09aa5d1068a99a84ce1c8a7e6aa6fa566db59737ad2d22a5d2d9d9400"
+ },
+ "results_dir_at_freeze": [
+  "eval_pilot.jsonl",
+  "exact_bias.jsonl",
+  "exact_bias_checks.json",
+  "exact_v1.json",
+  "inventory.json",
+  "restricted_lanczos.json",
+  "restricted_lanczos.txt",
+  "theorem2_checks.json",
+  "theorem2_checks.txt"
+ ]
+}

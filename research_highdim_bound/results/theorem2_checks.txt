@@ -1,0 +1,39 @@
+(A1) face formula vs centred finite differences, 24 faces: worst max-rel-err 4.11e-09
+(A1') random zeta, d = 2, K = 6: ||T zeta||^2 formula 3.619369677602e-01, quadrature 3.619369677602e-01; ratio to ||zeta||^2 0.011464 <= U_2 = 0.291939
+(A2) parity identity worst rel. error 1.2e-15; (A3) Cauchy-Schwarz step: max lhs/rhs 0.3506 (<= 1 required)
+(A4) partial fractions: worst |series - closed|/closed = 2.39e-06 (series truncated at j = 8e6, tail <= 6.3e-8); tanh(pi a/2)/a strictly decreasing on (0, 50]: True; even sum <= odd sum: True
+(A5) d=   1  L_d=0.500000  U_d=0.500000  U/L=1.0000  sqrt(d)U=0.50000  sqrt(d)L=0.50000  sqrt(2dU)=1.0000  (2C)^2 article=4.4053
+(A5) d=   2  L_d=0.185677  U_d=0.291939  U/L=1.5723  sqrt(d)U=0.41286  sqrt(d)L=0.26259  sqrt(2dU)=1.0806  (2C)^2 article=4.2026
+(A5) d=   3  L_d=0.121413  U_d=0.219846  U/L=1.8107  sqrt(d)U=0.38078  sqrt(d)L=0.21029  sqrt(2dU)=1.1485  (2C)^2 article=4.1351
+(A5) d=   4  L_d=0.095391  U_d=0.182190  U/L=1.9099  sqrt(d)U=0.36438  sqrt(d)L=0.19078  sqrt(2dU)=1.2073  (2C)^2 article=4.1013
+(A5) d=   5  L_d=0.081141  U_d=0.158562  U/L=1.9541  sqrt(d)U=0.35455  sqrt(d)L=0.18144  sqrt(2dU)=1.2592  (2C)^2 article=4.0811
+(A5) d=   6  L_d=0.071938  U_d=0.142099  U/L=1.9753  sqrt(d)U=0.34807  sqrt(d)L=0.17621  sqrt(2dU)=1.3058  (2C)^2 article=4.0675
+(A5) d=   8  L_d=0.060371  U_d=0.120251  U/L=1.9919  sqrt(d)U=0.34012  sqrt(d)L=0.17075  sqrt(2dU)=1.3871  (2C)^2 article=4.0507
+(A5) d=  10  L_d=0.053124  U_d=0.106086  U/L=1.9970  sqrt(d)U=0.33547  sqrt(d)L=0.16799  sqrt(2dU)=1.4566  (2C)^2 article=4.0405
+(A5) d=  15  L_d=0.042543  U_d=0.085071  U/L=1.9996  sqrt(d)U=0.32948  sqrt(d)L=0.16477  sqrt(2dU)=1.5975  (2C)^2 article=4.0270
+(A5) d=  20  L_d=0.036514  U_d=0.073025  U/L=1.9999  sqrt(d)U=0.32658  sqrt(d)L=0.16329  sqrt(2dU)=1.7091  (2C)^2 article=4.0203
+(A5) d=  30  L_d=0.029554  U_d=0.059109  U/L=2.0000  sqrt(d)U=0.32375  sqrt(d)L=0.16188  sqrt(2dU)=1.8832  (2C)^2 article=4.0135
+(A5) d=  50  L_d=0.022736  U_d=0.045473  U/L=2.0000  sqrt(d)U=0.32154  sqrt(d)L=0.16077  sqrt(2dU)=2.1324  (2C)^2 article=4.0081
+(A5) d= 100  L_d=0.015996  U_d=0.031991  U/L=2.0000  sqrt(d)U=0.31991  sqrt(d)L=0.15996  sqrt(2dU)=2.5295  (2C)^2 article=4.0041
+(A5) d=1000  L_d=0.005035  U_d=0.010071  U/L=2.0000  sqrt(d)U=0.31847  sqrt(d)L=0.15923  sqrt(2dU)=4.4880  (2C)^2 article=4.0004
+(A5) 1/pi = 0.31831, 1/(2 pi) = 0.15915; L_d series tail <= 5.1e-08
+(A7) d=2: (4/pi^2) S_J for J=1..1e5: 0.101321, 0.168906, 0.183691, 0.185475, 0.185675; full Rayleigh quotient at J=1e5: 0.241819; L_d=0.185677; U_d=0.291939
+(A7) d=3: (4/pi^2) S_J for J=1..1e5: 0.045032, 0.104717, 0.119427, 0.121211, 0.121411; full Rayleigh quotient at J=1e5: 0.156633; L_d=0.121413; U_d=0.219846
+(A7) d=5: (4/pi^2) S_J for J=1..1e5: 0.016211, 0.064594, 0.079155, 0.080939, 0.081139; full Rayleigh quotient at J=1e5: 0.097003; L_d=0.081141; U_d=0.158562
+(A7) d=10: (4/pi^2) S_J for J=1..1e5: 0.004053, 0.036934, 0.051138, 0.052922, 0.053122; full Rayleigh quotient at J=1e5: 0.058987; L_d=0.053124; U_d=0.106086
+(A7) d=20: (4/pi^2) S_J for J=1..1e5: 0.001013, 0.020979, 0.034529, 0.036311, 0.036512; full Rayleigh quotient at J=1e5: 0.039183; L_d=0.036514; U_d=0.073025
+(A7) d=100: (4/pi^2) S_J for J=1..1e5: 0.000041, 0.003945, 0.014022, 0.015793, 0.015994; full Rayleigh quotient at J=1e5: 0.016505; L_d=0.015996; U_d=0.031991
+(A7') d=2, J=59: Rayleigh quotient by operator 0.239483936881, closed formula 0.239483936881
+(A7') d=3, J=29: Rayleigh quotient by operator 0.151962964023, closed formula 0.151962964023
+(A6) d=2 K=  50: largest eigenvalue 0.283661  (L_d 0.185677, U_d 0.291939, ratio to U_d 0.9716)
+(A6) d=2 K= 100: largest eigenvalue 0.285686  (L_d 0.185677, U_d 0.291939, ratio to U_d 0.9786)
+(A6) d=2 K= 200: largest eigenvalue 0.286699  (L_d 0.185677, U_d 0.291939, ratio to U_d 0.9821)
+(A6) d=2 K= 400: largest eigenvalue 0.287205  (L_d 0.185677, U_d 0.291939, ratio to U_d 0.9838)
+(A6) d=2 K= 800: largest eigenvalue 0.287459  (L_d 0.185677, U_d 0.291939, ratio to U_d 0.9847)
+(A6) d=3 K=  20: largest eigenvalue 0.202878  (L_d 0.121413, U_d 0.219846, ratio to U_d 0.9228)
+(A6) d=3 K=  40: largest eigenvalue 0.207906  (L_d 0.121413, U_d 0.219846, ratio to U_d 0.9457)
+(A6) d=3 K=  60: largest eigenvalue 0.209591  (L_d 0.121413, U_d 0.219846, ratio to U_d 0.9534)
+(A6) d=3 K=  80: largest eigenvalue 0.210434  (L_d 0.121413, U_d 0.219846, ratio to U_d 0.9572)
+(A6) d=4 K=  10: largest eigenvalue 0.153761  (L_d 0.095391, U_d 0.182190, ratio to U_d 0.8440)
+(A6) d=4 K=  16: largest eigenvalue 0.161008  (L_d 0.095391, U_d 0.182190, ratio to U_d 0.8837)
+(A6) d=4 K=  24: largest eigenvalue 0.165146  (L_d 0.095391, U_d 0.182190, ratio to U_d 0.9064)

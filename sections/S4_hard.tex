@@ -1,0 +1,126 @@
+% =====================================================================================
+% sections/S4_hard.tex -- Supplementary Section S4: further results on the harder problems and
+% the classical baselines (Section 5).
+% All `% src:` paths are relative to the root of the repository.
+% =====================================================================================
+\section{Harder problems and classical baselines: further results}\label{S4:sec}
+
+\subsection{Longer runs on \texorpdfstring{\PWtwo}{Wave2}}\label{S4:sec:w2}
+
+% src: data/s5_hard_wave2d_long.json (adam_lbfgs_test_rel_l2_at 3000: 7.44e-2, 4.54e-2, 4.50e-2); research_benchmark/results/runs/wave2d_s0-5.json (sobol, seeds 0-2, adam_lbfgs curve at iteration 3000, test_rel_l2: 7.28e-2, 4.58e-2, 4.36e-2; the full-grid values in benchmark_runs.csv are 7.47e-2, 4.61e-2, 4.41e-2)
+At iteration 3000 the longer runs of Section~\ref{s5_hard:sec:w2} agree with the benchmark
+runs of the same seeds ($\sci{7.4}{-2}$, $\sci{4.5}{-2}$, $\sci{4.5}{-2}$ against
+$\sci{7.3}{-2}$, $\sci{4.6}{-2}$, $\sci{4.4}{-2}$, both on the 4096-point subset of the
+evaluation grid on which the training curves are logged). The \LBFGS\ phase stops on the
+termination test of the optimiser (gradient below $10^{-9}$, or step or loss change below
+$10^{-12}$).
+% src: data/s5_hard_wave2d_long.json (adam_lbfgs_test_ratio_3000_over_2000, adam_lbfgs_test_ratio_9500_over_8500); research_benchmark/pinnbench/core.py (run_single: tolerance_grad, tolerance_change)
+Between iterations 2000 and 3000 the error falls by a factor of 2.1 to 3.3; over the last
+1000 logged iterations before iteration 9500 it still falls by 8 to 15 per cent
+(Figure~\ref{s5_hard:fig:wave2d}).
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{s5_hard_wave2d.pdf}
+\caption{Problem \PWtwo, \strat{Sobol} points, $\Nr=512$, seeds 0, 1, 2 (longer runs of
+Section~\ref{s5_hard:sec:w2}).
+(a) Relative $L^2$ error on a fixed random subset of 4096 points of the
+$21\times81\times81$ held-out grid against the iteration number, for 10\,000 \Adam\
+iterations (blue) and for 1500 \Adam\ iterations followed by \LBFGS\ (orange); the dotted
+vertical lines mark the switch and the 3000-iteration budget of the benchmark, and the
+short vertical ticks the iteration at which \LBFGS\ stopped. (b) Value of the trained
+networks at the point $(x,y)=(0.5,0.5)$ at $t=0,0.05,\dots,1$: markers, \AdamLBFGS\ (three
+seeds, one marker shape each); blue lines, \Adam\ only; black line, exact solution.}
+\label{s5_hard:fig:wave2d}
+% src: code/s5_hard_wave2d_long.py (plot); data/s5_hard_wave2d_long.json
+\end{figure}
+
+\subsection{The two modes of \texorpdfstring{\PWone}{Wave1}}\label{S4:sec:w1}
+
+% src: data/s5_hard_wave1d_long.json (summary.benchmark_seed0: rel_l2_a1 0.078 to 0.117 (Adam), 0.036 to 0.092 (Adam -> L-BFGS); rms_a4_over_rms_exact 0.060 to 0.064 and 0.226 to 0.250; share_sq_error_mode4 0.89 to 0.93 and 0.84 to 0.89), computed by code/s5_hard_wave1d_long.py from research_benchmark/results/runs/wave1d_pred_seed0.npz
+We projected the ten stored predictions of seed 0 of the benchmark (five strategies, two
+arms) onto the two spatial modes,
+$a_k(t)=\ip{\unet(t,\cdot)}{\sin k\pi x}/\ip{\sin k\pi x}{\sin k\pi x}$ for $k=1,4$. The
+amplitude of the slow mode is reproduced to 8 to 12 per cent after \Adam\ and 4 to 9 per
+cent after \AdamLBFGS\ (relative $L^2$ error of $a_1$ over $t$); the amplitude of the fast
+mode has a root-mean-square value of 6 per cent of the exact one after \Adam\ and 23 to 25
+per cent after \AdamLBFGS, and the fast mode carries 84 to 93 per cent of the squared error.
+% src: data/s5_hard_wave1d_long.json (adam_lbfgs_test_rel_l2_at 3000); research_benchmark/results/runs/wave1d_s0-5.json (sobol, seeds 0-2, adam_lbfgs curve at iteration 3000: 0.4416, 0.4187, 0.4479)
+At iteration 3000 the longer runs of Section~\ref{s5_hard:sec:w1} agree with the benchmark
+runs of the same seeds (0.442, 0.414 and 0.452 against 0.442, 0.419 and 0.448, both on the
+4096-point subset on which the curves are logged).
+% src: data/s5_hard_wave1d_long.json (summary.per_seed[*].adam_lbfgs_modes and adam_modes: rms_a4_over_rms_exact 0.35 to 0.43)
+In the six longer runs the root-mean-square amplitude of the fast mode is 0.35 to 0.43 of the
+exact one.
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{s5_hard_wave1d.pdf}
+\caption{Problem \PWone, \strat{Sobol} points, $\Nr=1024$, seeds 0, 1, 2 (longer runs of
+Section~\ref{s5_hard:sec:w1}).
+(a)~Relative $L^2$ error on a fixed random subset of 4096 points of the $201\times201$
+held-out grid against the iteration number, for 41\,000 \Adam\ iterations (blue) and for
+1500 \Adam\ iterations followed by \LBFGS\ (orange); the short vertical ticks mark the
+iteration at which \LBFGS\ stopped, the dotted vertical line the budget of the benchmark,
+and the dashed horizontal line the error $1/\sqrt5$ of a predictor that contains the slow
+mode only. (b)~Amplitude $a_4(t)$ of the fast mode $\sin4\pi x$ in the trained networks
+(same colours and line styles), against the exact amplitude $\tfrac12\cos8\pi t$ (black).}
+\label{s5_hard:fig:wave1d}
+% src: code/s5_hard_wave1d_long.py (plot); data/s5_hard_wave1d_long.json
+\end{figure}
+
+\subsection{Finite differences}\label{S4:sec:fd}
+
+% src: research_benchmark/results/classical.csv (observed_order_rel_l2); research_benchmark/pinnbench/classical.py (evaluate)
+% src: data/s5_hard_fd_lap3s.json (Lap3s: rel_l2 2.105e-3, 5.286e-4, 1.323e-4, 3.307e-5 for n = 20, 40, 80, 160; observed orders 1.994, 1.999, 2.000; Lap3: 1.968, 2.698, 1.894), script code/s5_hard_fd_lap3s.py
+On \PLthree\ the observed order of the seven-point scheme is 1.97, 2.70 and 1.89
+(Table~\ref{sC_details:tab:fdconv}): the value 2.70 occurs where the evaluation changes from
+cubic interpolation ($n=20,40$) to nodal values ($n=80,160$) of the cell-centred evaluation
+grid, and the last value, between two nodal evaluations, is somewhat below two. The datum on
+the face $x=\pi$ is the cause of both irregularities: with the compatible single-mode datum
+of \PLthreeS\ the same solver and the same evaluation give $\errL=\sci{2.11}{-3}$,
+$\sci{5.29}{-4}$, $\sci{1.32}{-4}$ and $\sci{3.31}{-5}$ for $n=20$, 40, 80 and 160, that is,
+the orders 1.99, 2.00 and 2.00. Since \PLthreeS\ also makes the solution a single mode, the
+comparison does not separate the compatibility of the data from the modal content; that the
+discontinuity is what lowers the order is what the theory of the scheme leads one to expect,
+since the scheme is of second order for smooth solutions.
+% src: verify_research_benchmark/v_fd.out (heat1d n=100, laplace2d n=100, wave2d n=20, laplace3d n=20, 40; extracted by code/s5_hard_tables.py, info.n_runs_B.*.rederived_rel_l2); notes/VERIFICATION.md (sec. 2.1; sec. 2.3, item 7)
+The finite-difference errors do not rest on one code: the verification re-derived them from
+closed-form solutions of the discrete schemes and from a separate sparse solve. For the grids
+of Table~\ref{s5_hard:tab:fd} it obtained $\sci{4.918}{-4}$ for \PH\ (on the nodes of the
+finite-difference grid, not on the interpolated evaluation grid), $\sci{7.508}{-5}$ for
+\PLtwo, $\sci{5.121}{-3}$ for \PWtwo\ and $\sci{9.968}{-3}$ for \PLthree\ ($\sci{3.900}{-2}$
+for $n=20$); \PWone\ was not re-derived.
+
+\subsection{Cost}\label{S4:sec:cost}
+
+% src: research_benchmark/results/timing_single.json; research_benchmark/scripts/time_single.py
+(A)~The single-network driver was timed for 400 \Adam\ and 200 \LBFGS\ iterations while the
+load average was 95 to 167 and extrapolated to 3000 iterations.
+% src: verify_research_benchmark/v_runs.json; verify_research_benchmark/v_runs_extra.json; verify_research_benchmark/v_summary.out (t_arm); data/checks/machine_load.json (lowdim_verification_runs_B: load about 20 to 45); data/sC_details_numbers.json (verifier_lowdim.B: n_stopped_early = 12, min_lbfgs_iters = 1178)
+(B)~The runs of \textsf{V-bench} comprise 21 runs for \PH, 12 for \PLtwo\ and one for each
+other problem. Twelve of these 36 runs, all on \PH\ and \PLtwo, stopped on the tolerance of
+\LBFGS\ after 1178 or more of its 1500 iterations, which makes the lower ends of the ranges,
+if anything, too low.
+% src: research_benchmark/results/runs/*_s*-*.json (timing: (t_adam_to_branch + t_lbfgs_total) / batch_size = 12.4 s (heat1d, 50 networks), 11.5 and 13.9 s (laplace2d, two stacks of 25), 6.9 s (wave1d), 7.4 s (wave2d), 11.7 s (laplace3d)); data/s5_hard_cost.json (time_C_stacked_gpu_per_network_s)
+(C)~The training time of the \AdamLBFGS\ arm of a stack divided by the number of networks in
+it is 12.4~s for \PH\ (50 networks), 11.5 and 13.9~s for \PLtwo\ (two stacks of 25), 6.9~s
+for \PWone, 7.4~s for \PWtwo\ and 11.7~s for \PLthree; the load during these runs was not
+recorded. Table~\ref{sC_details:tab:cost} keeps the three measurements apart.
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{s5_hard_cost.pdf}
+\caption{Accuracy against wall-clock time of one solve, one panel per problem. Grey:
+second-order finite differences, the grid parameter $n$ doubling along each curve (time:
+best of three solves). Blue circles and orange squares: \Adam\ and \AdamLBFGS\ arms of the
+benchmark (3000 iterations); the ordinate is the geometric mean of $\errL$ over all
+strategies and seeds (50 runs for \PH\ and \PLtwo, 25 otherwise) and the vertical bar its
+range over those runs. Each PINN arm is drawn at three times, the measurements C, B and A
+of Section~\ref{s5_hard:sec:fd}: diamond, time per network in the GPU stacks of the
+benchmark; filled marker, median of the single-network runs of \textsf{V-bench}; open
+marker, single-network driver under heavy load. The horizontal bar spans the three. All
+errors are on the held-out sets of Table~\ref{s2_problems:tab:problems}.}
+\label{s5_hard:fig:cost}
+% src: code/s5_hard_cost.py; data/s5_hard_cost.json
+\end{figure}

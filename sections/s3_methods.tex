@@ -1,0 +1,363 @@
+% =====================================================================================
+% sections/s3_methods.tex -- Methods.
+% All `% src:` paths are relative to the root of the repository.
+% Labels defined here and used elsewhere:
+%   s3_methods:sec, s3_methods:eq:pinn, s3_methods:eq:ritz, s3_methods:eq:ritz-mc,
+%   s3_methods:eq:errors, s3_methods:tab:setup, s3_methods:tab:samplers,
+%   s3_methods:prop:robin, s3_methods:rem:consistent, s3_methods:sec:* (subsections)
+% Details in the Supplementary Material: sections/S2_methods.tex (figure of the point
+% sets, Observation s3_methods:obs:robin, the two Laplacians, implementation).
+% =====================================================================================
+\section[Methods]{Methods: PINN loss, Deep Ritz energy, collocation strategies, optimisers
+and error measures}
+\label{s3_methods:sec}
+
+This section fixes what is common to the experiments of
+Sections~\ref{s4_lowdim:sec}--\ref{s6_highdim:sec}. Further details are in Supplementary
+Section~\ref{S2:sec}, and the settings of every experiment in
+Table~\ref{sC_details:tab:hyper}.
+
+% -------------------------------------------------------------------------------------
+\subsection{Networks and the PINN loss}\label{s3_methods:sec:pinn}
+
+Every approximant $\unet$ is a fully connected network with $\tanh$ activations and a
+linear output layer, with the default initialisation of PyTorch~\citep{paszke2019},
+un-normalised inputs and single-precision arithmetic (Table~\ref{s3_methods:tab:setup}).
+
+% src: research_benchmark/pinnbench/problems.py (hidden, blocks(), terms(), pde() of each class)
+% src: research_benchmark/results/timing_single.json (n_params, n_r)
+% src: research_highdim/scripts/hd_core.py (MLP, train: n_int = n_bd = 1024); research_highdim/results/cost_vs_d.json (n_params 8577, 8641, 8769, 9089, 9729 at d = 2, 3, 5, 10, 20, i.e. 64d + 8449)
+\begin{table}[tbp]
+\centering
+\caption{Network, interior budget $\Nr$ and the terms of the PINN
+loss~\eqref{s3_methods:eq:pinn} for each problem. ``$2\times128$'' means two hidden layers
+of 128 units. Each constraint block is one mean squared term; the number of points of a
+block is given in brackets. The initial displacement and the initial velocity of the wave
+problems are imposed at the same points.}
+\label{s3_methods:tab:setup}
+\small
+\setlength{\tabcolsep}{4.5pt}
+\begin{tabular}{@{}llrrl>{\raggedright\arraybackslash}p{0.37\textwidth}@{}}
+\toprule
+Problem & Hidden & Parameters & $\Nr$ & Residual $r_\theta$ & Constraint blocks \\
+\midrule
+\PH     & $2\times128$ & 17\,025 & 256  & $\partial_t\unet-\partial_{xx}\unet$
+        & $u(0,\cdot)$ [100]; $u(\cdot,0)$, $u(\cdot,1)$ [100 each] \\
+\PWone  & $3\times64$  & 8577    & 1024 & $\partial_{tt}\unet-4\,\partial_{xx}\unet$
+        & $u(0,\cdot)$, $\partial_t u(0,\cdot)$ [100]; $u(\cdot,0)$, $u(\cdot,1)$ [100 each] \\
+\PWtwo  & $2\times50$  & 2801    & 512  & $\partial_{tt}\unet-\lap\unet$
+        & $u(0,\cdot)$, $\partial_t u(0,\cdot)$ [$21\times21$]; $u$ on the 4 side faces
+          [$11\times21$ each] \\
+\PLtwo  & $3\times128$ & 33\,537 & 256  & $\lap\unet$
+        & $u$ at $x=0$, $x=\pi$ [100 each]; $\partial_y u$ at $y=0$, $y=\pi$ [100 each] \\
+\PLthree, \PLthreeS & $2\times100$ & 10\,601 & 512 & $\lap\unet$
+        & $u$ on the 6 faces [$12\times12$ each] \\
+\Pone, \Ptwo & $3\times64$ & $64d+8449$ & 1024 & $\lap\unet+f$
+        & $u$ on $\dOm$ [1024], weight $\lam$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+A PINN~\citep{raissi2019} is trained by minimising the mean squared residual of the
+differential equation at $\Nr$ interior points $\x_i$ plus one mean squared term for each
+of the $K$ blocks of initial or boundary data,
+\begin{equation}\label{s3_methods:eq:pinn}
+\Lpinn(\theta)=\frac{1}{\Nr}\sum_{i=1}^{\Nr} r_\theta(\x_i)^2
++\lam\sum_{k=1}^{K}\frac{1}{N_k}\sum_{j=1}^{N_k}
+\Bigl(B_k\unet\bigl(\boldsymbol{y}^{(k)}_j\bigr)-g_k\bigl(\boldsymbol{y}^{(k)}_j\bigr)\Bigr)^2 .
+\end{equation}
+Here a block is one edge, one face or one initial condition, with its points
+$\boldsymbol{y}^{(k)}_j$, its datum $g_k$ and its operator $B_k$ (the identity,
+$\partial_t$ for an initial velocity, $\partial_y$ for a Neumann edge); for the evolution
+problems the points are space--time points. Because every block is a mean, blocks with
+different numbers of points weigh the same. In Sections~\ref{s4_lowdim:sec}
+and~\ref{s5_hard:sec} we take $\lam=1$ and tune nothing; in Section~\ref{s6_highdim:sec}
+there is one boundary block and $\lam$ is chosen as described in
+Section~\ref{s3_methods:sec:highdim}.
+% src: research_benchmark/pinnbench/problems.py (gradient(), second())
+All derivatives in $r_\theta$ and $B_k\unet$ are computed by reverse-mode automatic
+differentiation of the network output with respect to the \emph{full} input tensor, and
+the required component is selected by indexing the result. Differentiating with respect
+to a slice of the input is not equivalent: the slice is a new tensor on which the output
+does not depend (Section~\ref{s7_pitfalls:sec:autograd}).
+
+% -------------------------------------------------------------------------------------
+\subsection{Collocation strategies}\label{s3_methods:sec:colloc}
+
+The interior points $\x_i$ are placed by one of the six strategies of
+Table~\ref{s3_methods:tab:samplers}, always with the same number $\Nr$ of points. The
+budgets $\Nr=256=16^2$ (\PH, \PLtwo), $1024=32^2$ (\PWone) and $512=8^3$ (\PWtwo,
+\PLthree) are perfect powers, as a tensor grid requires, and powers of two, as suits a
+Sobol' set. They are deliberately small, so that the placement of the points can matter;
+Section~\ref{s4_lowdim:sec} also varies $\Nr$ for \PH. The constraint points are identical
+for every strategy: 100 equispaced points on each edge or initial line of the two-dimensional
+domains, a $21\times21$ initial grid and $11\times21$ points on each side face for \PWtwo,
+and an open $12\times12$ cell-centred grid on each face for \PLthree, which keeps away
+from the two edges where its data are discontinuous.
+% src: research_benchmark/pinnbench/problems.py (blocks())
+
+% src: research_benchmark/pinnbench/samplers.py (GridSampler, RandomSampler, ResampleSampler, SobolSampler, RADSampler: period=500, pool_factor=8, k=1, c=1)
+% src: research_benchmark/pinnbench/core.py (run_batched: resample and RAD redraw at the branch point)
+% src: verify_research_benchmark/vpinn.py (points(kind="nodegrid")); notes/VERIFICATION.md (sec. 2.1, grid-n control)
+\begin{table}[tbp]
+\centering
+\caption{Collocation strategies for the $\Nr$ interior points. ``Coordinate'' includes
+time for the evolution problems; all sets are mapped affinely to the domain. A seed fixes
+the sets of the four random strategies.}
+\label{s3_methods:tab:samplers}
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}l>{\raggedright\arraybackslash}p{0.56\textwidth}
+  >{\raggedright\arraybackslash}p{0.25\textwidth}@{}}
+\toprule
+Strategy & Construction & During training \\
+\midrule
+\strat{grid-c} & cell-centred tensor grid: with $D$ coordinates and $q=\Nr^{1/D}$, the
+  points $(j+\tfrac12)/q$, $j=0,\dots,q-1$, in each coordinate; no point on the boundary
+  or on the initial line & fixed \\
+\strat{grid-n} & node-centred closed tensor grid: the points $j/(q-1)$, $j=0,\dots,q-1$,
+  in each coordinate; includes the boundary and the initial line. Used only in the controls
+  of Section~\ref{s4_lowdim:sec:strategy} & fixed \\
+\strat{random} & independent uniform points, drawn once & fixed \\
+\strat{resample} & independent uniform points & redrawn before every \Adam\ iteration;
+  one further draw, then fixed, for \LBFGS \\
+\strat{Sobol} & first $\Nr$ points of a scrambled Sobol'
+  sequence~\citep{sobol1967,owen1998}, generated with SciPy~\citep{virtanen2020} & fixed \\
+\strat{RAD} & residual-based adaptive distribution of \citet{wu2023}: starting from the
+  \strat{Sobol} set, $\Nr$ points are drawn without replacement from a uniform pool of
+  $8\Nr$ points with probability proportional to
+  $\abs{r_\theta}/\operatorname{mean}\abs{r_\theta}+1$
+  & redrawn every 500 \Adam\ iterations and once before \LBFGS \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% src: data/s3_methods_points.json (summary: min_t, n_points_with_t_below_1_over_32)
+For \PH\ the cell-centred grid has its first column of points at $t=1/32$ and so leaves the
+strip $0<t<1/32$ next to the initial line without a residual point; 14 of the 256
+\strat{random} points and 8 of the 256 \strat{Sobol} points of seed 0 lie in that strip. The
+node-centred grid has a column on the initial line itself but none inside the strip: its
+next column is at $t=1/15$ (Figure~\ref{s3_methods:fig:points}). This matters in
+Section~\ref{s4_lowdim:sec:strategy}.
+
+% -------------------------------------------------------------------------------------
+\subsection{Optimiser arms}\label{s3_methods:sec:optim}
+
+Two arms of 3000 iterations each are compared, an iteration being one update of the
+parameters. The arm \Adam\ runs Adam~\citep{kingma2015} with the constant learning rate
+$10^{-3}$ for 3000 iterations. The arm \AdamLBFGS\ shares the first 1500 of these
+iterations---it branches from a stored copy of the same run---and continues with 1500
+iterations of L-BFGS~\citep{liu1989} with memory 50 on a fixed point set, a common
+schedule~\citep{lu2021}.
+% src: research_benchmark/pinnbench/core.py (ADAM_LR, LBFGS_MEMORY, run_single, run_batched)
+% src: research_benchmark/results/timing_single.json (lbfgs_fevals_per_iter: 1.06, 1.06, 1.065, 1.045, 1.055)
+For a single network, with the L-BFGS of PyTorch and a strong-Wolfe line search, L-BFGS needed
+between 1.045 and 1.065 loss-and-gradient evaluations per iteration on the five problems, so
+an equal number of iterations is close to an equal cost. The multi-seed runs use our own
+L-BFGS for a stack of networks (Supplementary Section~\ref{S2:sec:impl}); the comparison of the
+arms is therefore one at equal iterations.
+
+% -------------------------------------------------------------------------------------
+\subsection{The Deep Ritz method and its boundary penalty}\label{s3_methods:sec:ritz}
+
+For the Dirichlet problem $-\lap u=f$ in $\Om=(0,1)^d$, $u=g$ on $\dOm$, the Deep Ritz
+method~\citep{eyu2018} minimises over the network parameters the energy whose
+Euler--Lagrange equation is the differential equation, with the boundary condition
+imposed by a penalty of weight $\bet$:
+\begin{equation}\label{s3_methods:eq:ritz}
+\Eritz(v)=\int_{\Om}\Bigl(\tfrac12\abs{\grad v}^2-fv\Bigr)\dd\x
++\bet\int_{\dOm}(v-g)^2\,\dd s .
+\end{equation}
+With $\Nr$ points $\x_i$ uniform in $\Om$ and $\Nb$ points $\boldsymbol{y}_j$ uniform on
+$\dOm$, and because $\abs{\Om}=1$ and $\abs{\dOm}=2d$, the loss is the Monte-Carlo estimate
+\begin{equation}\label{s3_methods:eq:ritz-mc}
+\frac{1}{\Nr}\sum_{i=1}^{\Nr}\Bigl(\tfrac12\abs{\grad\unet(\x_i)}^2-f(\x_i)\,\unet(\x_i)\Bigr)
++\frac{2d\,\bet}{\Nb}\sum_{j=1}^{\Nb}\bigl(\unet(\boldsymbol{y}_j)-g(\boldsymbol{y}_j)\bigr)^2 .
+\end{equation}
+% src: research_highdim/scripts/hd_core.py (loss_ritz, sample_boundary)
+Only first derivatives of the network enter. Unlike the PINN loss, the minimum of this
+loss is not zero and is not known in advance, so its raw value is not an error indicator:
+only its excess over the minimum measures an error, namely
+$\Eritz(v)-\Eritz(\ubeta)=\tfrac12\norm{\grad(v-\ubeta)}_{L^2(\Om)}^2+\bet\,\norm{v-\ubeta}_{L^2(\dOm)}^2$,
+where $\ubeta$ is the minimiser of $\Eritz$. The distance measured is that to $\ubeta$, not
+to the solution of the Dirichlet problem.
+
+The penalty changes the problem that is solved. This is classical~\citep{babuska1973} and
+has been analysed for the Deep Ritz method by \citet{muller2022}. We claim no novelty for
+the following statement; its proof on the cube is elementary and is included to keep the
+article self-contained (Supplementary Section~\ref{sA_proofs:sec:robin}).
+
+\begin{proposition}[Penalised Ritz energy: Robin problem and penalty bias]%
+\label{s3_methods:prop:robin}
+\StmtRobin
+\end{proposition}
+
+\noindent On the cube the constant of part~(c) is sharpened by
+Corollary~\ref{s6_highdim:cor:bound}(b) in Section~\ref{s6_highdim:sec:bound}.
+% src: verify_research_highdim/results/v_robin_fd.json (rel_l2_N200: 5.00e-2, 5.48e-3, 5.54e-4 at beta = 10, 100, 1000; norm of u* = 1/3)
+For \Pone\ at $d=2$, a finite-difference solution of the Robin problem shows the relative bias
+$\norm{\ubeta-\uex}/\norm{\uex}$ to decay like $0.50/\bet$ to $0.55/\bet$ for $\bet\ge10$,
+that is, the bias $\norm{\ubeta-\uex}$ itself like $0.167/\bet$ to $0.185/\bet$
+(Observation~\ref{s3_methods:obs:robin}). The bias
+is the error of the limit of the training, not a lower bound on the error of a trained
+network, which can end on either side of it.
+
+\begin{remark}\label{s3_methods:rem:consistent}
+\StmtConsistent
+\end{remark}
+
+% -------------------------------------------------------------------------------------
+\subsection{Protocol in \texorpdfstring{$d$}{d} dimensions}\label{s3_methods:sec:highdim}
+
+For \Pone\ and \Ptwo\ the PINN and the Deep Ritz method use the same network, optimiser
+and points and differ only in the loss: \eqref{s3_methods:eq:pinn} with residual
+$\lap\unet+f$ and one boundary block of weight $\lam$,
+or~\eqref{s3_methods:eq:ritz-mc}. At every iteration $\Nr=1024$ interior and $\Nb=1024$
+boundary points are drawn afresh, as in~\citep{sirignano2018}; a boundary point is
+obtained by choosing one of the $2d$ faces uniformly. The optimiser is Adam with learning
+rate $10^{-3}$, multiplied by $0.1$ after 50 and after 75 per cent of the run, for 4000
+iterations unless stated otherwise. For a given seed the two methods start from the same
+network and see the same points.
+% src: research_highdim/scripts/hd_core.py (train, sample_interior, sample_boundary)
+The weights were chosen once for each problem and method, from $\{1,10,100,1000\}$, at
+$d=5$, by the error of one run with a separate seed on a validation set of 5000 points:
+$\lam=1000$ for the PINN on both problems, $\bet=100$ for Deep Ritz on \Pone\ and $\bet=1$
+on \Ptwo. They are then used for every $d$. Because $\lam$ weights a boundary mean and $\bet$
+a boundary integral (Remark~\ref{s3_methods:rem:consistent}), keeping both fixed means that
+the coefficient of one boundary sample in the Deep Ritz loss is $2d\,\bet/\lam$ times its
+coefficient in the PINN loss: 0.4 at $d=2$ and 4 at $d=20$ on \Pone, and 0.004 and 0.04 on
+\Ptwo. The comparison across $d$ in Section~\ref{s6_highdim:sec} is made under this
+convention; a convention that fixed the weight per unit of boundary measure for both
+methods was not tried.
+% src: research_highdim/scripts/hd_core.py (loss_pinn, loss_ritz: boundary terms); research_highdim/results/sweep.csv
+The Laplacian in the PINN residual is computed by propagating $(u,\grad u,\lap u)$ forward
+through the layers~\citep{li2024forward}; nested reverse-mode differentiation gives the same
+loss at a higher cost (Supplementary Section~\ref{S2:sec:lap}).
+
+% -------------------------------------------------------------------------------------
+\subsection{Error measures and trivial predictors}\label{s3_methods:sec:errors}
+
+Errors are measured on the held-out evaluation points
+$\boldsymbol{z}_1,\dots,\boldsymbol{z}_M$ of Table~\ref{s2_problems:tab:problems}, and
+always for the network at the last iteration: no checkpoint is selected. With
+$\norm{v}_2^2=\sum_{i=1}^{M}\abs{v(\boldsymbol{z}_i)}^2$ and
+$\overline{\uex}=M^{-1}\sum_{i}\uex(\boldsymbol{z}_i)$,
+\begin{equation}\label{s3_methods:eq:errors}
+\begin{gathered}
+\errL=\frac{\norm{\unet-\uex}_2}{\norm{\uex}_2},\qquad
+\errI=\max_{1\le i\le M}\abs{\unet(\boldsymbol{z}_i)-\uex(\boldsymbol{z}_i)},\qquad
+\errC=\frac{\norm{\unet-\uex}_2}{\norm{\uex-\overline{\uex}}_2},\\[0.4em]
+\errH=\frac{\norm{\grad\unet-\grad\uex}_2}{\norm{\grad\uex}_2},\qquad
+\errT(t)=\frac{\norm{\unet(t,\cdot)-\uex(t,\cdot)}_{2,t}}{\norm{\uex(t,\cdot)}_{2,t}},
+\end{gathered}
+\end{equation}
+where $\norm{\cdot}_{2,t}$ sums over the evaluation points of the time slice $t$ only.
+% src: research_benchmark/pinnbench/core.py (error_metrics); research_highdim/scripts/hd_core.py (evaluate)
+We report $\errL$ and $\errI$ for every problem; the centred error $\errC$ and the
+$H^1$-seminorm error $\errH$ in Section~\ref{s6_highdim:sec}; and the slice error
+$\errT$ for \PH. A relative error has to be read against what a trivial predictor achieves:
+the zero function has $\errL=1$, the best constant has $\errC=1$, and
+Proposition~\ref{s2_problems:prop:floors} gives the errors of the best constant and of the
+best affine function for \Pone\ and \Ptwo; for \Pone\ they decrease with $d$, so a small
+$\errL$ in high dimension is not by itself evidence of an accurate solution.
+
+% -------------------------------------------------------------------------------------
+\subsection{Seeds and statistical procedure}\label{s3_methods:sec:stats}
+
+A seed fixes the initial weights and every random point set of a run. We use 10 seeds for
+\PH\ and \PLtwo, 5 for \PWone, \PWtwo\ and \PLthree, and 3 in
+Section~\ref{s6_highdim:sec}; other counts are stated where they occur. A \emph{network} is
+one combination of problem, strategy and seed, trained up to the iteration at which the
+optimiser arms branch; a \emph{run} is one network in one arm; a \emph{pair} is the two runs
+of one network. The benchmark thus has 175 networks, 175 pairs and 350 runs. The strategies
+of one seed start from the same network and are compared \emph{paired by seed}. We report
+means with sample standard deviations over seeds, and geometric means; the ratio of two
+strategies or arms is the geometric mean of the per-seed ratios.
+% src: research_benchmark/scripts/analyze.py
+
+The test is the exact two-sided Wilcoxon signed-rank test~\citep{wilcoxon1945} on the
+per-seed differences of $\log\errL$. With $n$ seeds its smallest attainable $p$-value is
+$2^{1-n}$, reached when all seeds agree in direction: $2/1024\approx0.002$ for 10 seeds and
+$0.0625$ for 5.
+% src: data/s4_lowdim_numbers.json (optimiser.*.per_seed_wilcoxon_p: 0.001953125 with 10 seeds, 0.0625 with 5)
+For the comparison of the optimiser arms the errors of the five strategies are first
+averaged geometrically within each seed, because they share an initial network. The
+$p$-values are not corrected for multiple comparisons. We call an effect
+\emph{significant} only if it has the smallest attainable ten-seed value, $p=2/1024$, that is,
+only if all ten seeds agree in direction.
+% src: sections/S8_details.tex (Table sC_details:tab:paired: 16 ten-seed strategy tests, 2 ten-seed optimiser tests); data/s4_lowdim_gridcontrol.json (6 ten-seed tests printed in Table s4_lowdim:tab:gridcontrol and its text)
+There are 24 signed-rank tests with ten seeds in the article (16 strategy comparisons,
+2 optimiser comparisons and 6 tests of the control experiment of
+Section~\ref{s4_lowdim:sec:strategy}); by the Bonferroni inequality the probability that one
+or more of them is called significant when no effect exists is at most
+$24\times2/1024=4.7$ per cent. Nothing measured with fewer than ten seeds can be called
+significant by this rule; for those comparisons we report directions and ranges, and their
+$p$-values are descriptive. With 3 seeds (Section~\ref{s6_highdim:sec}) no test is made, and
+statements are restricted to cases in which the seed ranges of the two methods are disjoint.
+The rule was fixed after the results were known; it is stated so that it can be judged, not
+because it was pre-registered. The looser threshold $p\le0.004$ would also admit effects on
+which nine of ten seeds agree and the one dissenting seed has the smallest difference (signed-rank
+statistic $W=1$, $p=4/1024$); two such comparisons exist, Sobol' points on \PLtwo\ and the
+repeated comparison of the cell-centred grid with random points in the control experiment of
+Section~\ref{s4_lowdim:sec:strategy}, and we call them suggestive, not significant.
+
+% -------------------------------------------------------------------------------------
+\subsection{Finite-difference baselines}\label{s3_methods:sec:fd}
+
+Each low-dimensional problem is also solved, on a sequence of grids, by a standard
+finite-difference scheme of second order~\citep{leveque2007}: the Crank--Nicolson
+scheme~\citep{crank1947} with $\Delta t=\Delta x$ for \PH; the explicit leapfrog scheme
+with Courant number $0.5$ and a second-order starting step for \PWone\ and \PWtwo\ (for
+\PWone\ the Courant number 1 is avoided because the scheme is then exact at the nodes,
+which would not be a representative baseline); the five-point Laplacian with second-order
+ghost-point Neumann rows and a sparse direct solver for \PLtwo; and the seven-point
+Laplacian, solved with a discrete sine transform, for \PLthree. The grid solution is
+evaluated on the same held-out points as the networks, by its nodal values where these
+points are nodes and by cubic spline interpolation otherwise.
+% src: research_benchmark/pinnbench/classical.py
+
+% -------------------------------------------------------------------------------------
+\subsection{Verification codes and pre-registration}\label{s3_methods:sec:verif}
+
+Two bodies of code, written separately from the code of the experiments, are used to check
+the results, and are referred to by name.
+% src: verify_research_benchmark/vpinn.py; verify_research_highdim/scripts/v_core.py; notes/VERIFICATION.md (sec. 2.1; sec. 3.1, V10); verify_research_highdim/results/v_summary.txt (seeds per cell)
+\textsf{V-bench} re-implements the low-dimensional PINNs: one network at a time on the
+CPU, derivatives propagated analytically through the layers, the strong-Wolfe \LBFGS\ of
+PyTorch, seeds 0 to 5. It re-ran 40 configurations of
+Sections~\ref{s4_lowdim:sec} and~\ref{s5_hard:sec}. \textsf{V-dim} re-implements the
+$d$-dimensional study: its own exact solutions, a nested Laplacian, its own test points,
+seeds 7 to 9 (7 to 11 in one cell); it trained 73 networks for Section~\ref{s6_highdim:sec}.
+Both also re-aggregated the stored raw results (Supplementary
+Section~\ref{sC_details:sec:verification}).
+
+The verification has two limits. First, the codes were written, and the stored results
+re-aggregated, separately from the experiments but within the same project, with the aim of
+refuting the results; they ran on the same machine, with the same library versions, as the
+experiments. This guards against errors of one code and of one analysis; it is not a
+replication by another group on other hardware, and errors common to both sides (a shared
+misreading of a problem, the single-precision library stack) are not excluded. Second, the
+following experiments were run with the code of the experiments only and are not covered:
+the longer runs on \PWtwo\ and \PWone\ (Sections~\ref{s5_hard:sec:w2}
+and~\ref{s5_hard:sec:w1}), the compatible-data problem \PLthreeS\
+(Section~\ref{s5_hard:sec:l3}), the slice errors of \PH\ (Section~\ref{s4_lowdim:sec:timeslice}),
+the control experiment for the cell-centred grid (Section~\ref{s4_lowdim:sec:strategy}), the
+16\,000-iteration runs at $d=20$ (Section~\ref{s6_highdim:sec:budget}) and the demonstration
+of Section~\ref{s7_pitfalls:sec:autograd}. The demonstration of Section~\ref{s7_pitfalls:sec:oneface}
+was re-run for three of its five seeds with the network and derivative code of \textsf{V-bench}.
+% src: data/s4_lowdim_gridcontrol.json (agreement_with_benchmark: 0.944, 0.967); data/s4_lowdim_timeslices.json (space-time geometric means 1.07e-3, 1.16e-3 against 1.19e-3, 1.15e-3); data/s5_hard_wave2d_long.json and data/s5_hard_wave1d_long.json (errors at iteration 3000 against the benchmark runs of the same seeds); data/sC_details_repro.json (bit-for-bit re-runs)
+The experiments listed above have only internal cross-checks: the configurations that they share with the benchmark
+agree with it, \PLthreeS\ is run with its own control, and the drivers are reproducible bit
+for bit on the machine used (Supplementary Section~\ref{sC_details:sec:repro}).
+
+The analyses of Sections~\ref{s6_highdim:sec:bound} and~\ref{s6_highdim:sec:remedies} were
+pre-registered: hypotheses, networks or problems, seeds and decision rules were fixed in a
+document whose hash and time were recorded in the repository (\texttt{PREREG\_FREEZE.json}) before
+the first counted evaluation or run; no external registry was used. Each was
+then re-checked, in two rounds, with separately written code within the same project and on the
+same machine: the proofs were re-read and their formulas checked numerically, every quoted number
+was recomputed from the stored files, networks were retrained with other seeds, and problems were
+added on which neither remedy had been tried. Below, the two rounds are referred to together as
+\emph{the re-check}; it has the limits stated above; where it added a result, the text says so, and
+Supplementary Section~\ref{sC_details:sec:verification} describes it.
+% src: research_highdim_bound/PREREG_T2.md; research_highdim_bound/PREREG_FREEZE.json; research_highdim_remedies/PREREG_C1.md; research_highdim_remedies/PREREG_C1_P5.md; research_highdim_remedies/PREREG_FREEZE.json; notes/VERIFICATION.md (sec. 4)

@@ -1,0 +1,9 @@
+{
+  "source": "Load averages of the shared 12-core machine during the timings, as recorded in the working notes of the studies and of their verification; only research_benchmark/results/timing_single.json stores the load itself.",
+  "lowdim_single_network_timing_A": {"result_file": "research_benchmark/results/timing_single.json", "load_average": [95, 167], "note": "stored in the file (loadavg_start, loadavg_end)"},
+  "lowdim_verification_runs_B": {"result_file": "verify_research_benchmark/v_runs.json, v_runs_extra.json", "load_average_about": [20, 45]},
+  "lowdim_study_overall": {"load_average": [50, 170]},
+  "highdim_cost_primary": {"result_file": "research_highdim/results/cost_vs_d.csv", "load_average_about": [90, 110]},
+  "highdim_cost_first_run": {"result_file": "research_highdim/results/cost_vs_d_run1.csv", "load_average": [130, 166], "note": "same ordering, times 1.5 to 2 times larger; not used"},
+  "highdim_cost_verification": {"result_file": "verify_research_highdim/results/v_bench.txt", "load_average_about": 20}
+}

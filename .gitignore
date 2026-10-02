@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# trained networks (not redistributed; recreated by the training scripts)
+*.pt
+*.pth
+*.pkl
+ckpt/
+*_ckpt/
+
+# LaTeX build files
+*.aux
+*.bbl
+*.blg
+*.fls
+*.fdb_latexmk
+main.log
+main.out
+main.pdf
+# (build_pdfs.sh copies main.pdf to paper.pdf, which is tracked)
+supplement.log
+supplement.out
+supplement.toc
+*.synctex.gz
+
+# operating system
+.DS_Store

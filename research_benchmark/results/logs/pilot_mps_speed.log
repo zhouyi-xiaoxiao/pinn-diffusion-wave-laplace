@@ -1,0 +1,3 @@
+[heat1d] MPS S=25 N_r=1024: 300 adam + 100 lbfgs wall 201.0s timing={'batch_size': 25, 't_adam_total': 26.369137370003955, 't_adam_to_branch': 22.15514720500323, 't_lbfgs_total': 19.4578006669999, 'lbfgs_batched_fevals': 152, 'device': 'mps'}
+[heat1d] MPS S=50 N_r=1024: 300 adam + 100 lbfgs wall 89.4s timing={'batch_size': 50, 't_adam_total': 34.593547129004946, 't_adam_to_branch': 27.84121487700304, 't_lbfgs_total': 46.94308158400008, 'lbfgs_batched_fevals': 179, 'device': 'mps'}
+[laplace3d] MPS S=25 N_r=4096: 300 adam + 100 lbfgs wall 144.2s timing={'batch_size': 25, 't_adam_total': 99.94479491799802, 't_adam_to_branch': 71.62639909099835, 't_lbfgs_total': 36.27409908300024, 'lbfgs_batched_fevals': 126, 'device': 'mps'}

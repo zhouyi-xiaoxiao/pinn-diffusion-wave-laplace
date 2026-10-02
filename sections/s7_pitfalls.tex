@@ -1,0 +1,90 @@
+% =====================================================================================
+% sections/s7_pitfalls.tex -- Two implementation pitfalls, demonstrated on minimal examples.
+% Demonstration of Section 7.1: code/s7_pitfalls.py -> data/s7_pitfalls_autograd.json,
+%   figures/s7_pitfalls.pdf; with --passes 1500 -> data/s7_pitfalls_autograd_1500passes.json.
+% Demonstration of Section 7.2: research_benchmark/scripts/run_oneface.py
+%   -> research_benchmark/results/oneface_laplace3d.json.
+% Details, the listing and the figure: sections/S6_pitfalls.tex.  All "% src:" paths are relative
+% to the root of the repository.
+% =====================================================================================
+\section{Two implementation pitfalls, demonstrated on minimal examples}\label{s7_pitfalls:sec}
+
+A PINN can reach a small training loss and still be far from the solution for reasons that
+have nothing to do with the optimiser or the points. This section demonstrates two such
+reasons on minimal, released examples. Neither depends on seeds or budgets, and each is caught
+by a cheap test that we recommend in Section~\ref{s8_discussion:sec:checklist}.
+
+% -------------------------------------------------------------------------------------
+\subsection{A residual that automatic differentiation makes identically zero}%
+\label{s7_pitfalls:sec:autograd}
+
+A tempting way to obtain $u_{tt}$ in PyTorch is to differentiate $u_t$ with respect to the
+column \code{x[:, 0]} of the input tensor \code{x}. Indexing creates a new tensor, and $u_t$ was
+computed from \code{x}, not from that slice, so reverse-mode differentiation~\citep{paszke2019}
+finds no path between the two. Without \code{allow_unused=True} the call raises an error; with
+it the call returns \code{None}, and code that replaces a missing derivative by zeros turns the
+residual into the constant zero, which gives the loss neither a value nor a gradient. The correct
+pattern differentiates with respect to the whole input and indexes the result
+(Listing~\ref{s7_pitfalls:lst:autograd}).
+% src: data/s7_pitfalls_autograd.json (autograd_demo; operator_unit_test_float64: faulty 0.0 and 0.0; correct 3.55e-15 and 19.61)
+A unit test exposes the fault at once: in double precision on 2000 random points the faulty
+operator for the wave equation $u_{tt}=\lap u$ returns exactly 0 both for the solution of \PWtwo\
+and for the non-solution $\ee^{-t}\sin\pi x\sin\pi y$, whereas the correct operator returns at
+most $\sci{3.6}{-15}$ for the former and values up to 19.6 for the latter.
+
+% src: data/s7_pitfalls_autograd.json (training: steps 23550, none_returns 70650 of 70650 calls, max_pde_term_over_all_steps 0.0, loss 0.1011 -> 1.1007e-04; heldout_21x81x81: 1.3507 vs exact, 0.0247 vs target; slices at t = 0, 1: amplitude 0.98110, 0.36431)
+Training gives no warning. We trained a 3--50--50--1 tanh network on the domain of \PWtwo\ with
+a loss made of the faulty residual, a data term that prescribes $\ee^{-t}\sin\pi x\sin\pi y$ at
+10\,000 random space--time points and a zero boundary term at 400 points of the spatial boundary at
+$t=0$ (batches of 64, \Adam\
+with learning rate $10^{-3}$, seed 0, 23\,550 iterations). The PDE term was exactly 0 at every
+iteration (all 70\,650 second-derivative calls returned \code{None}), while the loss fell from
+0.10 to $\sci{1.1}{-4}$. The network fitted the data term (relative distance 0.025 on the held-out
+grid of \PWtwo) and followed its decay, with mode amplitudes 0.981 and 0.364 at $t=0$ and 1; its
+relative distance from the solution of \PWtwo\ is 1.35. The network thus follows whatever the data
+term prescribes; a correct residual would have penalised this data term, which is not a wave:
+
+\begin{proposition}[A decaying mode is not a wave solution]\label{s7_pitfalls:prop:notwave}
+\StmtNotWave
+\end{proposition}
+
+% src: data/closed_forms.json (wave2d.rel_L2_target_vs_exact_ut0_zero = 1.3800); data/s7_pitfalls_autograd.json (heldout_21x81x81.rel_L2_target_vs_exact = 1.3528); data/s7_pitfalls_autograd_1500passes.json (training: steps 235500, max_pde_term_over_all_steps 0.0, loss 0.1011 -> 5.61e-06; heldout_21x81x81: 1.3532 vs exact)
+\noindent On the held-out grid, which has 21 time levels, the ratio of part~(b) is 1.353. With ten
+times as many iterations nothing changes in kind: the PDE term is exactly 0 at all 235\,500
+iterations, the loss falls to $\sci{5.6}{-6}$, and the distance from the solution is 1.35. Three
+guards would each catch the fault: never pass \code{allow_unused=True} in a residual; assert that
+every derivative is not \code{None}; and unit-test each residual operator on an exact solution
+\emph{and} on a non-solution. The last is decisive, since a test on an exact solution alone is
+passed by the zero operator.
+
+% -------------------------------------------------------------------------------------
+\subsection{A small loss does not imply a unique solution}\label{s7_pitfalls:sec:oneface}
+
+A boundary-value problem with too few conditions has a whole family of solutions, and a PINN
+trained on it may converge to any of them. The Laplace equation in the cube with data on one face
+is the simplest example.
+
+\begin{proposition}[A Laplace problem with data on one face only]\label{s7_pitfalls:prop:nonunique}
+\StmtNonunique
+\end{proposition}
+
+% src: research_benchmark/results/oneface_laplace3d.json (oneface_laplace3d.rows: rel_l2 1.616, 12.51, 13.22, 7.275, 1.633; final_bc_loss 2.7e-04..2.2e-03, final_pde_loss 4.1e-04..7.9e-04; mean_abs_u_face_x0 0.267, 2.62, 2.65, 1.45, 0.259); research_benchmark/scripts/run_oneface.py
+We trained five seeded $2\times100$ tanh networks on this problem, with the residual on the closed
+$21^3$ grid of the cube and the datum on its 441 points with $x=\pi$ (AdamW~\citep{loshchilov2019}
+with learning rate $10^{-3}$ and its default weight decay, 2000 iterations). Both loss terms end between $\sci{2.7}{-4}$ and $\sci{2.2}{-3}$ in
+every run, and the five networks are five different, nearly harmonic functions: their relative
+$L^2$ distance from the solution of \PLthree, which has the same datum and zero data on the other
+five faces, is 1.62, 12.51, 13.22, 7.28 and 1.63, and the mean of $\abs{\unet}$ on the face $x=0$
+is 0.27, 2.62, 2.65, 1.45 and 0.26 (Figure~\ref{s7_pitfalls:fig:demo}), in line with part~(c) of
+the proposition.
+% src: verify_research_benchmark/v_oneface.json (oneface|0..2: rel_l2 1.589, 12.84, 13.36); verify_research_benchmark/v_oneface.py
+A re-run of seeds 0 to 2 with the separately written code \textsf{V-bench}
+(Section~\ref{s3_methods:sec:verif}) gave the distances 1.59, 12.84 and 13.36. Nothing in such a
+loss selects one solution, so the outcome depends on the initial weights. Count the conditions before training and say why the solution is unique; and run
+more than one seed: an answer that changes with the seed while the loss stays comparably small is
+the symptom.
+
+The settings of the two demonstrations are arbitrary, were not tuned and differ from the
+protocol of Section~\ref{s3_methods:sec}. The mechanism of each, a residual that is identically
+zero and a loss that does not determine the solution, does not depend on them; the particular
+numbers do.

@@ -1,0 +1,18 @@
+=== stack A: 40 stacked networks, N_r = 256, device = mps
+  [heat1d] adam it=500 median rel_l2=1.797e-01 t=13.3s
+  [heat1d] adam it=1000 median rel_l2=4.058e-02 t=19.4s
+  [heat1d] adam it=1500 median rel_l2=2.481e-02 t=25.3s
+  [heat1d] adam it=2000 median rel_l2=1.911e-02 t=32.5s
+  [heat1d] adam it=2500 median rel_l2=1.747e-02 t=39.7s
+  [heat1d] adam it=3000 median rel_l2=1.597e-02 t=46.4s
+  [heat1d] lbfgs it=250 median rel_l2=7.642e-03 t=11.8s
+  [heat1d] lbfgs it=500 median rel_l2=4.034e-03 t=24.0s
+  [heat1d] lbfgs it=750 median rel_l2=3.017e-03 t=37.0s
+  [heat1d] lbfgs it=1000 median rel_l2=2.545e-03 t=49.8s
+  [heat1d] lbfgs it=1250 median rel_l2=2.109e-03 t=69.6s
+  [heat1d] lbfgs it=1500 median rel_l2=1.921e-03 t=146.7s
+   random     adam_lbfgs rel_l2 mean 1.194e-03 sd 4.319e-04 geo 1.123e-03
+   grid       adam_lbfgs rel_l2 mean 6.073e-03 sd 4.077e-03 geo 4.843e-03
+   gridn      adam_lbfgs rel_l2 mean 2.760e-03 sd 1.955e-03 geo 2.225e-03
+   gridt0     adam_lbfgs rel_l2 mean 2.369e-03 sd 1.238e-03 geo 2.069e-03
+=== stack A done in 357.4 s

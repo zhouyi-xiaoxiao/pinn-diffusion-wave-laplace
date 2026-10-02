@@ -1,0 +1,5 @@
+heat1d {"ms_per_adam_step": 71.7542415575167, "ms_per_lbfgs_iter": 71.9564231250024, "lbfgs_fevals_per_iter": 1.06, "n_params": 17025, "n_r": 256, "est_run_s_adam": 215.26272467255012, "est_run_s_adam_lbfgs": 215.56599702377866}
+laplace2d {"ms_per_adam_step": 128.94876979747778, "ms_per_lbfgs_iter": 138.79695562499364, "lbfgs_fevals_per_iter": 1.06, "n_params": 33537, "n_r": 256, "est_run_s_adam": 386.84630939243334, "est_run_s_adam_lbfgs": 401.61858813370714}
+wave1d {"ms_per_adam_step": 93.821037587511, "ms_per_lbfgs_iter": 107.59958083498987, "lbfgs_fevals_per_iter": 1.065, "n_params": 8577, "n_r": 1024, "est_run_s_adam": 281.463112762533, "est_run_s_adam_lbfgs": 302.1309276337513}
+wave2d {"ms_per_adam_step": 86.1291439775141, "ms_per_lbfgs_iter": 96.05780750000122, "lbfgs_fevals_per_iter": 1.045, "n_params": 2801, "n_r": 512, "est_run_s_adam": 258.3874319325423, "est_run_s_adam_lbfgs": 273.280427216273}
+laplace3d {"ms_per_adam_step": 110.61083936998784, "ms_per_lbfgs_iter": 116.8276941699969, "lbfgs_fevals_per_iter": 1.055, "n_params": 10601, "n_r": 512, "est_run_s_adam": 331.83251810996353, "est_run_s_adam_lbfgs": 341.1578003099771}

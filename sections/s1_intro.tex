@@ -1,0 +1,151 @@
+% =====================================================================================
+% sections/s1_intro.tex -- Introduction (body only).
+% The contributions are stated without numbers; the numbers are in Sections 4 to 7 and,
+% once, in Section 8.1.  No figures, tables or new computation.
+% =====================================================================================
+\section{Introduction}\label{s1_intro:sec}
+
+A physics-informed neural network (PINN) represents the solution of a partial
+differential equation by a neural network whose weights minimise the squared residual of
+the equation at collocation points, plus the misfit to the initial and boundary
+data~\citep{raissi2019}; neural trial functions for differential equations go back at least
+to \citet{lagaris1998}. The Deep Ritz method~\citep{eyu2018} minimises instead a
+Monte-Carlo estimate of the variational energy of an elliptic problem, with the boundary
+condition imposed by a penalty. Both methods need no mesh, only automatic differentiation;
+they are short to implement~\citep{lu2021} and extend formally to inverse
+problems~\citep{raissi2019} and to high dimension~\citep{sirignano2018}, where other
+neural solvers exist as well~\citep{han2018}; see the
+reviews~\citep{karniadakis2021,cuomo2022}.
+
+Their difficulties are equally well documented. The terms of a PINN loss can be badly
+unbalanced~\citep{wangteng2021}; a neural-tangent-kernel analysis shows that they are then
+learnt at different rates and exhibits a two-mode wave problem on which the unweighted
+method fails~\citep{wangyu2022}, which we reuse as problem \PWone. PINNs that succeed on simple
+linear equations fail as the coefficients grow, for reasons of optimisation rather than
+expressivity~\citep{krishnapriyan2021}, and time-dependent problems may need a loss that
+respects causality~\citep{wangsankaran2024}. Quasi-Newton optimisation has been part of
+the method since \citet{raissi2019}; \citet{rathore2024} measure the benefit of running
+\Adam\ and then \LBFGS\ and relate it to the ill-conditioning of the loss. The placement of collocation
+points has been compared systematically by \citet{wu2023}, with residual-based refinement
+and importance sampling as adaptive variants~\citep{lu2021,nabian2021}; \citet{daw2023}
+attribute failures of PINNs to a failed propagation of the solution from the initial and
+boundary points into the interior. Against classical
+solvers, PINNs did not beat the finite element method in solution time and accuracy in the
+study of \citet{grossmann2024}; \citet{mcgreivy2024} show that weak baselines and selective
+reporting have made machine-learning solvers for fluid-related equations look better than
+they are; and much larger benchmarks than ours exist~\citep{hao2023pinnacle}. On the theoretical side, PINN
+minimisers converge for linear elliptic and parabolic problems as the number of collocation
+points grows~\citep{shin2020}, and a boundary penalty is known to change the problem being
+solved~\citep{babuska1973,muller2022}.
+
+This article asks what the two methods deliver on the diffusion, wave and Laplace equations
+when every error is measured against an exact solution, every run is seeded, comparisons are
+paired and a classical solver is run alongside, and it contributes the following.
+\begin{enumerate}[label=(C\arabic*),leftmargin=*]
+\item Eight test problems, each stated so that it has a unique solution in a stated class:
+the unique classical solution or, for the three-dimensional problem with discontinuous
+data, the unique solution that attains the datum in mean square. The exact solutions are
+given with proofs (Section~\ref{s2_problems:sec}; Supplementary
+Sections~\ref{S1:sec} and~\ref{sA_proofs:sec}).
+% src: research_benchmark/results/benchmark_runs.csv (350 rows = 175 networks x 2 arms)
+\item A seeded benchmark of 175 networks on five low-dimensional problems, with five
+collocation strategies and two optimiser arms of equal length, reporting held-out relative
+errors; for the heat equation the error is also resolved in time, which shows how a small
+space--time error hides a large error at late times (Sections~\ref{s3_methods:sec}
+and~\ref{s4_lowdim:sec}).
+\item The effect of replacing the second half of the \Adam\ iterations by \LBFGS, measured
+pair by pair and also against the best logged \Adam\ iterate
+(Section~\ref{s4_lowdim:sec:optimiser}).
+\item A paired comparison of the collocation strategies, with a control experiment that
+traces the one large penalty after the \LBFGS\ phase, that of a cell-centred grid on the
+heat problem, to the absence of residual points next to the initial line
+(Section~\ref{s4_lowdim:sec:strategy}).
+\item Longer runs and a compatible-data control on the two- and three-dimensional problems,
+which show what limits them; runs of up to 41\,000 iterations showing that the two-mode wave
+problem is not solved by the unit-weight PINN at the network size used, with the trained
+networks projected onto the two modes; and a comparison of all five problems with
+second-order finite differences in accuracy and time (Section~\ref{s5_hard:sec}).
+\item A comparison of the PINN and the Deep Ritz method on the unit cube in dimension $d=2$
+to $20$, in accuracy per iteration, in cost per iteration, at equal compute and at two
+budgets, with the penalty bias of Deep Ritz computed exactly
+(Sections~\ref{s6_highdim:sec:equal-its}--\ref{s6_highdim:sec:weights}).
+\item On the unit cube in any dimension $d$, two-sided bounds of exact order $d^{-1/2}$ for
+the squared norm of the harmonic extension from $L^2(\dOm)$, with surface measure, to
+$L^2(\Om)$, which is the inverse of the first biharmonic Steklov eigenvalue. With them the
+$L^2$ error of any network is bounded by the two terms of the PINN loss with a constant
+explicit in $d$, and the penalty bias of Deep Ritz by a sharper constant. The bound is
+evaluated under a pre-registered protocol on the trained networks of the dimension study
+and, without pre-registration, on networks retrained with separately written code
+(Section~\ref{s6_highdim:sec:bound}).
+\item A pre-registered test, for both methods, at equal iterations and at equal CPU time,
+with two pre-registered controls for Deep Ritz (lift3u, rep3) and an exploratory centred-input
+arm for both methods, of two cheap remedies for the plateau at
+$d=20$, where neither method improves on the best affine approximation of the solution: a
+fixed affine part computed by one linear solve, and coordinate-wise Legendre input features
+(Section~\ref{s6_highdim:sec:remedies}).
+\item Two implementation pitfalls demonstrated on minimal, released examples: a PDE
+residual made identically zero by differentiating with respect to a slice of the input and
+replacing the missing derivative by zeros, and a
+boundary-value problem with too few conditions, on which training reaches a small loss with
+a different function for every seed (Section~\ref{s7_pitfalls:sec}).
+\end{enumerate}
+
+No new method is proposed, and, except for the two-sided bound of (C7), none of these findings
+is new taken singly.
+% src: refs.bib (rathore2024, annote: Sec. 2.2 and Table 1 of arXiv:2402.01868v2, checked 2026-10-01)
+The gain from an \LBFGS\ phase after \Adam\ was measured by \citet{rathore2024}; what is
+added here is the same measurement, paired by seed, on the heat and Laplace problems at a
+small budget and against an untuned \Adam\ (Section~\ref{s4_lowdim:sec:optimiser}).
+% src: research_benchmark/results/tables.md (T3: sobol/random after Adam -> L-BFGS 0.97, 0.54, 1.00, 0.99, 0.78; 10 of 10 seeds on no problem)
+That the point set matters mainly when points are scarce is in the direction reported by
+\citet{wu2023}; at our much smaller budgets we do not reproduce their ranking of grid and
+resampled points on every problem. That a PINN needs residual points next to the initial
+data (C4) is consistent with the propagation hypothesis of \citet{daw2023} and with causal
+training~\citep{wangsankaran2024}; the control experiment isolates it for one problem. The
+late-time behaviour of the heat problem (C2) is an elementary consequence of a loss made of
+absolute residuals; we have not found it quantified for this problem and do not claim it as
+a new phenomenon. The cost gap to classical solvers agrees with \citet{grossmann2024}, and
+the penalty bias is classical~\citep{babuska1973,muller2022}. The residual loss and the Ritz
+loss have been compared on elliptic problems by \citet{chen2020comparison}, who found, as we
+do, that neither dominates the other. The constant of (C7) is classical: it is
+$\delta_1^{-1/2}$ for the first biharmonic Steklov eigenvalue $\delta_1$, Payne's bound for
+convex domains~\citep{payne1968bounds}, as stated in~\citet[Lemma~5.3]{bucur2011first}, already
+gives a constant independent of $d$, and the torsion function of the cube gives one that
+decreases slowly with $d$; to our knowledge, what is new is the explicit two-sided bound of
+the squared constant $1/\delta_1$ of exact order $d^{-1/2}$ on the cube (equivalently, the
+constant itself is of exact order $d^{-1/4}$). The error bound that
+follows is an application of known theory with a better constant: a bound of the same form,
+on smooth domains and with a constant that is not explicit, is in
+\citet[App.~B]{shin2023error}. The remedies of (C8) are
+known~\citep{lagaris1998,ainsworth2021galerkin,chang2022horderdnn,zhang2025khorderdnn}; only
+their measurement is added. Apart from (C7), what this article contributes is the setting:
+exact solutions, seeds, paired comparisons and a classical baseline of the kind whose
+absence \citet{mcgreivy2024} criticise; a verification of the benchmark and of the dimension
+study by re-aggregation of the raw runs and by separately written code for part of them
+(Section~\ref{s3_methods:sec:verif} states what it covers and what it does not); and the
+release of all code and data.
+
+The scope is narrow. All problems are linear with constant coefficients on boxes; the
+networks are small and use the tanh activation; the loss weights are equal to one in
+Sections~\ref{s4_lowdim:sec} and~\ref{s5_hard:sec}, and a single boundary weight per problem
+and method is chosen once in Section~\ref{s6_highdim:sec}. Of the published remedies only two
+cheap ones were tried, at $d=20$; adaptive loss weights, causal training, Fourier features and
+boundary conditions built into the trial function were not
+(Section~\ref{s8_discussion:sec:nottried}). Each of these might change a conclusion, in
+particular the outcome on \PWone:
+% src: refs.bib (rathore2024, annote: App. A.3, beta = 5; Sec. 2.2: widths up to 400, 10000 residual points, tuned Adam rate, switch after 1000, 11000 or 31000 Adam iterations; Table 1: lowest loss over widths after tuning)
+on a variant with a faster second mode, \citet{rathore2024} report a few per cent with a
+larger network and budget and tuned settings, without any of these remedies
+(Section~\ref{s5_hard:sec:w1}).
+
+Section~\ref{s2_problems:sec} states the problems and Section~\ref{s3_methods:sec} the
+methods. Sections~\ref{s4_lowdim:sec}, \ref{s5_hard:sec} and~\ref{s6_highdim:sec} report
+the low-dimensional benchmark, the harder problems with the finite-difference baselines,
+and the dimension study, including the stability constant with the computable error bound
+(Section~\ref{s6_highdim:sec:bound}) and the two remedies
+(Section~\ref{s6_highdim:sec:remedies}). Section~\ref{s7_pitfalls:sec} demonstrates the two
+implementation pitfalls, and Section~\ref{s8_discussion:sec} discusses the evidence and its
+limitations. The Supplementary Material contains the proofs
+(Section~\ref{sA_proofs:sec}), further results, figures and tables for each section, and
+implementation details with full tables (Section~\ref{sC_details:sec}); its sections,
+equations, figures and tables carry the prefix S.

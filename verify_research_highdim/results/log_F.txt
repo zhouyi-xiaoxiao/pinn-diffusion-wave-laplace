@@ -1,0 +1,9 @@
+[F] main laplace ritz d=20 s=8 w=100 it=4000: rel_l2=4.530e-02 h1=2.598e-01 bd=4.763e-02 cpu=17.8s (4.44 ms/it) wall=103s
+[F] main laplace ritz d=20 s=9 w=100 it=4000: rel_l2=4.529e-02 h1=2.699e-01 bd=4.549e-02 cpu=14.0s (3.51 ms/it) wall=17s
+[F] main laplace ritz d=20 s=10 w=100 it=4000: rel_l2=4.505e-02 h1=2.575e-01 bd=4.693e-02 cpu=12.3s (3.06 ms/it) wall=14s
+[F] main laplace ritz d=20 s=11 w=100 it=4000: rel_l2=4.400e-02 h1=2.494e-01 bd=4.600e-02 cpu=12.9s (3.23 ms/it) wall=15s
+[F] eq9k laplace ritz d=10 s=7 w=100 it=9000: rel_l2=9.237e-03 h1=5.213e-02 bd=1.096e-02 cpu=26.6s (2.95 ms/it) wall=30s
+[F] eq9k laplace ritz d=10 s=8 w=100 it=9000: rel_l2=9.412e-03 h1=5.489e-02 bd=1.092e-02 cpu=26.2s (2.91 ms/it) wall=30s
+[F] eq9k laplace ritz d=10 s=9 w=100 it=9000: rel_l2=9.649e-03 h1=5.512e-02 bd=1.131e-02 cpu=24.1s (2.68 ms/it) wall=26s
+[F] main_fwd laplace pinn d=20 s=8 w=1000 it=4000: rel_l2=4.500e-02 h1=2.325e-01 bd=4.911e-02 cpu=42.8s (10.71 ms/it) wall=46s
+[F] main_fwd laplace pinn d=20 s=9 w=1000 it=4000: rel_l2=4.456e-02 h1=2.336e-01 bd=4.913e-02 cpu=58.5s (14.62 ms/it) wall=62s

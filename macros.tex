@@ -1,0 +1,160 @@
+% =====================================================================================
+% macros.tex -- notation and theorem environments of the article.
+% Loaded by main.tex after the packages.  Each quantity listed here has one symbol,
+% used throughout the article.
+%
+% NOTATION TABLE
+% -------------------------------------------------------------------------------------
+%  symbol (macro)                meaning
+% -------------------------------------------------------------------------------------
+%  \Om, \dOm                     spatial domain Omega and its boundary
+%  \QT                           space-time cylinder (0,T] x Omega (evolution problems)
+%  d                             spatial dimension (Section 6: d = 2,...,20; cost up to 100;
+%                                constants and bias up to d = 10^6)
+%  \x                            point of Omega (bold x); x_i its coordinates
+%  \lap, \grad, \dn              Laplacian, gradient, outward normal derivative
+%  \uex                          exact solution u^*
+%  \unet                         network approximation u_theta (theta = all weights)
+%  \ubeta                        minimiser of the penalised Ritz energy with weight beta
+%  \Lpinn                        PINN loss (empirical, eq. s3_methods:eq:pinn)
+%  \Lpop                         population (continuum) PINN loss
+%  \Eritz                        penalised Ritz energy E_beta (eq. s3_methods:eq:ritz)
+%  \lam                          weight of the boundary term in the PINN loss
+%                                (lambda = 1 in Sections 4-5; tuned in Section 6)
+%  \bet                          boundary-penalty weight beta of the Deep Ritz energy
+%  \Nr, \Nb, \Nic                numbers of interior (residual), boundary and
+%                                initial-condition collocation points
+%  \errL                         relative L2 error  ||u_theta-u^*||_2 / ||u^*||_2
+%                                on the held-out evaluation set
+%  \errI                         L-infinity error  max |u_theta-u^*| on the evaluation set
+%  \errC                         centred relative L2 error ||u_theta-u^*|| / ||u^*-mean(u^*)||
+%  \errH                         relative H1-seminorm error ||grad(u_theta-u^*)|| / ||grad u^*||
+%  \errT(t)                      relative L2 error on the time slice t (heat problem)
+%  \norm{.}, \abs{.}, \ip{.}{.}  norm, absolute value, L2 inner product
+%  \R, \N                        real numbers, natural numbers
+%  \dd                           upright differential d
+%  \ee                           Euler's number (upright e)
+%  \sci{a}{b}                    a x 10^b, e.g. \sci{1.6}{-3}
+%  \PH, \PWone, \PWtwo,          problem names: Heat (1-D heat), Wave1 (two-mode 1-D wave),
+%  \PLtwo, \PLthree,             Wave2 (2-D wave), Lap2 (2-D Laplace, mixed BC), Lap3 (3-D
+%  \PLthreeS, \Pone, \Ptwo       Laplace, discontinuous data), Lap3s (3-D Laplace, compatible
+%                                data), LapD (d-dim Laplace), PoiD (d-dim Poisson).
+%  \Pridge, \Pcospair,          further problems on the unit cube of Section 6.8 (RidgeD,
+%  \Paltridge, \Psinlin,         CosPairD, AltRidgeD; SinLinD, ExpCosD of the re-check), held
+%  \Pexpcos                      out from the design of the two remedies tested there
+%                                The digit is the space dimension.  The names are words so
+%                                that they cannot be confused with the norm L^2, the space
+%                                H^1 or the polynomial spaces P_0, P_1.
+%  \strat{name}                  collocation strategy name, one of
+%                                grid-c (cell-centred grid), grid-n (node-centred, closed grid),
+%                                random (fixed i.i.d. uniform), resample (fresh i.i.d. uniform
+%                                every Adam step), Sobol (scrambled Sobol', fixed),
+%                                RAD (residual-based adaptive distribution)
+%  \Adam, \LBFGS, \AdamLBFGS     optimiser arms: Adam; L-BFGS; Adam followed by L-BFGS
+%  \nbd{.}                       norm of L2(dOmega) (surface measure)
+%  \kappa_d                      norm of the harmonic extension L2(dOmega) -> L2(Omega) on the unit
+%                                cube (Section 6.7); not the constant C_d = sqrt(1+1/(d pi^2)) of
+%                                Proposition s3_methods:prop:robin(c)
+%  U_d, L_d                      upper and lower bounds of kappa_d^2 (Theorem s6_highdim:thm:kappa)
+%  \delta_1                      first biharmonic Steklov eigenvalue of the unit cube (= 1/kappa_d^2)
+%  B_int, B_bd, \eta             interior and boundary terms of the computable error bound and its
+%                                efficiency (bound over error), Corollary s6_highdim:cor:bound(c);
+%                                eta is used for nothing else
+%  \Lpop_int, \Lpop_bd           the two terms of the population PINN loss \Lpop_1 (mean squared residual,
+%                                mean squared boundary misfit), Corollary s6_highdim:cor:bound(c)
+%  m_d                           bound of kappa_d^2 through the torsion function \vartheta of the cube
+%                                (-Lap theta = 1, theta = 0 on the boundary), Remark sA_proofs:rem:steklov
+%  q, N                          q = d_n u^* on the boundary and N = ||q||_partial (Section S7.5)
+%  M_\partial                    boundary Gram matrix of the affine functions (Section S7.6)
+%  \mathcal A, \mathcal F, \mathcal S   affine functions, span of the lift features, additively separable
+%                                functions (Section S7.6); sinc a = sin(a)/a
+%  \rho                          seed-paired ratio err(plain)/err(arm) of Section 6.8
+%  "plateau"                     (Section 6.8) a test error no smaller than the affine floor
+%  "the re-check"                (Sections 6.7, 6.8, S5, S7) the two rounds of re-checks of the analyses of
+%                                Sections 6.7 and 6.8, made with separately written code (Section 3.9)
+%  \code{...}                    file names, identifiers (typewriter)
+% -------------------------------------------------------------------------------------
+% Terminology fixed for the whole article:
+%   "iteration"   = one optimiser step (never "epoch");
+%   "network"     = one trained network up to the point where the optimiser arms branch,
+%                   i.e. one (problem, strategy, seed); "run" = one network in one arm;
+%                   "pair" = the two runs of one network;
+%   "held-out"    = evaluation points never used for training;
+%   "seed"        = fixes initial weights and all random point sets of a run;
+%   "relative L2 error" always means \errL on the held-out set unless a slice is named.
+% =====================================================================================
+
+% ---- sets, operators -------------------------------------------------------------
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\ee}{\mathrm{e}}
+\newcommand{\Om}{\Omega}
+\newcommand{\dOm}{\partial\Omega}
+\newcommand{\QT}{Q_T}
+\newcommand{\x}{\boldsymbol{x}}
+\newcommand{\lap}{\Delta}
+\newcommand{\grad}{\nabla}
+\newcommand{\dn}{\partial_n}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\ip}[2]{\langle #1,\,#2\rangle}
+\newcommand{\nbd}[1]{\norm{#1}_{\partial}}
+
+% ---- solutions and functionals ---------------------------------------------------
+\newcommand{\uex}{u^{*}}
+\newcommand{\unet}{u_{\theta}}
+\newcommand{\ubeta}{u_{\beta}}
+\newcommand{\Lpinn}{\mathcal{L}}
+\newcommand{\Lpop}{\mathcal{L}^{\mathrm{pop}}}
+\newcommand{\Eritz}{\mathcal{E}_{\beta}}
+\newcommand{\lam}{\lambda}
+\newcommand{\bet}{\beta}
+
+% ---- point budgets ---------------------------------------------------------------
+\newcommand{\Nr}{N_{r}}
+\newcommand{\Nb}{N_{b}}
+\newcommand{\Nic}{N_{0}}
+
+% ---- error measures --------------------------------------------------------------
+\newcommand{\errL}{\varepsilon_{2}}
+\newcommand{\errI}{\varepsilon_{\infty}}
+\newcommand{\errC}{\varepsilon_{2}^{\mathrm{c}}}
+\newcommand{\errH}{\varepsilon_{H^{1}}}
+\newcommand{\errT}{\varepsilon_{2}^{\mathrm{slice}}}
+
+% ---- numbers ---------------------------------------------------------------------
+\newcommand{\sci}[2]{#1\times 10^{#2}}
+
+% ---- names -----------------------------------------------------------------------
+\newcommand{\PH}{\textsf{Heat}}
+\newcommand{\PWone}{\textsf{Wave1}}
+\newcommand{\PWtwo}{\textsf{Wave2}}
+\newcommand{\PLtwo}{\textsf{Lap2}}
+\newcommand{\PLthree}{\textsf{Lap3}}
+\newcommand{\PLthreeS}{\textsf{Lap3s}}
+\newcommand{\Pone}{\textsf{LapD}}
+\newcommand{\Ptwo}{\textsf{PoiD}}
+\newcommand{\Pridge}{\textsf{RidgeD}}
+\newcommand{\Pcospair}{\textsf{CosPairD}}
+\newcommand{\Paltridge}{\textsf{AltRidgeD}}
+\newcommand{\Psinlin}{\textsf{SinLinD}}
+\newcommand{\Pexpcos}{\textsf{ExpCosD}}
+\newcommand{\strat}[1]{\textsf{#1}}
+\newcommand{\Adam}{Adam}
+\newcommand{\LBFGS}{L-BFGS}
+\newcommand{\AdamLBFGS}{Adam$\,\to\,$L-BFGS}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+
+% ---- theorem environments (amsthm) -----------------------------------------------
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{observation}[theorem]{Numerical observation}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}

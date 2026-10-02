@@ -1,0 +1,50 @@
+{
+ "heat1d:grid": {
+  "max_abs_error": 0.006467929499531455,
+  "argmax_coord0": 0.025,
+  "argmax_coord1": 0.49,
+  "share_sq_error_t_le_0.05": 0.6997247035452674,
+  "max_abs_error_t_gt_0.05": 0.003945576914193505
+ },
+ "heat1d:random": {
+  "max_abs_error": 0.001288644969463449,
+  "argmax_coord0": 0.02,
+  "argmax_coord1": 1.0,
+  "share_sq_error_t_le_0.05": 0.09040381852482922,
+  "max_abs_error_t_gt_0.05": 0.0012685731053352356
+ },
+ "heat1d:sobol": {
+  "max_abs_error": 0.0014196038246155791,
+  "argmax_coord0": 0.02,
+  "argmax_coord1": 1.0,
+  "share_sq_error_t_le_0.05": 0.1693407463144599,
+  "max_abs_error_t_gt_0.05": 0.0009347796440124118
+ },
+ "heat1d:rad": {
+  "max_abs_error": 0.0012915804982185364,
+  "argmax_coord0": 1.0,
+  "argmax_coord1": 1.0,
+  "share_sq_error_t_le_0.05": 0.04838764447623279,
+  "max_abs_error_t_gt_0.05": 0.0012915804982185364
+ },
+ "laplace2d:grid": {
+  "max_abs_error": 0.0008068680763244629,
+  "argmax_coord0": 3.141592653589793,
+  "argmax_coord1": 3.141592653589793
+ },
+ "laplace2d:random": {
+  "max_abs_error": 0.0009475350379943848,
+  "argmax_coord0": 3.141592653589793,
+  "argmax_coord1": 3.141592653589793
+ },
+ "laplace2d:sobol": {
+  "max_abs_error": 0.00047783424475555947,
+  "argmax_coord0": 3.141592653589793,
+  "argmax_coord1": 0.015707963267948967
+ },
+ "laplace2d:rad": {
+  "max_abs_error": 0.0009731650352478027,
+  "argmax_coord0": 3.141592653589793,
+  "argmax_coord1": 3.141592653589793
+ }
+}

@@ -1,0 +1,14 @@
+{
+ "lift1/d5/max_rel_diff_lap": 8.210590149183826e-16,
+ "lift1/d20/max_rel_diff_lap": 4.832806835864157e-16,
+ "laplace/ritz/lift3c/s10": {
+  "new": 0.02302280254662037,
+  "stored": 0.02302280254662037,
+  "identical": true
+ },
+ "laplace/pinn/plain/s10": {
+  "new": 0.04652712121605873,
+  "stored": 0.04652712121605873,
+  "identical": true
+ }
+}

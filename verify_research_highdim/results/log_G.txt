@@ -1,0 +1,6 @@
+[G] lam1e4 laplace pinn d=10 s=7 w=10000 it=4000: rel_l2=1.288e-02 h1=6.829e-02 bd=1.489e-02 cpu=43.4s (10.84 ms/it) wall=53s
+[G] lam1e4 laplace pinn d=10 s=8 w=10000 it=4000: rel_l2=1.272e-02 h1=6.904e-02 bd=1.492e-02 cpu=39.9s (9.97 ms/it) wall=41s
+[G] lam1e4 laplace pinn d=10 s=9 w=10000 it=4000: rel_l2=1.598e-02 h1=8.193e-02 bd=1.835e-02 cpu=39.8s (9.94 ms/it) wall=41s
+[G] lam1e4 poisson pinn d=10 s=7 w=10000 it=4000: rel_l2=1.200e-01 h1=4.379e-01 bd=1.345e-01 cpu=40.0s (10.00 ms/it) wall=41s
+[G] lam1e4 poisson pinn d=10 s=8 w=10000 it=4000: rel_l2=1.197e-01 h1=4.365e-01 bd=1.341e-01 cpu=39.9s (9.97 ms/it) wall=42s
+[G] lam1e4 poisson pinn d=10 s=9 w=10000 it=4000: rel_l2=1.108e-01 h1=4.057e-01 bd=1.256e-01 cpu=42.1s (10.52 ms/it) wall=43s

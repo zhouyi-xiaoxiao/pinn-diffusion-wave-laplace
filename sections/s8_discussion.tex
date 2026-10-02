@@ -1,0 +1,201 @@
+% =====================================================================================
+% sections/s8_discussion.tex -- Discussion, limitations and conclusion.
+% No computation and no new numbers: every figure quoted here is stated or tabulated in
+% an earlier section.  The "% src:" comments name the underlying file (paths relative to
+% the root of the repository).
+% =====================================================================================
+\section{Discussion, limitations and conclusion}\label{s8_discussion:sec}
+
+\subsection{What the evidence supports}\label{s8_discussion:sec:evidence}
+
+Findings (1) to (5) are ordered by the strength of their evidence, strongest first; (6) and (7)
+concern Sections~\ref{s6_highdim:sec:bound} and~\ref{s6_highdim:sec:remedies}, and (8) the
+reporting of errors.
+
+\begin{enumerate}[label=(\arabic*),leftmargin=*]
+% src: data/s7_pitfalls_autograd.json (operator_unit_test_float64; training.max_pde_term_over_all_steps 0.0); research_benchmark/results/oneface_laplace3d.json
+\item \emph{Two implementation faults give a small loss and a wrong answer.} A residual made
+identically zero by a misused automatic-differentiation call, and a boundary-value problem with data
+on one face of six, each gave a small training loss and a wrong answer (Section~\ref{s7_pitfalls:sec}): in the
+first the network follows whatever the data term prescribes, which a correct residual would have
+penalised. Neither fault depends on seeds or budgets, and each is exposed by a cheap test.
+% src: research_benchmark/results/tables.md (T2: 175 of 175); data/s4_lowdim_numbers.json (lbfgs_vs_logged_adam_iterates_it1500_3000); verify_research_benchmark/v_summary.out (39 of 40); data/s5_hard_wave2d_long.json (summary.per_seed: adam_lbfgs_rel_l2 5.7e-3 to 9.3e-3)
+\item \emph{An \LBFGS\ phase is the most effective change tested.} At equal iteration count it
+lowered the held-out error in all 175 pairs (39 of 40 in the verification code), by about one order
+of magnitude on \PH\ and \PLtwo\ even against the best logged \Adam\ iterate, and a longer phase took
+\PWtwo\ below one per cent (Sections~\ref{s4_lowdim:sec:optimiser} and~\ref{s5_hard:sec:w2}). The
+\Adam\ arm was not tuned.
+% src: research_benchmark/results/tables.md (T3, T6; T3 laplace2d adam resample 6.36, 0/10, the largest ratio of the table); data/s4_lowdim_gridcontrol.json (column against placebo 0.19, 10 of 10); verify_research_benchmark/v_summary.out
+\item \emph{The choice among space-filling point sets is secondary.} No strategy is best on every
+problem; the largest effect after the \LBFGS\ phase, a fourfold penalty of the cell-centred grid on
+\PH, is caused by the absence of residual points next to the initial line
+(Table~\ref{s4_lowdim:tab:gridcontrol}). Adaptive sampling brought no detectable gain at our budget,
+and redrawing the points at every iteration hurt under \Adam\ alone (on \PLtwo\ by a factor 6.4,
+the largest penalty of any strategy in the benchmark) but not after the \LBFGS\ phase (Section~\ref{s4_lowdim:sec:strategy}).
+% src: research_benchmark/results/benchmark_runs.csv (wave1d: 50 runs, 0.414 to 0.512); data/s5_hard_wave1d_long.json (summary.per_seed: 0.337 to 0.381); data/s5_hard_cost.json (summary: ratio_smallest_of_all_measurements 475.6, ratio_B_range 1.9e3 to 1.3e5)
+\item \emph{At the sizes and budgets used, the unit-weight PINN does not solve the two-mode wave
+problem, and finite differences are far faster.} All 50 runs on \PWone\ ended between 41 and 51 per
+cent error and the longer runs between 34 and 38 per cent, although \citet{rathore2024} report a few
+per cent with wider networks, more points and a tuned schedule. A second-order finite-difference solve
+was at least as accurate as the best PINN on all five problems and faster by a factor of more than
+400 in every timing (smallest measured ratio $\sci{4.8}{2}$; Section~\ref{s5_hard:sec:fd}), as \citet{grossmann2024} found against finite
+elements.
+% src: research_highdim/results/summary.csv; research_highdim/results/extensions.json; data/s6_highdim_long_d20.jsonl; data/s6_highdim_robin_bias.json (against_trained_networks.beta_100_16000_iterations: bias_over_gap 1.048, 0.654); data/s6_highdim_bound_numbers.json (recheck_r2: P1_ritz_eqcpu_d20, P1_pinn_d20)
+\item \emph{In higher dimension the ranking of PINN and Deep Ritz depends on what is counted.} Per
+iteration the PINN was the more accurate for $d\le10$ and, with 16\,000 iterations, at $d=20$; at
+equal compute Deep Ritz was the more accurate (at $d=10$, and at $d=20$ for \Pone\ in a descriptive
+re-check with three seeds; Sections~\ref{s6_highdim:sec:equal-its}--\ref{s6_highdim:sec:compute}).
+On \Pone\ the lead of the PINN at the larger budget is of the size of the penalty bias of Deep Ritz
+(Section~\ref{s6_highdim:sec:weights}). As in \citet{chen2020comparison}, neither loss dominates.
+% src: data/s6_highdim_bound_numbers.json (n_networks_bound_valid; eta_d10_d20_all_networks; eta_by_d_all_networks; recheck_r2: pairs_ranked_like_error_equal_iterations 4/9); research_highdim_bound/results/decisions.json (H2: 21 of 57, max 5.456)
+\item \emph{On the unit cube the error of a network is bounded by the two population terms of its
+loss, but the bound is loose at small $d$.} The constant of the harmonic extension is of exact order $d^{-1/4}$
+(Theorem~\ref{s6_highdim:thm:kappa}); the bound of Corollary~\ref{s6_highdim:cor:bound} held on all
+133 networks evaluated, with efficiency 1.92 to 3.44 at $d=10$ and 20, but the pre-registered target
+of an efficiency of at most 3 for $d\ge5$ failed (21 of 57 networks), and at $d=2$ the efficiency
+reached 24.8. It is a certificate, not an error estimator. A bound of this form already follows from
+Payne's classical constant; the theorem adds the order in $d$.
+% src: research_highdim_remedies/results/decision.json; research_highdim_remedies/results/decision_p5.json; research_highdim_remedies/results/summary.json (P2/d20 lift3c, rep3; presolve and lift3c medians); research_highdim_remedies/results/summary_exploratory.json (P2/d20 lift1); research_highdim_remedies/results/attribution.json (P2 lift1/lift3c); research_highdim_remedies/results/summary_p5.json (P5/d20 presolve, lift3c); research_highdim_remedies/results/checks.json (C5_floors poisson/d20: exact_lift3 3.9e-3)
+\item \emph{Neither cheap remedy is general at $d=20$.} By the pre-registered rule the Legendre
+features (lift3c) were a general remedy on the four pre-registered problems, but they and the fixed
+affine part were less accurate than plain on \Paltridge, which was added afterwards and was not a
+blind test; the affine part also hurt on \Pridge. The features left the plateau of \Ptwo, whose
+solution they contain up to $\sci{3.9}{-3}$, as did the centred input alone (exploratory, with
+less gain) and, for Deep Ritz, the featureless control rep3 (with more); how much of each gain the
+features explain differs between problems (Section~\ref{s6_highdim:sec:remedies}).
+% src: data/closed_forms.json (floors); data/s4_lowdim_timeslices.json (summary: n_seeds_slice_t1_above_1 = 10 in all four cells)
+\item \emph{How an error is reported changes the conclusion.} A relative $L^2$ error needs the error
+of a trivial predictor beside it (Proposition~\ref{s2_problems:prop:floors}), and for a decaying
+solution the space--time error hides the late slices: all 40 runs of Section~\ref{s4_lowdim:sec:timeslice}
+are more than 100 per cent in error on the slice $t=1$, at a space--time error of about 0.1 per cent
+after \AdamLBFGS.
+\end{enumerate}
+
+\subsection{A checklist for small PINN studies}\label{s8_discussion:sec:checklist}
+
+\begin{enumerate}[label=\arabic*.,leftmargin=*]
+\item Unit-test every residual operator on an exact solution and on a non-solution, and never
+let a missing derivative default to zero (Section~\ref{s7_pitfalls:sec:autograd}).
+\item Count the initial and boundary conditions and say why the solution is unique
+(Section~\ref{s7_pitfalls:sec:oneface}).
+\item Fix and report seeds, at least five, preferably ten, per configuration, and compare
+paired by seed.
+\item Report held-out relative errors, not training losses, per time slice for evolution
+problems (Section~\ref{s4_lowdim:sec:timeslice}), with the error of a trivial predictor beside
+them (Proposition~\ref{s2_problems:prop:floors}).
+\item Run a classical baseline on the same evaluation set, after checking it against an
+exact solution (Section~\ref{s5_hard:sec:fd}).
+\end{enumerate}
+
+\subsection{Limitations}\label{s8_discussion:sec:limitations}
+
+\emph{Budgets.} The benchmark uses 256 to 1024 interior points and 3000 iterations. The
+strategy effects belong to this scarce-point regime.
+
+\emph{Statistics.} \PWone, \PWtwo\ and \PLthree\ have five seeds, for which the paired
+test cannot go below $p=0.0625$, so ``no significant difference'' is weak evidence there.
+The $p$-values are not corrected for multiple comparisons, and the rule by which we call
+an effect significant (all ten seeds agree; Section~\ref{s3_methods:sec:stats}) was fixed
+after the results were known.
+% src: notes/VERIFICATION.md (sec. 2.5, caveat 2)
+
+\emph{Verification.} The re-checks were made with separately written code within the same
+project, on the same machine and library versions; they are not a replication by a third
+party. The longer runs, the control experiments, the time-slice result, the 16\,000-iteration
+runs at $d=20$ and the demonstration of Section~\ref{s7_pitfalls:sec:autograd} rest on the code of
+the experiments alone (Section~\ref{s3_methods:sec:verif}).
+
+\emph{Scope.} All problems are linear with constant coefficients on boxes, and their
+solutions are smooth except at the discontinuous data of \PLthree. Each problem has one
+tanh architecture, and Sections~\ref{s4_lowdim:sec} and~\ref{s5_hard:sec} use unit loss
+weights. Uniqueness is proved in a stated class (classical solutions; for \PLthree, the
+solutions that attain the datum in mean square); continuous dependence on the data is not
+proved.
+
+\emph{Unfinished problems.} \PWtwo\ and \PLthree\ are not converged at 3000 iterations.
+The longer runs on \PWtwo\ (three seeds, one strategy) ended on the tolerance of the
+optimiser in single precision, below one per cent but not on a plateau
+(Section~\ref{s5_hard:sec:w2}). \PWone\ is not solved at the network size and budgets
+used (Section~\ref{s5_hard:sec:w1}).
+% src: research_benchmark/results/runs/wave2d_s0-5.json, laplace3d_s0-5.json (median held-out error of the 25 runs still falling between iterations 2750 and 3000: 5.81e-2 to 4.58e-2 and 4.56e-2 to 4.27e-2)
+% src: data/s5_hard_wave2d_long.json (summary.per_seed: stop, adam_lbfgs_test_ratio_9500_over_8500); notes/VERIFICATION.md (sec. 2.5, caveat 6)
+
+\emph{Implementation.} Most multi-seed runs used single precision on a GPU backend. A stack
+repeated on the same machine reproduces its results bit for bit, but the result of one
+network depends on the stack in which it is trained (its size and composition; the mechanism,
+presumably rounding, was not investigated; Supplementary Section~\ref{sC_details:sec:repro}); other hardware was not tested. The \LBFGS\ of these runs
+is a custom stacked implementation whose final errors were 4 to 10 per cent above those of the
+reference optimiser, in geometric mean, in the validation of
+Supplementary Section~\ref{sC_details:sec:validation}.
+% src: research_benchmark/results/validate_batched.json (ratio stacked/single: geometric mean 1.10 on heat1d, 1.04 on laplace2d); notes/VERIFICATION.md (sec. 2.5, caveats 3 and 4)
+
+\emph{Timings} come from three measurements on a loaded shared machine, with different
+drivers, and are good to an order of magnitude only.
+% src: data/checks/machine_load.json; notes/VERIFICATION.md (sec. 2.3, item 7; sec. 3.3, item 4)
+
+\emph{Dimension study.} There are three seeds per cell, which understates the spread
+(Table~\ref{s6_highdim:tab:vdim}) and allows no test, and no network was trained for
+$d>20$. One architecture and one learning-rate schedule serve every $d$; the schedule
+itself arrests the descent, so the errors at a fixed budget include its effect. The
+weights were tuned at $d=5$ with one run per value, and $\lam$ and $\bet$ are normalised
+differently in $d$ (Remark~\ref{s3_methods:rem:consistent}). Both solutions are simple in
+structure, a sum of products of pairs of coordinates and a sum of functions of one
+coordinate, and that of \Ptwo, with zero normal derivative, favours Deep Ritz. Boundary
+conditions are imposed by penalty only. The inputs of the dimension study are not centred;
+% src: research_highdim_remedies/results/summary_exploratory.json (P1, P2 at d = 20: paired plain/lift1 medians 0.92, 1.78, 1.57, 1.95; per seed 0.83 to 2.27); research_highdim_remedies/results/summary.json (plain)
+centring alone (exploratory, Section~\ref{s6_highdim:sec:remedies}) changes the errors at $d=20$
+and 4000 iterations by median factors of 0.92 to 1.95 (0.83 to 2.27 per seed), makes the PINN more
+accurate than Deep Ritz on \Pone\ and takes both methods below the affine floor on \Ptwo. The 16\,000-iteration runs exist for $d=10$ on
+\Pone\ and for $d=20$ only, and the equal-compute comparison for $d=10$ and, in the re-check,
+for \Pone\ at $d=20$ with three seeds.
+% src: notes/VERIFICATION.md (sec. 3.4; sec. 3.3, item 6)
+
+\emph{Stability constant and remedies.} Theorem~\ref{s6_highdim:thm:kappa} and the bound of
+Corollary~\ref{s6_highdim:cor:bound} are proved for the unit cube only, and whether $U_d$ is sharp
+is open; the bound holds for the exact norms and was evaluated with Monte-Carlo estimates of them,
+with margins of at least 75 standard errors on the 88 saved networks and 92 on the 21 networks of
+the second round of the re-check; for the 24 networks of its first round (efficiency at least 1.97)
+no standard errors were recorded. The remedies were tested with the network, optimiser,
+schedule and weights of Section~\ref{s6_highdim:sec}, with five seeds at $d=20$ and three at $d=5$
+and $10$, and with CPU-time budgets measured on a loaded shared machine. Both remedies, the centred
+input and, for Deep Ritz on \Pone, rep3 had been tried on \Pone\ and \Ptwo\ in exploratory pilots
+before the freeze, so their direction on these two problems was known and only \Pridge\ and
+\Pcospair\ were held out; the pre-registered controls lift3u and rep3 were run for Deep Ritz only;
+\Paltridge\ was not a blind test; and the second round of the re-check, which added \Psinlin\
+and \Pexpcos, is descriptive, and three planned cells of it were not run (Supplementary
+Section~\ref{S5:sec:remedies}).
+% src: research_highdim_bound/results/decisions.json (H1: min_z_D hd 75.49); data/s6_highdim_bound_numbers.json (recheck_r2: min_z 92.57; n_networks_bound_valid: recheck_round1_eta_range from 1.974); research_highdim_bound/check/out/c4_fresh.jsonl (no standard-error fields); data/s6_highdim_remedies_recheck.json (missing_runs_of_plan; load1_range); notes/VERIFICATION.md (sec. 4.3, pilots before the freeze)
+
+\subsection{What was not tried}\label{s8_discussion:sec:nottried}
+
+Apart from the two cheap remedies of Section~\ref{s6_highdim:sec:remedies}, none of the
+published remedies for the failures seen here was tried: adaptive loss
+weighting \citep{wangteng2021,wangyu2022}, causal training \citep{wangsankaran2024},
+Fourier-feature inputs \citep{wangwang2021}, or trial functions that satisfy the initial
+and boundary conditions exactly \citep{lagaris1998,sheng2021,sukumar2022exact}; on the cube the
+last would also remove the boundary term of the bound of Section~\ref{s6_highdim:sec:bound} and
+the penalty bias. For Deep Ritz we tried neither continuation in $\bet$ nor a consistent boundary
+treatment of Nitsche type~\citep{nitsche1971}, which exists in a neural
+version~\citep{liao2021nitsche}. Non-linear and variable-coefficient equations, domains other than
+boxes, and more seeds are the natural next steps.
+
+\subsection{Conclusion}\label{s8_discussion:sec:conclusion}
+
+We posed eight linear problems so that each has a unique solution in a stated class
+(Proposition~\ref{s2_problems:prop:unique}), measured seeded held-out errors of PINNs and the Deep
+Ritz method against exact solutions and, in low dimension, finite-difference baselines, and checked
+the benchmark and the dimension study in part with separately written code. On these problems an \LBFGS\
+phase mattered most; after it, and once the strip next to the initial line had residual points, the
+collocation strategy changed the error by at most about a factor of two in geometric mean
+($\Nr\ge256$); a classical solver was far faster; a unit-weight PINN of the size used did not solve
+the two-mode wave problem; and whether the PINN or Deep Ritz is ahead in higher dimension depended
+on the budget, on what is counted, on the input scaling and, on the Laplace problem, on the penalty
+bias. On the unit cube a classical stability constant now has explicit two-sided bounds of the right
+order in $d$; with it, as already with Payne's classical constant, the two population terms of the
+PINN loss bound the $L^2$ error of any $C^2$ network, and the theorem sharpens that bound. The bound held on every network
+evaluated but is loose. Of two cheap remedies at $d=20$, the fixed affine part did not remove the
+plateau of the Poisson problem, and the Legendre features, which contain its solution up to 0.4 per
+cent, did, as did centring the input alone (exploratory); neither remedy improved the accuracy on
+every problem. Finally, the two pitfalls of
+Section~\ref{s7_pitfalls:sec} show that a small training loss is not evidence of a correct solution;
+each is caught by an entry of the checklist above.

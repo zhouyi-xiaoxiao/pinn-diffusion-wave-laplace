@@ -1,0 +1,75 @@
+% =====================================================================================
+% sections/S1_problems.tex -- Supplementary Section S1: the test problems (statements of the
+% existence and uniqueness results, evaluation sets, further checks of the exact solutions).
+% All `% src:` paths are relative to the root of the repository.
+% =====================================================================================
+\section{Test problems: exact solutions, uniqueness and evaluation sets}\label{S1:sec}
+
+This section completes Section~\ref{s2_problems:sec}. A classical solution is one that is
+twice continuously differentiable on the closed domain (the closed space--time cylinder for
+\PH, \PWone\ and \PWtwo). The proofs of the two propositions are in
+Section~\ref{sA_proofs:sec}.
+
+\begin{proposition}[Exact solutions]\label{s2_problems:prop:exact}\leavevmode
+\StmtExact
+\end{proposition}
+
+\begin{proposition}[Uniqueness]\label{s2_problems:prop:unique}\leavevmode
+\StmtUnique
+\end{proposition}
+
+Propositions~\ref{s2_problems:prop:exact} and~\ref{s2_problems:prop:unique} together say that
+each problem has a unique solution in the stated class and that it is the function $\uex$
+against which we measure; for \PLthree\ the class is the one in which the datum is attained
+in mean square.
+
+\paragraph{Evaluation sets.}
+% src: data/s2_problems_evalsets.json (script code/s2_problems_evalsets.py):
+%      heat1d, wave1d, laplace2d: 4 of 40401 evaluation nodes coincide with boundary/initial
+%      training points; wave2d: 1241 of 137781 (fraction 0.0090); laplace3d: 0 of 64000;
+%      cell-centred collocation grid (grid-c) coinciding with evaluation points: 0 for
+%      heat1d, wave1d, wave2d, laplace2d; 512 of 64000 (fraction 0.008) for laplace3d.
+% src: research_highdim/scripts/hd_core.py (fixed_sets: separate generators for the test sets)
+The evaluation sets are dense grids, or random points drawn from a generator of their own.
+They are separate from the training points with two small exceptions. Grid nodes on the
+boundary or the initial line can coincide with boundary or initial training points: the four
+corner nodes for \PH, \PWone\ and \PLtwo\ (of $40\,401$), and $1241$ of the $137\,781$ nodes
+for \PWtwo\ ($0.9$ per cent). And for \PLthree\ the $512$ collocation points of the
+cell-centred strategy \strat{grid-c} are among the $64\,000$ evaluation points ($0.8$ per
+cent); at those points the network is trained on the residual, not on values of $\uex$.
+
+\paragraph{Further checks of the exact solutions.}
+The formulas were also checked by means that do not rely on the proofs.
+% src: data/s2_problems_symbolic.txt (script code/s2_problems_symbolic.py; all 55 expressions 0)
+(i)~Symbolic differentiation returns a zero residual and a zero mismatch in every initial
+and boundary condition for the seven closed-form solutions (for \Pone\ and \Ptwo\ at
+$d=2,3,5,10,20$); for \PLthree\ it confirms that every term of the
+series~\eqref{s2_problems:eq:lap3d-exact} is harmonic and vanishes on the five faces, and
+that the $b_n$ are the stated sine coefficients.
+% src: research_benchmark/checks/verify_exact.out (heat1d 9.96e-07 with |u|max 0.590, wave1d 1.25e-04, wave2d 2.00e-07, laplace2d 4.44e-08, laplace3d 2.69e-07);
+%      research_benchmark/scripts/verify_exact.py (2000 points drawn in the box shrunk by 5 per cent of each side at both ends; step h = 1e-4)
+(ii)~Central finite-difference residuals of the coded solutions were evaluated at $2000$
+random points of the inner 90 per cent of each box (every coordinate at least 5 per cent
+of the side away from both ends), with step $h=10^{-4}$ in double precision. They are at
+most $\sci{1.3}{-4}$ for \PWone, $\sci{1.0}{-6}$ for \PH\ and $\sci{2.7}{-7}$ for \PWtwo,
+\PLtwo\ and \PLthree. The first two values are truncation errors of the difference
+quotients, not errors of the formulas: for \PWone\ the mode of temporal frequency $8\pi$
+leaves $\tfrac12(\omega^4-c^2k^4)h^2/12=\sci{1.25}{-4}$ with $\omega=8\pi$, $k=4\pi$,
+$c^2=4$; for \PH\ the quotients leave $h^2(\pi^6/6+\pi^4/12)\abs{\uex}=\sci{1.68}{-6}\abs{\uex}$,
+and $\abs{\uex}\le0.59$ at the sampled points, where $t\ge0.05$.
+% (check by hand: the central first difference in t leaves (h^2/6) u_ttt = -(h^2/6) pi^6 u and the
+%  second difference in x leaves (h^2/12) u_xxxx = (h^2/12) pi^4 u; 1.683e-6 * 0.590 = 9.93e-7,
+%  against the reported maximum 9.96e-07.)
+% src: research_benchmark/checks/verify_exact.out (laplace3d eval grid (64000 pts): max|series(4000)-series(8000)| = 0.00e+00)
+(iii)~The series for \PLthree, truncated at $n=4000$ and at $n=8000$, gives identical
+double-precision values at all $64\,000$ evaluation points.
+% src: research_highdim/results/check_core.txt (laplace d=2,3,5,10: 0.00e+00; poisson d=2,3,5,10: at most 7.11e-15);
+%      research_highdim/scripts/check_core.py (2000 points, float64)
+(iv)~For \Pone\ and \Ptwo, automatic differentiation in double precision gives
+$\max\abs{\lap\uex+f}\le\sci{7.11}{-15}$ over $2000$ random points for $d=2,3,5,10$, where $f$
+is the right-hand side.
+% src: data/closed_forms.json (floors.*.monte_carlo, 400 000 points; max difference 4.3e-4);
+%      research_highdim/results/floors.json (50 000-point evaluation sets; max difference 1.8e-3)
+(v)~The closed forms of Proposition~\ref{s2_problems:prop:floors} agree with Monte-Carlo
+estimates on $400\,000$ points to within $\sci{5}{-4}$ and with the values on the evaluation
+sets to within $\sci{2}{-3}$, for $d=2,3,5,10,20$.

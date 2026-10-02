@@ -1,0 +1,19 @@
+heat1d Crank-Nicolson (dt=dx=1/n): closed-form discrete solution, error on the node grid
+  n=25 rel-L2 6.948e-03 Linf 4.285e-03
+  n=50 rel-L2 1.881e-03 Linf 1.078e-03
+  n=100 rel-L2 4.918e-04 Linf 2.686e-04
+  n=200 rel-L2 1.259e-04 Linf 6.710e-05
+wave2d leapfrog (dt/dx=0.5): closed-form discrete dispersion, error on t=k/20 output grid
+  n=20 omega_h 4.43371 (exact 4.44288) rel-L2 5.121e-03 Linf 8.832e-03
+  n=40 omega_h 4.44060 (exact 4.44288) rel-L2 1.278e-03 Linf 2.203e-03
+  n=80 omega_h 4.44231 (exact 4.44288) rel-L2 3.192e-04 Linf 5.505e-04
+laplace2d 5-point: closed-form discrete solution x/2pi + cos2y sinh(theta i)/(2 sinh(theta n)), cosh(theta)=1+2 sin^2 h
+  n=25 rel-L2 1.163e-03 Linf 9.629e-04 (max 5-pt residual 8.9e-16)
+  n=50 rel-L2 2.973e-04 Linf 2.417e-04 (max 5-pt residual 8.9e-16)
+  n=100 rel-L2 7.508e-05 Linf 6.048e-05 (max 5-pt residual 8.9e-16)
+  n=200 rel-L2 1.886e-05 Linf 1.512e-05 (max 5-pt residual 8.9e-16)
+laplace3d 7-point: own sparse CG solve, evaluated by cubic interpolation on the 40^3 cell-centred grid
+  n=20 (x=pi face values = data) rel-L2 3.900e-02 Linf 1.713e-01  [cg info 0, 0.01s]
+  n=20 (x=pi face values = 0 (as in study's array)) rel-L2 3.861e-01 Linf 5.847e-01  [cg info 0, 0.01s]
+  n=40 (x=pi face values = data) rel-L2 9.968e-03 Linf 4.341e-02  [cg info 0, 0.07s]
+  n=40 (x=pi face values = 0 (as in study's array)) rel-L2 1.958e-01 Linf 3.031e-01  [cg info 0, 0.07s]

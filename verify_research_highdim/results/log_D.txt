@@ -1,0 +1,15 @@
+[D] equaltime laplace ritz d=10 s=7 w=100 it=10000: rel_l2=8.740e-03 h1=4.958e-02 bd=1.040e-02 cpu=53.9s (5.39 ms/it) wall=181s
+[D] equaltime laplace ritz d=10 s=8 w=100 it=10000: rel_l2=9.092e-03 h1=5.306e-02 bd=1.046e-02 cpu=53.7s (5.37 ms/it) wall=71s
+[D] equaltime laplace ritz d=10 s=9 w=100 it=10000: rel_l2=9.019e-03 h1=5.210e-02 bd=1.061e-02 cpu=51.7s (5.17 ms/it) wall=66s
+[D] equaltime poisson ritz d=10 s=7 w=1 it=9000: rel_l2=1.381e-02 h1=5.833e-02 bd=1.360e-02 cpu=44.3s (4.93 ms/it) wall=53s
+[D] equaltime poisson ritz d=10 s=8 w=1 it=9000: rel_l2=1.242e-02 h1=5.027e-02 bd=1.206e-02 cpu=43.9s (4.88 ms/it) wall=58s
+[D] equaltime poisson ritz d=10 s=9 w=1 it=9000: rel_l2=1.503e-02 h1=6.014e-02 bd=1.455e-02 cpu=40.4s (4.48 ms/it) wall=47s
+[D] beta poisson ritz d=10 s=7 w=100 it=4000: rel_l2=1.249e-01 h1=4.512e-01 bd=1.363e-01 cpu=23.6s (5.91 ms/it) wall=36s
+[D] beta poisson ritz d=10 s=8 w=100 it=4000: rel_l2=1.251e-01 h1=4.504e-01 bd=1.359e-01 cpu=26.6s (6.65 ms/it) wall=50s
+[D] beta poisson ritz d=10 s=9 w=100 it=4000: rel_l2=1.214e-01 h1=4.383e-01 bd=1.326e-01 cpu=26.1s (6.53 ms/it) wall=46s
+[D] beta poisson ritz d=10 s=7 w=10 it=4000: rel_l2=1.255e-01 h1=4.493e-01 bd=1.360e-01 cpu=18.3s (4.57 ms/it) wall=23s
+[D] beta poisson ritz d=10 s=8 w=10 it=4000: rel_l2=1.256e-01 h1=4.481e-01 bd=1.356e-01 cpu=14.4s (3.60 ms/it) wall=18s
+[D] beta poisson ritz d=10 s=9 w=10 it=4000: rel_l2=1.187e-01 h1=4.232e-01 bd=1.283e-01 cpu=12.0s (3.00 ms/it) wall=14s
+[D] beta poisson ritz d=20 s=7 w=100 it=4000: rel_l2=1.229e-01 h1=4.647e-01 bd=1.325e-01 cpu=13.2s (3.30 ms/it) wall=15s
+[D] long laplace ritz d=10 s=7 w=100 it=16000: rel_l2=6.836e-03 h1=3.957e-02 bd=8.172e-03 cpu=47.4s (2.96 ms/it) wall=54s
+[D] long laplace ritz d=10 s=8 w=100 it=16000: rel_l2=7.476e-03 h1=4.549e-02 bd=8.483e-03 cpu=43.9s (2.74 ms/it) wall=47s

@@ -1,0 +1,14 @@
+=== re-run of stack wave2d: 25 networks, device mps
+  [wave2d] adam it=500 median rel_l2=9.665e-01 t=14.9s
+  [wave2d] adam it=1000 median rel_l2=5.615e-01 t=28.4s
+  [wave2d] adam it=1500 median rel_l2=3.631e-01 t=41.9s
+  [wave2d] adam it=2000 median rel_l2=2.829e-01 t=55.0s
+  [wave2d] adam it=2500 median rel_l2=2.274e-01 t=68.4s
+  [wave2d] adam it=3000 median rel_l2=1.908e-01 t=81.7s
+  [wave2d] lbfgs it=250 median rel_l2=1.626e-01 t=13.2s
+  [wave2d] lbfgs it=500 median rel_l2=1.153e-01 t=27.5s
+  [wave2d] lbfgs it=750 median rel_l2=9.181e-02 t=42.4s
+  [wave2d] lbfgs it=1000 median rel_l2=7.240e-02 t=58.3s
+  [wave2d] lbfgs it=1250 median rel_l2=5.815e-02 t=90.3s
+  [wave2d] lbfgs it=1500 median rel_l2=4.579e-02 t=130.3s
+=== done in 219 s (not a timing claim)

@@ -1,0 +1,2 @@
+[long20] poisson  ritz d=20 seed=2 w=1: rel_l2=8.2605e-02 centred=8.2606e-02 h1=2.9210e-01 val=8.3519e-02 wall=101s
+[long20] poisson  pinn d=20 seed=2 w=1000: rel_l2=6.0201e-02 centred=6.0201e-02 h1=2.1248e-01 val=5.9301e-02 wall=317s

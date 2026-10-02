@@ -1,0 +1,25 @@
+=== laplace2d: 25 stacked models, {'n_r': 256, 'n_adam': 3000, 'branch_at': 1500}, device=mps
+  [laplace2d] adam it=500 median rel_l2=1.239e-01 t=25.8s
+  [laplace2d] adam it=1000 median rel_l2=2.989e-02 t=41.5s
+  [laplace2d] adam it=1500 median rel_l2=1.084e-02 t=59.5s
+  [laplace2d] adam it=2000 median rel_l2=9.890e-03 t=85.2s
+  [laplace2d] adam it=2500 median rel_l2=9.436e-03 t=114.8s
+  [laplace2d] adam it=3000 median rel_l2=5.267e-03 t=140.9s
+  [laplace2d] lbfgs it=250 median rel_l2=1.486e-03 t=24.8s
+  [laplace2d] lbfgs it=500 median rel_l2=7.627e-04 t=68.4s
+  [laplace2d] lbfgs it=750 median rel_l2=6.127e-04 t=122.0s
+  [laplace2d] lbfgs it=1000 median rel_l2=5.035e-04 t=178.3s
+  [laplace2d] lbfgs it=1250 median rel_l2=3.662e-04 t=235.3s
+  [laplace2d] lbfgs it=1500 median rel_l2=2.798e-04 t=287.9s
+=== laplace2d done in 599.4s  timing={'batch_size': 25, 't_adam_total': 140.89472643702356, 't_adam_to_branch': 59.46334387200659, 't_lbfgs_total': 287.8536302909997, 'lbfgs_batched_fevals': 3884, 'device': 'mps', 'wall_total_s': 599.3537721633911}
+   adam       grid      rel_l2 mean 8.142e-03 std 5.765e-03 median 4.272e-03
+   adam       random    rel_l2 mean 1.226e-02 std 1.366e-02 median 4.069e-03
+   adam       resample  rel_l2 mean 5.306e-02 std 3.222e-02 median 5.407e-02
+   adam       sobol     rel_l2 mean 3.736e-03 std 1.248e-03 median 4.158e-03
+   adam       rad       rel_l2 mean 1.193e-02 std 1.620e-02 median 5.903e-03
+   adam_lbfgs grid      rel_l2 mean 1.774e-04 std 4.059e-05 median 1.659e-04
+   adam_lbfgs random    rel_l2 mean 4.693e-04 std 1.118e-04 median 4.533e-04
+   adam_lbfgs resample  rel_l2 mean 3.862e-04 std 1.244e-04 median 3.803e-04
+   adam_lbfgs sobol     rel_l2 mean 2.176e-04 std 2.212e-05 median 2.105e-04
+   adam_lbfgs rad       rel_l2 mean 3.312e-04 std 1.165e-04 median 3.125e-04
+DONE

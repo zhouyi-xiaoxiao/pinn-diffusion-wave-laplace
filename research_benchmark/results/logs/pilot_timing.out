@@ -1,0 +1,17 @@
+heat1d     cpu N_r=1024 hidden=[128, 128]: 8.04 ms/step
+wave1d     cpu N_r=1024 hidden=[128, 128, 128]: 18.49 ms/step
+laplace2d  cpu N_r=1024 hidden=[128, 128, 128]: 17.66 ms/step
+wave2d     cpu N_r=4096 hidden=[50, 50]: 16.78 ms/step
+wave2d     mps N_r=4096 hidden=[50, 50]: 7.41 ms/step
+laplace3d  cpu N_r=4096 hidden=[100, 100]: 28.70 ms/step
+laplace3d  mps N_r=4096 hidden=[100, 100]: 9.62 ms/step
+heat1d     mps N_r=1024: 6.31 ms/step
+heat1d     cpu N_r=1024: 8.81 ms/step
+wave1d     mps N_r=1024: 9.97 ms/step
+wave1d     cpu N_r=1024: 25.07 ms/step
+laplace2d  mps N_r=1024: 12.87 ms/step
+laplace2d  cpu N_r=1024: 24.10 ms/step
+wave2d     mps N_r=4096: 10.70 ms/step
+wave2d     cpu N_r=4096: 23.18 ms/step
+laplace3d  mps N_r=4096: 11.08 ms/step
+laplace3d  cpu N_r=4096: 35.31 ms/step

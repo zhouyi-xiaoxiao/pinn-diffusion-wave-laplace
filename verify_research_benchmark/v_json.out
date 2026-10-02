@@ -1,0 +1,79 @@
+== budget sweep
+ N=64 grid    n=5 seeds=[0, 1, 2, 3, 4] mean 7.212e-02 +- 3.092e-02  vals [0.0218 0.0791 0.0903 0.0674 0.102 ]
+ N=64 random  n=5 seeds=[0, 1, 2, 3, 4] mean 4.765e-02 +- 4.447e-02  vals [0.0199 0.1031 0.014  0.0125 0.0888]
+ N=64 sobol   n=5 seeds=[0, 1, 2, 3, 4] mean 1.643e-02 +- 1.269e-02  vals [0.0076 0.0084 0.0255 0.0342 0.0063]
+   grid/random geo ratio 2.02 better 1/5 p=0.312
+   sobol/random geo ratio 0.41 better 3/5 p=0.438
+ N=256 grid    n=5 seeds=[0, 1, 2, 3, 4] mean 6.712e-03 +- 4.667e-03  vals [0.0061 0.0136 0.0032 0.0019 0.0088]
+ N=256 random  n=5 seeds=[0, 1, 2, 3, 4] mean 1.452e-03 +- 3.380e-04  vals [0.0017 0.0009 0.0014 0.0018 0.0014]
+ N=256 sobol   n=5 seeds=[0, 1, 2, 3, 4] mean 1.354e-03 +- 3.660e-04  vals [0.0014 0.0011 0.0012 0.002  0.0011]
+   grid/random geo ratio 3.79 better 0/5 p=0.062
+   sobol/random geo ratio 0.93 better 3/5 p=0.438
+ N=1024 grid    n=5 seeds=[0, 1, 2, 3, 4] mean 1.231e-03 +- 4.484e-04  vals [0.0011 0.0009 0.001  0.002  0.0012]
+ N=1024 random  n=5 seeds=[0, 1, 2, 3, 4] mean 1.130e-03 +- 4.310e-04  vals [0.0015 0.0009 0.001  0.0017 0.0007]
+ N=1024 sobol   n=5 seeds=[0, 1, 2, 3, 4] mean 1.146e-03 +- 4.078e-04  vals [0.0011 0.001  0.0012 0.0018 0.0006]
+   grid/random geo ratio 1.11 better 1/5 p=0.438
+   sobol/random geo ratio 1.02 better 2/5 p=0.812
+== classical
+<class 'list'> {'problem': 'heat1d', 'n': 25, 'grid_values': 676, 'time_s_best_of_3': 0.0005462919998535654, 'rel_l2': 0.00816341306175431, 'linf': 0.004352413355542983, 'rel_linf': 0.004352413355542983, 'observed_order_rel_l2': None}
+== timing
+{
+"note": "CPU, torch.set_num_threads(4), measured on a shared machine under heavy external load (load average 50-100 on 12 cores) -> upper bounds; relative costs are meaningful.",
+"loadavg_start": [
+95.29345703125,
+111.64013671875,
+100.95458984375
+],
+"heat1d": {
+"ms_per_adam_step": 71.7542415575167,
+"ms_per_lbfgs_iter": 71.9564231250024,
+"lbfgs_fevals_per_iter": 1.06,
+"n_params": 17025,
+"n_r": 256,
+"est_run_s_adam": 215.26272467255012,
+"est_run_s_adam_lbfgs": 215.56599702377866
+},
+"laplace2d": {
+"ms_per_adam_step": 128.94876979747778,
+"ms_per_lbfgs_iter": 138.79695562499364,
+"lbfgs_fevals_per_iter": 1.06,
+"n_params": 33537,
+"n_r": 256,
+"est_run_s_adam": 386.84630939243334,
+"est_run_s_adam_lbfgs": 401.61858813370714
+},
+"wave1d": {
+"ms_per_adam_step": 93.821037587511,
+"ms_per_lbfgs_iter": 107.59958083498987,
+"lbfgs_fevals_per_iter": 1.065,
+"n_params": 8577,
+"n_r": 1024,
+"est_run_s_adam": 281.463112762533,
+"est_run_s_adam_lbfgs": 302.1309276337513
+},
+"wave2d": {
+"ms_per_adam_step": 86.1291439775141,
+"ms_per_lbfgs_iter": 96.05780750000122,
+"lbfgs_fevals_per_iter": 1.045,
+"n_params": 2801,
+"n_r": 512,
+"est_run_s_adam": 258.3874319325423,
+"est_run_s_adam_lbfgs": 273.280427216273
+},
+"laplace3d": {
+"ms_per_adam_step": 110.61083936998784,
+"ms_per_lbfgs_iter": 116.8276941699969,
+"lbfgs_fevals_per_iter": 1.055,
+"n_params": 10601,
+"n_r": 512,
+"est_run_s_adam": 331.83251810996353,
+"est_run_s_adam_lbfgs": 341.1578003099771
+},
+"loadavg_end": [
+167.06884765625,
+160.189453125,
+130.64306640625
+]
+}
+== validate_batched
+<class 'dict'> ['heat1d', 'laplace2d']

@@ -1,0 +1,27 @@
+{
+ "all_identical": true,
+ "runs": [
+  {
+   "phase": "main20",
+   "problem": "laplace",
+   "method": "ritz",
+   "arm": "plain",
+   "rel_new": 0.04796603322029114,
+   "rel_stored": 0.04796603322029114,
+   "loss_new": 66.74777221679688,
+   "loss_stored": 66.74777221679688,
+   "identical": true
+  },
+  {
+   "phase": "posthoc_lift1",
+   "problem": "ridge",
+   "method": "pinn",
+   "arm": "lift1",
+   "rel_new": 0.010675331577658653,
+   "rel_stored": 0.010675331577658653,
+   "loss_new": 0.22377440333366394,
+   "loss_stored": 0.22377440333366394,
+   "identical": true
+  }
+ ]
+}

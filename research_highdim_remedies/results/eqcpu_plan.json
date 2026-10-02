@@ -1,0 +1,90 @@
+{
+ "laplace/ritz/lift3c": {
+  "iters": 3250,
+  "median_cpu_plain": 8.082380000004832,
+  "median_cpu_arm": 9.990288999999962
+ },
+ "laplace/ritz/presolve": {
+  "iters": 0,
+  "median_cpu_plain": 8.082380000004832,
+  "median_cpu_total_presolve": 8.223551999999472,
+  "ratio": 1.0174666373017052
+ },
+ "laplace/pinn/lift3c": {
+  "iters": 3650,
+  "median_cpu_plain": 30.63884600000472,
+  "median_cpu_arm": 33.44279099999973
+ },
+ "laplace/pinn/presolve": {
+  "iters": 0,
+  "median_cpu_plain": 30.63884600000472,
+  "median_cpu_total_presolve": 29.379292999995414,
+  "ratio": 0.9588903250465403
+ },
+ "poisson/ritz/lift3c": {
+  "iters": 3350,
+  "median_cpu_plain": 8.22048500002711,
+  "median_cpu_arm": 9.83117099999913
+ },
+ "poisson/ritz/presolve": {
+  "iters": 0,
+  "median_cpu_plain": 8.22048500002711,
+  "median_cpu_total_presolve": 8.289386000000121,
+  "ratio": 1.0083816222489042
+ },
+ "poisson/pinn/lift3c": {
+  "iters": 3550,
+  "median_cpu_plain": 29.883509999999205,
+  "median_cpu_arm": 33.88659999999663
+ },
+ "poisson/pinn/presolve": {
+  "iters": 0,
+  "median_cpu_plain": 29.883509999999205,
+  "median_cpu_total_presolve": 30.812517999997453,
+  "ratio": 1.031087646665277
+ },
+ "ridge/ritz/lift3c": {
+  "iters": 3200,
+  "median_cpu_plain": 8.293858000002786,
+  "median_cpu_arm": 10.289013000007799
+ },
+ "ridge/ritz/presolve": {
+  "iters": 3700,
+  "median_cpu_plain": 8.293858000002786,
+  "median_cpu_total_presolve": 8.971142999999074,
+  "ratio": 1.0816610315725277
+ },
+ "ridge/pinn/lift3c": {
+  "iters": 3750,
+  "median_cpu_plain": 29.17292899999211,
+  "median_cpu_arm": 31.172796999980164
+ },
+ "ridge/pinn/presolve": {
+  "iters": 0,
+  "median_cpu_plain": 29.17292899999211,
+  "median_cpu_total_presolve": 29.093502000007447,
+  "ratio": 0.9972773731432767
+ },
+ "cospair/ritz/lift3c": {
+  "iters": 3350,
+  "median_cpu_plain": 8.507750999970085,
+  "median_cpu_arm": 10.10162699999887
+ },
+ "cospair/ritz/presolve": {
+  "iters": 0,
+  "median_cpu_plain": 8.507750999970085,
+  "median_cpu_total_presolve": 8.390254999995307,
+  "ratio": 0.9861895346989832
+ },
+ "cospair/pinn/lift3c": {
+  "iters": 3750,
+  "median_cpu_plain": 30.5585129999979,
+  "median_cpu_arm": 32.7402410000077
+ },
+ "cospair/pinn/presolve": {
+  "iters": 0,
+  "median_cpu_plain": 30.5585129999979,
+  "median_cpu_total_presolve": 31.082354000010582,
+  "ratio": 1.0171422280924702
+ }
+}

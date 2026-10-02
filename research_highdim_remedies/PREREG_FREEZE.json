@@ -1,0 +1,12 @@
+{
+ "file": "PREREG_C1.md",
+ "sha256": "5d110a6505f87d8ba1b98eb85180386eb74d969876f948c1004c40be90506dff",
+ "frozen_at": "2026-10-01T17:59:54+0100",
+ "note": "frozen before the first counted run (repro, main20, eqcpu, stall, rep3, d10); runs_timing.jsonl and runs_sweep.jsonl precede the freeze and do not count",
+ "addendum_p5": {
+  "file": "PREREG_C1_P5.md",
+  "sha256": "6a5a361db64ad5dd6ac4f2bfcb27f1484be075725221f8c4ef885d2002ee5c58",
+  "frozen_at": "2026-10-01T20:12:30+0100",
+  "note": "written after the check (check/), before any P5 run with the study code; results/checks_p5.json (no training) precedes it; runs_sweepP5.jsonl (weight selection) does not count"
+ }
+}

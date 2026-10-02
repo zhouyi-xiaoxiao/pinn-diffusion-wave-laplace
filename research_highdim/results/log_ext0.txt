@@ -1,0 +1,10 @@
+[main] laplace  ritz d=20 seed=0 w=100: rel_l2=4.659e-02 h1=2.715e-01 bd=4.838e-02 val=4.639e-02 13.4 ms/it  wall=146s
+[main] laplace  pinn d=20 seed=0 w=1000: rel_l2=4.760e-02 h1=2.469e-01 bd=5.223e-02 val=4.737e-02 21.2 ms/it  wall=85s
+[main] poisson  ritz d=20 seed=0 w=1: rel_l2=1.261e-01 h1=4.581e-01 bd=1.328e-01 val=1.267e-01 4.8 ms/it  wall=20s
+[main] poisson  pinn d=20 seed=0 w=1000: rel_l2=1.423e-01 h1=4.726e-01 bd=1.558e-01 val=1.422e-01 20.3 ms/it  wall=82s
+[long] laplace  ritz d=10 seed=0 w=100: rel_l2=6.830e-03 h1=4.077e-02 bd=7.865e-03 val=6.631e-03 4.6 ms/it  wall=74s
+[long] laplace  pinn d=10 seed=0 w=1000: rel_l2=5.590e-03 h1=3.051e-02 bd=6.943e-03 val=5.490e-03 9.3 ms/it  wall=150s
+laplace: PINN mean train CPU 36.9s, Ritz 3.85 CPU ms/it -> Ritz iters 10000
+[equaltime] laplace  ritz d=10 seed=0 w=100: rel_l2=8.900e-03 h1=5.094e-02 bd=1.048e-02 val=8.684e-03 3.9 ms/it  wall=39s
+poisson: PINN mean train CPU 40.0s, Ritz 4.51 CPU ms/it -> Ritz iters 9000
+[equaltime] poisson  ritz d=10 seed=0 w=1: rel_l2=1.498e-02 h1=6.311e-02 bd=1.431e-02 val=1.553e-02 4.9 ms/it  wall=45s

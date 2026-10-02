@@ -1,0 +1,12 @@
+main_poisson_pinn_d10_s0_w1000_it4000.pt   ||Lap u+f||/||f|| = 0.154  rel err 0.022  bd rel err 0.028  d2u/dx0^2: rel err 0.165 corr 0.992
+main_poisson_pinn_d10_s1_w1000_it4000.pt   ||Lap u+f||/||f|| = 0.158  rel err 0.027  bd rel err 0.034  d2u/dx0^2: rel err 0.304 corr 0.975
+main_poisson_pinn_d10_s2_w1000_it4000.pt   ||Lap u+f||/||f|| = 0.132  rel err 0.018  bd rel err 0.022  d2u/dx0^2: rel err 0.206 corr 0.989
+main_poisson_ritz_d10_s0_w1_it4000.pt      ||Lap u+f||/||f|| = 0.530  rel err 0.072  bd rel err 0.073  d2u/dx0^2: rel err 0.240 corr 0.985
+main_poisson_ritz_d10_s1_w1_it4000.pt      ||Lap u+f||/||f|| = 0.663  rel err 0.103  bd rel err 0.105  d2u/dx0^2: rel err 0.971 corr 0.643
+main_poisson_ritz_d10_s2_w1_it4000.pt      ||Lap u+f||/||f|| = 0.408  rel err 0.050  bd rel err 0.049  d2u/dx0^2: rel err 0.231 corr 0.980
+main_poisson_pinn_d20_s0_w1000_it4000.pt   ||Lap u+f||/||f|| = 0.348  rel err 0.145  bd rel err 0.155  d2u/dx0^2: rel err 0.916 corr 0.542
+main_poisson_pinn_d20_s1_w1000_it4000.pt   ||Lap u+f||/||f|| = 0.366  rel err 0.148  bd rel err 0.160  d2u/dx0^2: rel err 0.941 corr 0.424
+main_poisson_pinn_d20_s2_w1000_it4000.pt   ||Lap u+f||/||f|| = 0.354  rel err 0.146  bd rel err 0.158  d2u/dx0^2: rel err 0.924 corr 0.489
+main_poisson_ritz_d20_s0_w1_it4000.pt      ||Lap u+f||/||f|| = 0.898  rel err 0.129  bd rel err 0.133  d2u/dx0^2: rel err 0.989 corr 0.422
+main_poisson_ritz_d20_s1_w1_it4000.pt      ||Lap u+f||/||f|| = 0.902  rel err 0.129  bd rel err 0.134  d2u/dx0^2: rel err 0.990 corr 0.399
+main_poisson_ritz_d20_s2_w1_it4000.pt      ||Lap u+f||/||f|| = 0.902  rel err 0.129  bd rel err 0.134  d2u/dx0^2: rel err 0.991 corr 0.416

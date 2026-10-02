@@ -1,0 +1,1 @@
+('long', 'laplace', 'pinn', 10, 0, 1000.0, 16000): stored rel_l2 5.589728709e-03  rerun 5.589728709e-03  reldiff 0.00e+00  cpu 147.0s (stored 128.9s) wall 159s

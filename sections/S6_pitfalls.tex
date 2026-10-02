@@ -1,0 +1,76 @@
+% =====================================================================================
+% sections/S6_pitfalls.tex -- Supplementary Section S6: details of the two demonstrations of
+% Section 7.  Script: code/s7_pitfalls.py (-> data/s7_pitfalls_autograd.json, figures/s7_pitfalls.pdf);
+% research_benchmark/scripts/run_oneface.py (-> research_benchmark/results/oneface_laplace3d.json).
+% All "% src:" paths are relative to the root of the repository.
+% =====================================================================================
+\section{Implementation pitfalls: details of the demonstrations}\label{S6:sec}
+
+\subsection{Differentiating with respect to a slice of the input}
+
+\begin{lstlisting}[float=tp,captionpos=b,label={s7_pitfalls:lst:autograd},caption={The second time derivative computed with respect to a slice of the input (faulty) and with respect to the whole input (correct). The comments at the right give what the faulty lines return. Both patterns are executed by \texttt{code/s7\_pitfalls.py}.}]
+# faulty: txy[:, 0] is a new tensor on which u_t does not depend
+h = torch.autograd.grad(u_t, txy[:, 0], grad_outputs=torch.ones_like(u_t),
+                        create_graph=True, allow_unused=True)[0]  # None
+u_tt = torch.zeros_like(u_t) if h is None else h[:, 0]            # zeros
+# correct: differentiate w.r.t. the whole input, then index
+h = torch.autograd.grad(u_t.sum(), txy, create_graph=True)[0]     # (N, 3)
+assert h is not None
+u_tt = h[:, 0]
+\end{lstlisting}
+
+% src: code/s7_pitfalls.py; data/s7_pitfalls_autograd.json (protocol; autograd_demo: slice_grad_is_None true, none_returns_per_call 3, without_allow_unused_raises, max_abs_residual_faulty 0.0, residual_faulty_requires_grad false)
+Listing~\ref{s7_pitfalls:lst:autograd} shows the two patterns for $u_{tt}$; the spatial second
+derivatives are treated alike. On the untrained network and 64 points, the faulty operator returns
+\code{None} in all three second-derivative calls and a residual that is exactly zero and does not
+even require a gradient, and the call without \code{allow_unused} raises the error that the
+differentiated tensor does not appear in the graph.
+
+\paragraph{The training run.} The network is $3$--$50$--$50$--$1$ with tanh activations; the
+10\,000 training points are independent and uniform in $[0,1]\times[-1,1]^2$; the loss is the sum
+of the mean squared faulty residual, the mean squared difference from $\ee^{-t}S$ at the points of
+the batch, with $S=\sin(\pi x)\sin(\pi y)$, and the mean squared value at 400 points on the spatial
+boundary at $t=0$. Batches of 64 are drawn by a permutation per pass; \Adam\ with learning rate
+$10^{-3}$, seed 0, 150 passes, that is 23\,550 iterations, on one CPU thread.
+% src: data/s7_pitfalls_autograd.json (slices at t = 0, 1, 2, 3: amplitude 0.98110, 0.36431, 0.10037, 0.04399; no sign change on [0,3]; rel_L2_vs_exact 1.998 at t = 0.5, 2.369 at t = 1)
+% src: data/closed_forms.json (wave2d: exp_minus_t_at_t_1_2_3, exact_factor_at_t_1_2_3)
+The least-squares amplitude of the mode, $a(t)=\ip{\unet(t,\cdot)}{S}/\ip{S}{S}$, is 0.981, 0.364,
+0.100 and 0.044 at $t=0,1,2,3$, against $\ee^{-t}=1$, 0.368, 0.135, 0.050 and against the factor
+$\cos(\sqrt2\,\pi t)=1$, $-0.266$, $-0.858$, $+0.723$ of the solution of \PWtwo\
+(Figure~\ref{s7_pitfalls:fig:demo}(a); the times 2 and 3 lie outside the sampled window). It never
+changes sign. The relative $L^2$ distance from the solution of \PWtwo\ is 2.0 on the slice $t=0.5$
+and 2.4 on the slice $t=1$.
+% src: data/s7_pitfalls_autograd_1500passes.json (slices at t = 0, 1, 2, 3: amplitude 0.99734, 0.36831, 0.14998, 0.07667; heldout_21x81x81: 0.0059 vs target)
+With 1500 passes the amplitudes are 0.997 and 0.368 at $t=0$ and $1$ (0.150 and 0.077 at $t=2$
+and $3$), and the distance from $\ee^{-t}S$ on the held-out grid is 0.006. The PDE term is zero
+whatever the number of passes, because the missing derivative does not depend on the weights.
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{s7_pitfalls.pdf}
+\caption{The two demonstrations of Section~\ref{s7_pitfalls:sec}.
+(a)~Residual made identically zero by differentiation with respect to a slice of the input:
+least-squares amplitude $a(t)=\ip{\unet(t,\cdot)}{S}/\ip{S}{S}$ of the mode
+$S=\sin(\pi x)\sin(\pi y)$, on a $101\times101$ grid per time, for the network trained with the
+zero residual and the data term $\ee^{-t}S$ (seed 0, 150 passes, that is 23\,550 \Adam\
+iterations), with the factor $\cos(\sqrt2\,\pi t)$ of the solution of \PWtwo; dots mark
+$t=0,1,2,3$. Training samples $t\in[0,1]$; the shaded region lies outside that window.
+(b)~Laplace problem with data on one face only: mean of $\abs{\unet}$ over $20\times20$ points of
+the face $x=0$ (blue, value printed) and of each of the four other faces without a condition
+(grey), for five seeds. The solution of \PLthree, which has zero data on these faces, vanishes on
+all five; the dashed line is the mean of the datum $\abs{\sin y\cos z}$ over the constrained face,
+$4/\pi^2\approx0.41$, for scale.}
+% src: data/s7_pitfalls_autograd.json (panel a); research_benchmark/results/oneface_laplace3d.json (oneface_laplace3d.rows, panel b); script code/s7_pitfalls.py
+\label{s7_pitfalls:fig:demo}
+\end{figure}
+
+\subsection{The problem with data on one face}
+
+% src: research_benchmark/results/oneface_laplace3d.json (device mps; interior_seed_std_over_rms_exact 4.49); research_benchmark/scripts/run_oneface.py
+The five networks of Section~\ref{s7_pitfalls:sec:oneface} were trained as one stack on the GPU
+backend, with the loss $\operatorname{mean}(\lap\unet)^2+\operatorname{mean}(\unet-\text{datum})^2$
+over the 9261 grid points and the 441 points of the face $x=\pi$, AdamW~\citep{loshchilov2019} with its default weight
+decay 0.01, single precision; their predictions are compared with the solution of \PLthree\ on its
+$40^3$ cell-centred evaluation grid. The pointwise standard deviation of the five predictions over
+the seeds, averaged over that grid, is 4.49 times the root-mean-square value of the solution of
+\PLthree.

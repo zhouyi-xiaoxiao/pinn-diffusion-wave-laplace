@@ -1,0 +1,7 @@
+re-run heat: 300 of 300 final values identical (largest relative difference 0.0e+00); 50 of 50 networks with identical logged curves in both arms; L-BFGS evaluations 10918 -> 10918; device mps -> mps
+re-run wave2d: 150 of 150 final values identical (largest relative difference 0.0e+00); 25 of 25 networks with identical logged curves in both arms; L-BFGS evaluations 2755 -> 2755; device mps -> mps
+re-run gridcontrol_B: 120 of 120 final values identical (largest relative difference 0.0e+00); 20 of 20 networks with identical logged curves in both arms; L-BFGS evaluations 3652 -> 3652; device mps -> mps
+stack size, mps: identical in the four stacks of two: True; identical in the stacks of two and of five: False; Adam 7.8184e-02 (two) vs 8.4639e-02 (five); Adam->L-BFGS 1.0805e-02 vs 8.5856e-03
+stack size, cpu: identical in the four stacks of two: True; identical in the stacks of two and of five: True; Adam 1.0724e-01 (two) vs 1.0724e-01 (five); Adam->L-BFGS 1.3030e-02 vs 1.3030e-02
+Control stack A (40) vs benchmark Heat stack (50), random: Adam arm identical in 10 of 10; L-BFGS arm identical in 0 of 10; first logged iteration with a different loss [1550]; ratio of the final L-BFGS errors 0.72 to 1.09
+Control stack A (40) vs benchmark Heat stack (50), grid: Adam arm identical in 10 of 10; L-BFGS arm identical in 0 of 10; first logged iteration with a different loss [1550]; ratio of the final L-BFGS errors 0.84 to 1.03

@@ -1,0 +1,31 @@
+  [heat1d] adam it=500 median rel_l2=1.342e-01 t=4.7s
+  [heat1d] adam it=1000 median rel_l2=7.219e-02 t=8.8s
+  [heat1d] adam it=1500 median rel_l2=6.896e-02 t=12.8s
+  [heat1d] adam it=2000 median rel_l2=6.472e-02 t=16.5s
+  [heat1d] adam it=2500 median rel_l2=7.099e-02 t=20.6s
+  [heat1d] adam it=3000 median rel_l2=6.413e-02 t=24.6s
+  [heat1d] lbfgs it=250 median rel_l2=4.995e-02 t=6.7s
+  [heat1d] lbfgs it=500 median rel_l2=4.326e-02 t=13.3s
+  [heat1d] lbfgs it=750 median rel_l2=3.088e-02 t=19.9s
+  [heat1d] lbfgs it=1000 median rel_l2=2.880e-02 t=56.3s
+  [heat1d] lbfgs it=1250 median rel_l2=2.664e-02 t=141.3s
+  [heat1d] lbfgs it=1500 median rel_l2=2.544e-02 t=211.6s
+heat1d N_r=64 grid: adam_lbfgs rel_l2 mean 7.212e-02 std 3.092e-02
+heat1d N_r=64 random: adam_lbfgs rel_l2 mean 4.765e-02 std 4.447e-02
+heat1d N_r=64 sobol: adam_lbfgs rel_l2 mean 1.643e-02 std 1.269e-02
+  [heat1d] adam it=500 median rel_l2=1.661e-01 t=11.5s
+  [heat1d] adam it=1000 median rel_l2=4.820e-02 t=24.8s
+  [heat1d] adam it=1500 median rel_l2=2.325e-02 t=43.5s
+  [heat1d] adam it=2000 median rel_l2=1.794e-02 t=60.8s
+  [heat1d] adam it=2500 median rel_l2=1.451e-02 t=78.2s
+  [heat1d] adam it=3000 median rel_l2=1.008e-02 t=94.7s
+  [heat1d] lbfgs it=250 median rel_l2=5.552e-03 t=13.6s
+  [heat1d] lbfgs it=500 median rel_l2=2.422e-03 t=30.4s
+  [heat1d] lbfgs it=750 median rel_l2=2.094e-03 t=48.4s
+  [heat1d] lbfgs it=1000 median rel_l2=1.757e-03 t=64.5s
+  [heat1d] lbfgs it=1250 median rel_l2=1.312e-03 t=80.9s
+  [heat1d] lbfgs it=1500 median rel_l2=1.136e-03 t=132.3s
+heat1d N_r=1024 grid: adam_lbfgs rel_l2 mean 1.231e-03 std 4.484e-04
+heat1d N_r=1024 random: adam_lbfgs rel_l2 mean 1.130e-03 std 4.310e-04
+heat1d N_r=1024 sobol: adam_lbfgs rel_l2 mean 1.146e-03 std 4.078e-04
+DONE

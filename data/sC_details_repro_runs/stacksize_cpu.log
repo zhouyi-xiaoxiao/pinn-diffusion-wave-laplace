@@ -1,0 +1,5 @@
+cpu A: (random,0), (random,1) Adam 1.0724145661e-01 Adam->L-BFGS 1.3030212084e-02
+cpu B: (random,0), (grid,5) Adam 1.0724145661e-01 Adam->L-BFGS 1.3030212084e-02
+cpu C: (random,0), (random,1), (grid,5), (sobol,2), (sobol,3) Adam 1.0724145661e-01 Adam->L-BFGS 1.3030212084e-02
+cpu D: (grid,5), (random,0) Adam 1.0724145661e-01 Adam->L-BFGS 1.3030212084e-02
+cpu A again Adam 1.0724145661e-01 Adam->L-BFGS 1.3030212084e-02

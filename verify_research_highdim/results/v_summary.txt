@@ -1,0 +1,42 @@
+re-check runs: 73 total train CPU s: 2896 total wall s: 4469 max wall 238
+('beta', 'poisson', 'ritz', 10, 10.0, 4000) seeds [7, 8, 9] 1.255e-01 1.256e-01 1.187e-01 | mean 1.233e-01 sd 3.97e-03
+('beta', 'poisson', 'ritz', 10, 100.0, 4000) seeds [7, 8, 9] 1.249e-01 1.251e-01 1.214e-01 | mean 1.238e-01 sd 2.13e-03
+('beta', 'poisson', 'ritz', 20, 100.0, 4000) seeds [7] 1.229e-01 | mean 1.229e-01 
+('eq9k', 'laplace', 'ritz', 10, 100.0, 9000) seeds [7, 8, 9] 9.237e-03 9.412e-03 9.649e-03 | mean 9.433e-03 sd 2.07e-04
+('equaltime', 'laplace', 'ritz', 10, 100.0, 10000) seeds [7, 8, 9] 8.740e-03 9.092e-03 9.019e-03 | mean 8.950e-03 sd 1.86e-04
+('equaltime', 'poisson', 'ritz', 10, 1.0, 9000) seeds [7, 8, 9] 1.381e-02 1.242e-02 1.503e-02 | mean 1.375e-02 sd 1.31e-03
+('lam1e4', 'laplace', 'pinn', 10, 10000.0, 4000) seeds [7, 8, 9] 1.288e-02 1.272e-02 1.598e-02 | mean 1.386e-02 sd 1.84e-03
+('lam1e4', 'poisson', 'pinn', 10, 10000.0, 4000) seeds [7, 8, 9] 1.200e-01 1.197e-01 1.108e-01 | mean 1.169e-01 sd 5.21e-03
+('long', 'laplace', 'ritz', 10, 100.0, 16000) seeds [7, 8] 6.836e-03 7.476e-03 | mean 7.156e-03 sd 4.53e-04
+('main', 'laplace', 'pinn', 2, 1000.0, 4000) seeds [7, 8, 9] 2.008e-03 9.188e-03 1.464e-03 | mean 4.220e-03 sd 4.31e-03
+('main', 'laplace', 'pinn', 10, 1000.0, 4000) seeds [7, 8, 9] 1.093e-02 1.153e-02 1.393e-02 | mean 1.213e-02 sd 1.59e-03
+('main', 'laplace', 'pinn', 20, 1000.0, 4000) seeds [7] 3.360e-02 | mean 3.360e-02 
+('main', 'laplace', 'ritz', 2, 100.0, 4000) seeds [7, 8, 9] 1.021e-02 2.289e-02 1.637e-02 | mean 1.649e-02 sd 6.34e-03
+('main', 'laplace', 'ritz', 10, 100.0, 4000) seeds [7, 8, 9] 1.525e-02 1.687e-02 2.523e-02 | mean 1.911e-02 sd 5.36e-03
+('main', 'laplace', 'ritz', 20, 100.0, 4000) seeds [7, 8, 9, 10, 11] 3.590e-02 4.530e-02 4.529e-02 4.505e-02 4.400e-02 | mean 4.311e-02 sd 4.06e-03
+('main', 'poisson', 'pinn', 2, 1000.0, 4000) seeds [7, 8, 9] 1.245e-03 1.235e-03 1.261e-03 | mean 1.247e-03 sd 1.31e-05
+('main', 'poisson', 'pinn', 10, 1000.0, 4000) seeds [7, 8, 9] 2.456e-02 2.086e-02 2.557e-02 | mean 2.366e-02 sd 2.48e-03
+('main', 'poisson', 'pinn', 20, 1000.0, 4000) seeds [7] 1.422e-01 | mean 1.422e-01 
+('main', 'poisson', 'ritz', 2, 1.0, 4000) seeds [7, 8, 9] 4.693e-03 5.058e-03 6.619e-03 | mean 5.457e-03 sd 1.02e-03
+('main', 'poisson', 'ritz', 10, 1.0, 4000) seeds [7, 8, 9] 9.541e-02 9.594e-02 7.108e-02 | mean 8.748e-02 sd 1.42e-02
+('main', 'poisson', 'ritz', 20, 1.0, 4000) seeds [7, 8] 1.271e-01 1.272e-01 | mean 1.271e-01 sd 6.02e-05
+('main_fwd', 'laplace', 'pinn', 20, 1000.0, 4000) seeds [8, 9] 4.500e-02 4.456e-02 | mean 4.478e-02 sd 3.13e-04
+('robin', 'laplace', 'ritz', 2, 1.0, 4000) seeds [7] 2.896e-01 | mean 2.896e-01 
+('robin', 'laplace', 'ritz', 2, 10.0, 4000) seeds [7] 4.775e-02 | mean 4.775e-02 
+('robin', 'laplace', 'ritz', 2, 100.0, 4000) seeds [7] 1.021e-02 | mean 1.021e-02 
+('robin', 'laplace', 'ritz', 2, 1000.0, 4000) seeds [7] 5.891e-02 | mean 5.891e-02 
+('sweep', 'laplace', 'pinn', 5, 1.0, 4000) seeds [7] 9.149e-03 | mean 9.149e-03 
+('sweep', 'laplace', 'pinn', 5, 1000.0, 4000) seeds [7] 5.792e-03 | mean 5.792e-03 
+('sweep', 'laplace', 'ritz', 5, 1.0, 4000) seeds [7] 1.584e-01 | mean 1.584e-01 
+('sweep', 'laplace', 'ritz', 5, 10.0, 4000) seeds [7] 2.233e-02 | mean 2.233e-02 
+('sweep', 'laplace', 'ritz', 5, 100.0, 4000) seeds [7] 1.105e-02 | mean 1.105e-02 
+('sweep', 'laplace', 'ritz', 5, 1000.0, 4000) seeds [7] 1.208e-02 | mean 1.208e-02 
+('sweep', 'poisson', 'pinn', 5, 1.0, 4000) seeds [7] 4.768e-02 | mean 4.768e-02 
+('sweep', 'poisson', 'pinn', 5, 1000.0, 4000) seeds [7] 9.644e-03 | mean 9.644e-03 
+('sweep', 'poisson', 'ritz', 5, 1.0, 4000) seeds [7] 1.434e-02 | mean 1.434e-02 
+('sweep', 'poisson', 'ritz', 5, 1000.0, 4000) seeds [7] 1.665e-02 | mean 1.665e-02 
+('main', 'poisson', 'ritz', 10, 1.0, 4000) ['250:0.142', '500:0.139', '1000:0.137', '1500:0.137', '2000:0.112', '3000:0.090', '4000:0.088']
+('beta', 'poisson', 'ritz', 10, 10.0, 4000) ['250:0.133', '500:0.134', '1000:0.128', '1500:0.130', '2000:0.131', '3000:0.125', '4000:0.126']
+('beta', 'poisson', 'ritz', 10, 100.0, 4000) ['250:0.132', '500:0.133', '1000:0.128', '1500:0.129', '2000:0.132', '3000:0.126', '4000:0.126']
+('main', 'poisson', 'pinn', 10, 1000.0, 4000) ['250:0.130', '500:0.151', '1000:0.131', '1500:0.081', '2000:0.034', '3000:0.025', '4000:0.024']
+('lam1e4', 'poisson', 'pinn', 10, 10000.0, 4000) ['250:0.132', '500:0.131', '1000:0.127', '1500:0.126', '2000:0.126', '3000:0.120', '4000:0.120']
