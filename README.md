@@ -6,6 +6,11 @@ Article, Supplementary Material, code and data for
 > Laplace problems: a reproducible benchmark and its failure modes*, 2026.
 > [`paper.pdf`](paper.pdf), Supplementary Material [`supplement.pdf`](supplement.pdf)
 
+The article develops a project report written in 2024 during an exchange year at the Hong Kong University of
+Science and Technology. [How to cite it](#how-to-cite).
+
+Xiaoxiao Zhouyi · [zhouyixiaoxiao.com](https://zhouyixiaoxiao.com/research/)
+
 ## What the paper shows
 
 A benchmark study of physics-informed neural networks (PINNs) and of the Deep Ritz method on eight linear
