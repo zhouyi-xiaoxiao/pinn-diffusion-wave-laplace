@@ -85,6 +85,6 @@ pre-registrations refer to earlier exploratory pilots (folders
 `../ideas_theory`, `../ideas_cost`, `../ideas_dynamics`), which are not included; no result of the article rests
 on them.
 
-## Current-machine PINN replication
+## Additional PINN runs at d = 20 with saved networks
 
 `current_machine/` contains a separate 24-network descriptive cohort, including all trained weights, full seed/configuration records, portable training and checkpoint-validation scripts, and a summary. It repeats the three-seed LapD PINN comparison, calibrates its own CPU budget, and tests all four SinLinD PINN arms; see its README and Supplementary Table S14. Historical records above remain unchanged.

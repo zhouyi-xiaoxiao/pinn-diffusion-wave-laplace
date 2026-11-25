@@ -764,7 +764,7 @@ uses all three seeds and calibrates its computational budget on one machine.
 % src: research_highdim_remedies/check/runs_reimpl2.jsonl; research_highdim_remedies/check/reimpl2_summary.json; research_highdim_remedies/results/tables.tex (study medians, P1 PINN: presolve 2.85, lift3c 2.86); data/s6_highdim_remedies_recheck.json (recomputed by code/s6_highdim_remedies.py: P6 lift3c 2.937, eq. CPU 2.533, d10 2.140, lift1 3.018, lift1/lift3c 1.011, presolve 1.163; P7 presolve 4.507, lift3c 1.852, lift1 1.333, lift1/lift3c 1.336, plain err 0.02504-0.02532; P1 PINN presolve 2.814, 3.961, lift3c 2.858, 2.677; missing runs)
 
 % src: research_highdim_remedies/results/decision.json; research_highdim_remedies/results/decision_p5.json; research_highdim_remedies/results/attribution.json; data/s6_highdim_remedies_recheck.json
-\paragraph{Current-machine PINN replication.}\label{S5:sec:current-machine}
+\paragraph{Additional PINN runs at $d=20$ with saved networks.}\label{S5:sec:current-machine}
 A separate cohort uses the same implementation, seeds 40--42 and $d=20$ on an Apple M4 Pro
 CPU (Python 3.14.6, PyTorch 2.14.1). Each of two concurrent processes uses one PyTorch thread.
 The 24 networks comprise plain, presolve and lift3c on \Pone\ at 4000 iterations; lift3c on
@@ -788,7 +788,7 @@ accounts for much of the gain on \Psinlin.
 
 \begin{table}[htbp]
 \centering\small
-\caption{Current-machine PINN replication at $d=20$, seeds 40--42. $\rho$ is the seed-paired
+\caption{Additional PINN runs at $d=20$ with saved networks, seeds 40--42. $\rho$ is the seed-paired
 error of plain divided by the arm's error; wins count $\rho>1$. CPU ratio is the ratio of
 median measured training times to plain at 4000 iterations, on the same machine. The
 calibrated budget is selected from the first-stage timing medians, not from historical timing.}

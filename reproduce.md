@@ -328,7 +328,7 @@ the CPU; seeds already in `v_oneface.json` are not trained again):
   comparison with the stored stacks.
 
 
-## Current-machine PINN replication
+## Additional PINN runs at d = 20 with saved networks
 
 `research_highdim_remedies/current_machine/` is a separate 24-network descriptive cohort,
 with per-run records and all trained weights. It does not replace historical or frozen-study

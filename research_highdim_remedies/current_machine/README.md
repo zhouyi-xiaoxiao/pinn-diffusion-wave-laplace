@@ -1,4 +1,4 @@
-# Current-machine PINN replication
+# Additional PINN runs at d = 20 with saved networks
 
 This separate, retrospective descriptive cohort covers all three seeds (40–42) for the PINN comparisons on LapD and SinLinD at dimension 20. It does not alter the earlier frozen-study or re-check records.
 
