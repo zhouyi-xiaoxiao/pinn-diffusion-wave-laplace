@@ -1,0 +1,25 @@
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+Copyright (c) 2026 Xiaoxiao Zhouyi
+
+This repository contains two kinds of material under two licences. The MIT License in LICENSE applies to
+every source file: the script build_pdfs.sh at the root, and *.py and *.sh in code/, research_benchmark/,
+research_highdim/, research_highdim_bound/, research_highdim_remedies/ (including their src/, scripts/ and
+check/ folders), verify_research_benchmark/ and verify_research_highdim/. No third-party code is
+redistributed in this repository.
+
+This licence applies to the article and its Supplementary Material (paper.pdf, supplement.pdf, main.tex,
+supplement.tex, macros.tex, statements.tex, sections/, figures/, refs.bib), to the documentation (*.md),
+and to every other file that is not a source file covered by the MIT License, in particular the result files
+(*.json, *.jsonl, *.csv, *.txt, *.out, *.log, *.npz, *.npy, *.png, *.pdf, *.tex) in the data, results,
+inputs and check folders. These materials are licensed under the Creative Commons Attribution 4.0
+International License. You may copy and redistribute the material in any medium or format, and remix,
+transform and build upon it for any purpose, provided that you give appropriate credit, provide a link to
+the licence, and indicate if changes were made.
+
+Full licence text: https://creativecommons.org/licenses/by/4.0/legalcode
+Summary:           https://creativecommons.org/licenses/by/4.0/
+
+Suggested credit: Xiaoxiao Zhouyi, "Physics-informed neural networks and the Deep Ritz method for
+diffusion, wave and Laplace problems: a reproducible benchmark and its failure modes" (2026),
+https://github.com/zhouyi-xiaoxiao/pinn-diffusion-wave-laplace
