@@ -18,9 +18,9 @@ Xiaoxiao Zhouyi · [zhouyixiaoxiao.com](https://zhouyixiaoxiao.com/research/)
 - A small overall error can hide a large one. For the heat equation the error at the final time exceeds 100 per cent in all 40 runs examined, although the space-time error is about 0.1 per cent after L-BFGS (1.6 to 2.1 per cent with Adam alone).
 - The error bound proved for the unit cube held on all 133 networks evaluated but is loose, at 1.9 to 3.4 times the error at $d=10$ and $d=20$.
 
-[![Accuracy against cost for the PINN and finite differences on five problems](figures/s5_hard_cost.png)](figures/s5_hard_cost.png)
+[![Accuracy against cost for the PINN and finite differences on five problems](figures/s5_hard_cost_readme.png)](figures/s5_hard_cost.png)
 
-Accuracy against wall-clock time of one solve (Supplementary Figure S8). Grey: second-order finite differences, the grid parameter $n$ doubling along each curve. Blue circles and orange squares: the Adam and Adam → L-BFGS arms of the PINN (geometric mean over all strategies and seeds; the vertical bar is the range), each drawn at three timings: per network in a GPU run of 25 or 50 networks (diamond), a single network on the CPU (filled marker) and a single network under heavy machine load (open marker).
+Accuracy against wall-clock time of one solve (Supplementary Figure S8). Grey: second-order finite differences, the grid parameter $n$ doubling along each curve. Blue circles and orange squares: the Adam and Adam → L-BFGS arms of the PINN (geometric mean over all strategies and seeds; the vertical bar is the range), each drawn at three timings: GPU batch (diamond), single network, CPU (filled marker) and single network, CPU under heavy load (open marker). This is a redrawn copy with larger type; the link opens the figure as printed in the paper.
 
 ## What the paper shows
 
@@ -57,7 +57,7 @@ All errors are relative errors in the $L^2$ norm on held-out points. Details and
 
 ### Does an L-BFGS phase help?
 
-**Yes: replacing the second half of the Adam iterations by L-BFGS lowers the error in all 175 pairs.** A separately written verification code agrees in 39 of 40 pairs. In geometric mean the error falls from $2.1\times10^{-2}$ to $1.6\times10^{-3}$ on Heat and from $7.8\times10^{-3}$ to $3.4\times10^{-4}$ on Lap2. Against the best logged Adam iterate of each run the gain is still a factor 8 to 13, about one order of magnitude.
+**Yes: replacing the second half of the Adam iterations by L-BFGS lowers the error in all 175 pairs.** A separately written verification code agrees in 39 of 40 pairs. In geometric mean the error falls from $2.12\times10^{-2}$ to $1.56\times10^{-3}$ on Heat (a factor of 13.6) and from $7.78\times10^{-3}$ to $3.39\times10^{-4}$ on Lap2 (a factor of 22.9). Against the best logged Adam iterate of each run the gain is still a factor 8 to 13, about one order of magnitude.
 
 ### Which collocation strategy is best?
 
@@ -89,7 +89,7 @@ All errors are relative errors in the $L^2$ norm on held-out points. Details and
 
 ### Does a cheap remedy remove the plateau at d = 20?
 
-**No single remedy is general.** The plateau (a test error no smaller than that of the best affine fit) occurs, among the problems of the pre-registered study, on the Poisson problem PoiD. There a fixed affine part ("presolve") from one linear solve does not remove it. Coordinate-wise Legendre input features (lift3c) do remove it for both methods and in every seed, and they contain the solution of PoiD up to $3.9\times10^{-3}$. For Deep Ritz a featureless reparametrisation of the input (rep3) gains as much, and centring the input alone (the exploratory lift1 arm) also leaves the plateau for both methods, with less gain. By the pre-registered rule lift3c is a general remedy on the four pre-registered problems. LapD and PoiD had been used in exploratory pilots of both remedies before the pre-registration, and only RidgeD and CosPairD were held out. On a fifth problem, the ridge AltRidgeD, added afterwards and not a blind test, both the features and the affine part are less accurate than plain, with the affine part also less accurate on RidgeD. How much of the gain of lift3c the features explain differs between problems. On RidgeD centring alone matches it. On ExpCosD, which is on the plateau (0.025 against the affine floor 0.022; a re-check with separately written code, Deep Ritz, three seeds, descriptive), the affine part was 4.5 times more accurate. Neither remedy is general, and neither is new as a method.
+**No single remedy is general.** The plateau (a test error no smaller than that of the best affine fit) occurs, among the problems of the pre-registered study, on the Poisson problem PoiD. There a fixed affine part ("presolve") from one linear solve does not remove it. Coordinate-wise Legendre input features (lift3c) do remove it for both methods and in every seed, and they contain the solution of PoiD up to $3.9\times10^{-3}$. For Deep Ritz a featureless reparametrisation of the input (rep3) gains as much, and centring the input alone (the exploratory lift1 arm) also takes both methods off the plateau, with a smaller gain. By the pre-registered rule lift3c is a general remedy on the four pre-registered problems. LapD and PoiD had been used in exploratory pilots of both remedies before the pre-registration, and only RidgeD and CosPairD were held out. On a fifth problem, the ridge AltRidgeD, added afterwards and not a blind test, both the features and the affine part are less accurate than plain, with the affine part also less accurate on RidgeD. How much of the gain of lift3c the features explain differs between problems. On RidgeD centring alone matches it. On ExpCosD, which is on the plateau (0.025 against the affine floor 0.022; a re-check with separately written code, Deep Ritz, three seeds, descriptive), the affine part was 4.5 times more accurate. Neither remedy is general, and neither is new as a method.
 
 ### Implementation pitfalls
 
@@ -132,21 +132,19 @@ A separate set of 24 PINN runs at $d=20$ (seeds 40–42, problems LapD and SinLi
 
 ## Layout
 
-| Path | Content |
-|---|---|
-| `paper.pdf`, `supplement.pdf` | the article and its Supplementary Material |
-| `main.tex`, `supplement.tex`, `macros.tex`, `statements.tex`, `sections/`, `figures/`, `refs.bib` | LaTeX sources (`sections/s*.tex`: article; `sections/S*.tex`: supplement) |
-| `build_pdfs.sh` | builds both PDFs, which refer to each other |
-| `code/` | scripts that produce the tables, figures and additional experiments of the paper |
-| `data/` | their outputs |
-| `research_benchmark/` | the low-dimensional benchmark: package `pinnbench`, run scripts, raw results |
-| `research_highdim/` | the study in d dimensions: `scripts/hd_core.py`, run scripts, raw results |
-| `research_highdim_bound/` | stability constant and computable error bound (Section 6.7): pre-registration, scripts, results, re-checks |
-| `research_highdim_remedies/` | two remedies at d = 20 (Section 6.8): pre-registration and addendum, scripts, runs, re-checks |
-| `verify_research_benchmark/`, `verify_research_highdim/` | re-computation of the two studies and separately written verification codes (V-bench, V-dim) |
-| `notes/VERIFICATION.md` | how the results were checked, the caveats and the working records of the studies |
-| `reproduce.md` | how to regenerate every table and figure |
-| `LICENSE`, `LICENSE-CC-BY-4.0.txt`, `requirements.txt` | licences; Python packages |
+- `paper.pdf`, `supplement.pdf`: the article and its Supplementary Material
+- `main.tex`, `supplement.tex`, `macros.tex`, `statements.tex`, `sections/`, `figures/`, `refs.bib`: LaTeX sources (`sections/s*.tex`: article; `sections/S*.tex`: supplement)
+- `build_pdfs.sh`: builds both PDFs, which refer to each other
+- `code/`: scripts that produce the tables, figures and additional experiments of the paper
+- `data/`: their outputs
+- `research_benchmark/`: the low-dimensional benchmark: package `pinnbench`, run scripts, raw results
+- `research_highdim/`: the study in d dimensions: `scripts/hd_core.py`, run scripts, raw results
+- `research_highdim_bound/`: stability constant and computable error bound (Section 6.7): pre-registration, scripts, results, re-checks
+- `research_highdim_remedies/`: two remedies at d = 20 (Section 6.8): pre-registration and addendum, scripts, runs, re-checks
+- `verify_research_benchmark/`, `verify_research_highdim/`: re-computation of the two studies and separately written verification codes (V-bench, V-dim)
+- `notes/VERIFICATION.md`: how the results were checked, the caveats and the working records of the studies
+- `reproduce.md`: how to regenerate every table and figure
+- `LICENSE`, `LICENSE-CC-BY-4.0.txt`, `requirements.txt`: licences; Python packages
 
 ## How to cite
 
